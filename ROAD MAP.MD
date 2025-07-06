@@ -18,9 +18,10 @@
   - [ ] Branches: `main` (release), `development`, `staging`
   - [ ] Files: 
     - [ ] README
-    - [ ] Roadmap (this doc)
+    - [x] Roadmap (this doc)
     - [ ] Project Plan (MVP.md)
     - [ ] CHANGELOG
+    - [x] License
   - [x] Google doc: dev diary
   - [ ] GitHub Actions for CI (unit tests triggered on PRs to `development`)
   - [ ] Linting rules configured
