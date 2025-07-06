@@ -15,7 +15,10 @@
 - [x]  Decide on tech stack: language (e.g., TypeScript, Python), DB (e.g., SQLite, Firestore, Supabase)
 - [ ]  Sketch out dev environment needs (local CLI-first tools)
 - [ ]  Set up GitHub repo with the following:
-  - [ ] Branches: `main` (release), `development`, `staging`
+  - [ ] Branches: 
+    - [x] `main` (release)
+    - [ ] `development`
+    - [ ] `staging`
   - [ ] Files: 
     - [ ] README
     - [x] Roadmap (this doc)
@@ -25,7 +28,9 @@
   - [x] Google doc: dev diary
   - [ ] GitHub Actions for CI (unit tests triggered on PRs to `development`)
   - [ ] Linting rules configured
-  - [ ] PR templates: bug report & feature addition
+  - [x] PR templates: 
+    - [x] bug report
+    - [x]feature addition
   - [ ] GitHub Projects board to manage tasks and PR tracking
 - [ ] Create initial roadmap milestones and update this tracker for all months
 
