@@ -1,4 +1,10 @@
-# Bug Fix PR Template
+---
+name: Bug Fix
+about: Submit a fix for a bug
+title: "[Bugfix] "
+labels: bug
+assignees: []
+---
 
 ## Summary
 <!-- A brief explanation of what the bug was and how it was fixed -->
