@@ -1,11 +1,3 @@
----
-name: Bug Fix
-about: Submit a fix for a bug
-title: "[Bugfix] "
-labels: bug
-assignees: []
----
-
 ## Summary
 <!-- A brief explanation of what the bug was and how it was fixed -->
 Fixed an issue where archived tasks were still showing up in the “Active Tasks” view. The bug was due to a missing `isArchived` check in the backend query logic.

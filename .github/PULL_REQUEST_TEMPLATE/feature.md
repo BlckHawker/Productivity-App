@@ -1,11 +1,3 @@
----
-name: New Feature
-about: Propose a new feature or enhancement
-title: "[Feature] "
-labels: enhancement
-assignees: []
----
-
 ## Summary
 <!-- A short, high-level summary of what this PR adds or improves -->
 
