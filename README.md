@@ -1,42 +1,35 @@
-# [Project name] - [project one-liner]
-# [AirAware] - Indoor Air Quality Monitor
+# Name TBD - Cross-Platform Task Management & Productivity App
 
-**Replace this with a brief, one-sentence description of your project**
-
-A cross-platform system designed to collect, monitor, and alert users about indoor air quality conditions using Bluetooth-connected IoT sensors.
-
+A cross-platform productivity dashboard (web and mobile) that helps users organize tasks, visualize trends, and manage priorities with features like labels, filters, reminders, subtasks, and flexible recurrence rules.
 
 ---
 
 ## Project Purpose
-> What to include: A more detailed explanation of what the project is and why it exists.
 
-**Example:**
-
-AirAware helps users stay informed about the safety of their indoor environments by providing real-time data on CO₂, humidity, and temperature. It aims to improve wellness at home, in schools, and in workplaces by detecting poor air conditions and suggesting ventilation actions.
+This application empowers individuals to take control of their day-to-day tasks, long-term goals, and recurring routines. It enables seamless tracking across devices with flexible customization for how users plan, categorize, and prioritize their responsibilities. The system promotes intentional time use through features like visual urgency indicators, recurring logic, task caps, and filtering.
 
 ---
 
 ## Tech Stack
-> What to include: Core technologies used in the backend, frontend, database, and tools.
 
-**Example:**
-- **Frontend:** React (for web) & Flutter (for mobile)
-- **Backend:** Node.js + Express
-- **Database:** MongoDB
-- **IoT Communication:** Web Bluetooth API
-- **Notifications:** Firebase Cloud Messaging
-- **Testing:** Mocha + Chai
-- **Dev Tools:** Docker, Postman
+- **Frontend:** React (Web), React Native or Flutter (Mobile)
+- **Backend:** Node.js + Express (REST API)
+- **Database:** PostgreSQL
+- **ORM:** Prisma
+- **Notifications:** Local system notifications
+- **Testing:** Jest
+- **Dev Tools:** Docker, ESLint, Prettier, Husky, GitHub Actions
+
 ---
 
 ## Branch Structure
 
-| Branch     | Purpose                                         | Who Can Push?   | PR Target? |
-|------------|--------------------------------------------------|------------------|------------|
-| `main`     | Production branch — live application version             | Release manager only      | ❌   |
-| `development` | Active development — all PRs must go here        | 	Anyone via PR, merged by Maintainer | ✅  |
-| `staging`  | Final staging/test environment before production | Maintainer only      | ❌   |
+| Branch      | Purpose                                   | Who Can Push?                       | PR Target?        |
+| ----------- | ----------------------------------------- | ----------------------------------- | ----------------- |
+| `main`      | Production — stable release branch        | Maintainer only                     | ❌                 |
+| `develop`   | Active development — features merged here | Anyone via PR, merged by Maintainer | ✅                 |
+| `feature/*` | Feature-specific branches                 | Contributors                        | PR to `develop` ✅ |
+| `bug/*`     | Bug-specific branches                     | Contributors                        | PR to `develop` ✅ |
 
 ---
 
@@ -44,50 +37,18 @@ AirAware helps users stay informed about the safety of their indoor environments
 
 ### Requirements
 
-> What to include: Minimum system or library requirements to run the project.
-
-
-**Replace with requirements and installs**
-**Example:**
-
-- Node.js `v20.x+`
-- Flutter SDK `3.x`
-- MongoDB `6.x`
-- Docker (for optional containerized setup)
-
----
-
-### Setup Instructions
-> What to include: Step-by-step instructions for cloning and running the project locally.
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/yourusername/reponame.git
-cd reponame
-
-# 2. Install backend dependencies
-cd backend
-npm install
-
-# 3. Create and configure your environment file
-cp .env.example .env
-
-# 4. Start the development server
-npm run dev
-```
-> Instructions for frontend/mobile setup go here if applicable
+- Node.js `v22.14.0`
+- PostgreSQL `v17`
+- npm `v10.9.2`
+- Docker v`TBD` (optional containerized setup)
 
 ---
 
 ### How to Make a Pull Request (PR)
 
-> What to include: A PR workflow that contributors should follow.
-
-
-
-
+> Follow these steps to contribute features, fixes, or improvements.
 #### Checklist:
-1. > Create a new branch from `main`
+1. Create a new branch from `main`:
 
 ```bash
 git checkout main
@@ -95,52 +56,101 @@ git pull
 git checkout -b feature/my-feature-name
 ```
 
-2. Make your changes.
-3. Add tests if necessary.
+2. Make your changes locally.
+3. Add or update tests, if applicable.
 4. Commit with a clear message:
+
 ```bash
-git commit -m "Add feature to display real-time sensor data"
+git commit -m "Add feature: recurring task support with reminder offsets"
 ```
 
-5. Push your branch:
+5. Push your branch to the remote repository:
+
 ```bash
 git push origin feature/my-feature-name
 ```
 
-6. Open a Pull Request targeting `development`.
+6. Open a Pull Request targeting the `develop` branch.
+   - Assign reviewers if needed.
+   - Make sure all CI checks pass.
 ---
+#### PR Templates
 
-### PR Description Template
+Unfortunately, GitHub does not support choosing PR templates via GUI. Please follow these instructions carefully to target the correct branch. Not following these steps in order will cause the template to not appear.
 
-Type: Feature / Bug Fix
-Description: Explain what this PR does and why it’s needed.
+1. Copy, edit, and paste the url for the respective PR in your browser
+2. Select `Create Pull Request`
+3. Select `Create Pull Request` (This is not a typo)
+4. Change the target to `develop`
+5. Assign yourself
 
-#### Bug Fix
+##### Bug Fix
+```
+https://github.com/BlckHawker/Productivity-App/compare/branch?template=bugfix.md&title=[Bugfix]+Add+title+here
+&labels=bug
+```
+- Replace `branch` with the name of your branch
 
-- Steps to Reproduce:
-   1. Step-by-step instructions
-   2. ...
-- Expected Behavior: Describe what should happen.
-- Actual Behavior: Describe what actually happens.
-
-#### New Feature
-
-- How to Use:
-   1. Step-by-step instructions to test or use the feature
-   2. ...
-
-#### Optional
-- Media: Include screenshots or GIFs if available (optional but appreciated)
-- Additional notes
+##### New Feature
+```
+https://github.com/BlckHawker/Productivity-App/compare/branch?template=feature.md&title=[Feature]+Add+title+here
+&labels=enhancement
+```
+- Replace `branch` with the name of your branch
 ---
+## Changelog
+All notable changes to this project are documented in the CHANGELOG.md **insert link** file.
 
+
+
+### Versioning
+We follow [Semantic Versioning (SemVer)](https://semver.org) format:
+`MAJOR.MINOR.PATCH`
+
+- `MAJOR`: Breaking changes or major redesigns
+- `MINOR`: Backwards-compatible features and enhancements
+- `PATCH`: Bug fixes and minor improvements
+
+Example: `1.2.3` means 1st major version, 2 feature updates, and 3 patches
+
+### When to Add to the Changelog
+Add an entry to CHANGELOG.md whenever
+- You introduce a new feature
+- You fix a bug
+- You change existing behavior
+- You remove or deprecate functionality
+- You make changes that affect users or contributors (e.g., updated setup instructions API documentation)
+
+Changes should be added to a `## [Unreleased]` section until the version is released.
+
+### Format
+Each version section should include the version number, release date, and categorized changes:
+```md
+## [1.3.0] - 2025-09-01
+
+### Added
+- Feature: Support for nested subtasks up to 20 levels
+- UI: New mobile-friendly task filter panel
+
+### Changed
+- Updated recurrence engine to support custom interval units
+
+### Fixed
+- Fixed reminder bug where notifications were not sent after midnight
+
+### Removed
+- Deprecated label color presets
+
+```
+
+For more information on development, read through the wiki.
+
+---
 ## Contributor Roles
-
-- **Your name** – Project Maintainer / Lead Developer
-- You? – Open a PR and join the contributor list!
-
----
-
+- **Kovu Jackson-Bentley** – Project Maintainer / Lead Developer  
+- **Jabrecia Washington** – Frontend Lead
+- **You?** – Contribute to the project by opening a PR!
+---  
 ## License
 
-[MIT](https://github.com/BlckHawker/Stardew-Discord-Bot/blob/master/LICENSE) – Open source and open to contributions.
+[MIT](https://github.com/yourusername/taskflow/blob/main/LICENSE) – Open source and open to community contributions.
