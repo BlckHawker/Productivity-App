@@ -25,6 +25,7 @@ This project aims to build a cross-platform dashboard (web and mobile) to help u
 
 - Repository / Documentation Future Tasks:
 	- Add contributors on read me as a table with a link to their respective socials. At least github. Possibly others
+	- Document for installation instructions for both developers and users
 
 ---
 ## 3. Functional Requirements
