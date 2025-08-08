@@ -56,3 +56,4 @@ npm run test -- taskController.test.js
 - [ ] Tests added or updated as needed
 - [ ] Linting and formatting pass
 - [ ] Documentation updated (if needed)
+- [ ] Changelog updated

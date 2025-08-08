@@ -114,10 +114,54 @@ https://github.com/BlckHawker/Productivity-App/compare/branch?template=feature.m
 ```
 - Replace `branch` with the name of your branch
 ---
+## Changelog
+All notable changes to this project are documented in the CHANGELOG.md **insert link** file.
 
+
+
+### Versioning
+We follow [Semantic Versioning (SemVer)](https://semver.org) format:
+`MAJOR.MINOR.PATCH`
+
+- `MAJOR`: Breaking changes or major redesigns
+- `MINOR`: Backwards-compatible features and enhancements
+- `PATCH`: Bug fixes and minor improvements
+
+Example: `1.2.3` means 1st major version, 2 feature updates, and 3 patches
+
+### When to Add to the Changelog
+Add an entry to CHANGELOG.md whenever
+- You introduce a new feature
+- You fix a bug
+- You change existing behavior
+- You remove or deprecate functionality
+- You make changes that affect users or contributors (e.g., updated setup instructions API documentation)
+
+Changes should be added to a `## [Unreleased]` section until the version is released.
+
+### Format
+Each version section should include the version number, release date, and categorized changes:
+```md
+## [1.3.0] - 2025-09-01
+
+### Added
+- Feature: Support for nested subtasks up to 20 levels
+- UI: New mobile-friendly task filter panel
+
+### Changed
+- Updated recurrence engine to support custom interval units
+
+### Fixed
+- Fixed reminder bug where notifications were not sent after midnight
+
+### Removed
+- Deprecated label color presets
+
+```
+---
 ## Contributor Roles
 - **Kovu Jackson-Bentley** – Project Maintainer / Lead Developer  
-- **Jabrecia Washington** – Frontend Leader
+- **Jabrecia Washington** – Frontend Lead
 - **You?** – Contribute to the project by opening a PR!
 ---  
 ## License

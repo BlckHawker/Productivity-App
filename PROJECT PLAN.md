@@ -17,11 +17,14 @@ This project aims to build a cross-platform dashboard (web and mobile) to help u
 
 - Single-user only: This release does not include authentication or user accounts. All data is stored at the database root. Future updates will add multi-user support (including per-user data isolation, sharing, and auth).
 
-- Future tasks:
+- Application Future tasks:
 	- Retrospective views / reports
 	- Productivity goals
 	- Soft caps (e.g., "recommended 5 daily tasks") - Can be based on project goal allocations. Ex: if a user sets Life = 50%, Work = 30%, and Coding = 20%, the app will aim to suggest tasks in proportion to those targets. These percentages are adjusted by task size, so a Large Work task may count more toward the quota than a Tiny Life task. Users will also be able to add more commands for the suggestion to prioritize, such as closet deadline, and/or showing tasks with a specific label.
 	- Streaks/Habits - Users have the ability to keep track of instances of recurring tasks being complete and hold streaks.
+
+- Repository / Documentation Future Tasks:
+	- Add contributors on read me as a table with a link to their respective socials. At least github. Possibly others
 
 ---
 ## 3. Functional Requirements

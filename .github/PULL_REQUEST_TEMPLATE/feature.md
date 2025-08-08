@@ -69,3 +69,4 @@ This PR introduces a new feature that allows users to filter and sort data entri
 - [ ] Code is linted and follows project conventions
 - [ ] All acceptance criteria are met
 - [ ] Documentation updated if applicable
+- [ ] Changelog updated
