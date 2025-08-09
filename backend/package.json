@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "lint:fix": "eslint src/**/*.{js,ts,tsx} --fix && prettier --write src/**/*.{js,ts,tsx,json,css,md}",
+    "lint:warn": "eslint src/**/*.{js,ts,tsx}",
     "test": "jest --passWithNoTests"
   },
   "keywords": [],

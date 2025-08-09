@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint:warn": "eslint 'src/**/*.{js,ts,tsx}'",
+    "lint:fix": "eslint 'src/**/*.{js,ts,tsx}' --fix && prettier --write 'src/**/*.{js,ts,tsx,json,css,md}'",
     "preview": "vite preview",
     "test": "jest --passWithNoTests"
   },

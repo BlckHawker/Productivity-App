@@ -2,6 +2,8 @@
   "name": "productivity-app",
   "private": true,
   "scripts": {
+    "lint:warn": "npm run lint:warn --prefix frontend && npm run lint:warn --prefix backend",
+    "lint:fix": "npm run lint:fix --prefix frontend && npm run lint:fix --prefix backend",
     "test": "npm-run-all --parallel test:backend test:frontend",
     "test:backend": "cd backend && npm install && npm run test",
     "test:frontend": "cd frontend && npm install && npm run test"
