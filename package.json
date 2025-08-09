@@ -2,8 +2,11 @@
   "name": "productivity-app",
   "private": true,
   "scripts": {
-    "test": "npm run test:backend && npm run test:frontend",
+    "test": "npm-run-all --parallel test:backend test:frontend",
     "test:backend": "cd backend && npm install && npm run test",
     "test:frontend": "cd frontend && npm install && npm run test"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
   }
 }
