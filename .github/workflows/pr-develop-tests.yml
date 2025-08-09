@@ -1,9 +1,10 @@
-name: Run Unit Tests on PR to develop
+name: Run Unit Tests on PR to develop or manual trigger
 
 on:
   pull_request:
     branches:
       - develop
+  workflow_dispatch:
 
 jobs:
   test:
