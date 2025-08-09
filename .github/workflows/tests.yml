@@ -1,5 +1,4 @@
-name: Run Unit Tests on PR to develop or manual trigger
-
+name: Unit Tests
 on:
   pull_request:
     branches:
