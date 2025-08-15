@@ -1,0 +1,28 @@
+{
+    "preset": "ts-jest",
+    "transform": {
+    "^.+\\.(ts|tsx)?$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest"
+  },
+    "collectCoverageFrom": [
+        "src/**/*.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+        "src/prisma.ts",
+        "src/router.ts",
+        "src/server.ts",
+        "src/types/express.d.ts",
+        "src/services/"
+
+    ],
+    
+    "coverageThreshold": {
+        "global": {
+            "branches": 90,
+            "functions": 90,
+            "lines": 90,
+            "statements": 90
+        }
+    }
+
+}
