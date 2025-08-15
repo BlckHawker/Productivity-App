@@ -1,12 +1,11 @@
-
 # Overview
 
-This project is a full-stack application with a **React frontend** and a Node.js / Express backend using **TypeScript**.
+This project is a full-stack application with a React frontend and a Node.js / Express backend using TypeScript.
 
-- The **frontend** communicates with the backend API to display and manage tasks.
-- The **backend** handles API requests, interacts with a **PostgreSQL database via Prisma**, and contains all business logic.
-- Automated tests are set up for both frontend and backend using **Jest**, with coverage enforcement.
-- The project uses **Vite** for frontend development and build tooling.
+- The frontend communicates with the backend API to display and manage tasks.
+- The backend handles API requests, interacts with a PostgreSQL database via Prisma, and contains all business logic.
+- Automated tests are set up for both frontend and backend using Jest, with coverage enforcement.
+- The project uses Vite for frontend development and build tooling.
 
 The project is organized so that the **root `package.json`** mainly coordinates scripts across both frontend and backend, while most dependencies live in the respective folder (`frontend/package.json` or `backend/package.json`).
 # First-Time Setup
@@ -15,14 +14,15 @@ Follow these steps to get the project running locally:
 
 ## 1. Clone the Repository
 
-`git clone <repository-url> cd <repository-folder>`
+`git clone https://github.com/BlckHawker/Productivity-App.git`
 
 ## 2. Install PostgreSQL
 
-- Ensure PostgreSQL is installed on your machine.
+- Ensure PostgreSQL version 17 is installed on your machine.
 - Create a database for development:
+   - While the official database is called `productivity_app_db`, what you name it is up to you as it should not have any affects on building/deploying the project
 
-`CREATE DATABASE <DATABASE_NAME>;`
+`CREATE DATABASE <DATABASE_NAME>;` 
 
 ## 3. Backend Setup
 
@@ -42,7 +42,7 @@ npm install
     - `DATABASE_LOCALHOST` – Hostname of the database (`localhost` for local development)
     - `DATABASE_PORT` – Database port (default: `5432`)
     - `DATABASE_NAME` – Name of your development database
-    - `DATABASE_URL` – Complete database URL
+    - `DATABASE_URL` – Complete database URL. This should not be changed from `example.env`
 
 4. Generate the Prisma client
 ```bash
@@ -95,7 +95,7 @@ These scripts are shortcuts defined in `package.json` for common development tas
 | `build`                  | Build both frontend and backend.                        |
 | `build:frontend`         | Build the frontend only.                                |
 | `build:backend`          | Build the backend only.                                 |
-| `test`                   | `Run frontend and backend tests at the same time`       |
+| `test`                   | Run frontend and backend tests at the same time        |
 | `test:backend`           | Install backend dependencies, then run backend tests.   |
 | `test:frontend`          | Install frontend dependencies, then run frontend tests. |
 | `test:coverage`          | Run coverage tests for both frontend and backend.       |
@@ -109,7 +109,7 @@ These scripts are shortcuts defined in `package.json` for common development tas
 | `build`         | Creates a build of the project.                                                                                                                           |
 | `preview`       | Creates a build of the project and serves it locally                                                                                                      |
 | `test`          | Runs all automated tests. If no tests are found, it won’t fail the build.                                                                                 |
-| `test:coverage` | Runs tests and shows how much of your code is covered by tests. Fails if less than **90%** of your branches, functions, lines, or statements are covered. |
+| `test:coverage` | Runs tests and shows how much of your code is covered by tests. Fails if less than 90% of your branches, functions, lines, or statements are covered. |
 ## Backend
 | Script            | Description                                                                                                                                               |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -121,7 +121,7 @@ These scripts are shortcuts defined in `package.json` for common development tas
 | `migrate:prod`    | Apply all pending database migrations to production.                                                                                                      |
 | `prisma:generate` | Generate Prisma client from the schema.                                                                                                                   |
 | `test`            | Runs all Jest tests. If no tests exist, the command still succeeds without error.                                                                         |
-| `test:coverage`   | Runs tests and shows how much of your code is covered by tests. Fails if less than **90%** of your branches, functions, lines, or statements are covered. |
+| `test:coverage`   | Runs tests and shows how much of your code is covered by tests. Fails if less than 90% of your branches, functions, lines, or statements are covered. |
 
 # File Structure
 When installing new packages, make sure they go into the correct `package.json`. Backend-only packages belong in `backend/package.json`, frontend-only packages in `frontend/package.json`. The root `package.json` is mainly for scripts that coordinate both. If you think a package belongs at the root, check with the maintainers first.

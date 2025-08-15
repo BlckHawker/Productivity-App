@@ -11,6 +11,7 @@
     "test:coverage": "jest --coverage --coverageThreshold='{\"global\":{\"branches\":90,\"functions\":90,\"lines\":90,\"statements\":90}}'"
   },
   "dependencies": {
+    "@babel/preset-typescript": "^7.27.1",
     "dotenv": "^17.2.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"

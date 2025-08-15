@@ -9,6 +9,14 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
+    env: 
+      DATABASE_LOCALHOST: ${{ secrets.DATABASE_LOCALHOST }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,5 +29,16 @@ jobs:
       - name: Install dependencies (root)
         run: npm install
 
-      - name: Build
-        run: npm run build
+      # Backend
+      - name: Install backend dependencies
+        run: npm install --prefix backend
+
+      - name: Build backend
+        run: npm run build --prefix backend
+
+      # Frontend
+      - name: Install frontend dependencies
+        run: npm install --prefix frontend
+
+      - name: Build frontend
+        run: npm run build --prefix frontend

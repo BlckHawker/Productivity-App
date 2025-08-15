@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import * as taskController from "../controllers/task.js" 
-import * as utils from "../utils.js"
+import * as taskController from "../controllers/task" 
+import * as utils from "../utils"
 
 const getAllTasks = async (req: Request, res: Response): Promise<Response> => {
     const response = await taskController.getAllTasksController(req.prisma);
