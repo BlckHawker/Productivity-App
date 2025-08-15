@@ -6,6 +6,7 @@ A cross-platform productivity dashboard (web and mobile) that helps users organi
 
 ## Project Purpose
 
+
 This application empowers individuals to take control of their day-to-day tasks, long-term goals, and recurring routines. It enables seamless tracking across devices with flexible customization for how users plan, categorize, and prioritize their responsibilities. The system promotes intentional time use through features like visual urgency indicators, recurring logic, task caps, and filtering.
 
 ---
@@ -149,6 +150,7 @@ For more information on development, read through the wiki.
 ## Contributor Roles
 - **Kovu Jackson-Bentley** – Project Maintainer / Lead Developer  
 - **Jabrecia Washington** – Frontend Lead
+
 - **You?** – Contribute to the project by opening a PR!
 ---  
 ## License
