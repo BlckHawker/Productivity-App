@@ -94,18 +94,13 @@ npm run dev
 These scripts are shortcuts defined in `package.json` for common development tasks like building, running, testing, and database migrations. You run them with `npm run <script>` from the correct folder (`frontend`, `backend`, or `root`), depending on which part of the project they affect.
 
 ## Root
-
 | Script                   | Description                                             |
 | ------------------------ | ------------------------------------------------------- |
 | `build`                  | Build both frontend and backend.                        |
 | `build:frontend`         | Build the frontend only.                                |
 | `build:backend`          | Build the backend only.                                 |
-| `test`                   | Run frontend and backend tests at the same time         |
-| `test:backend`           | Install backend dependencies, then run backend tests.   |
-| `test:frontend`          | Install frontend dependencies, then run frontend tests. |
-| `test:coverage`          | Run coverage tests for both frontend and backend.       |
-| `test-coverage:backend`  | Run backend tests with coverage reporting.              |
-| `test-coverage:frontend` | Run frontend tests with coverage reporting.             |
+| `test`                   | Run backend tests                                       |
+| `test:coverage`          | Run coverage tests for backend.                         |
 
 ## Frontend
 | Script          | Description                                                                                                                                               |
@@ -113,8 +108,7 @@ These scripts are shortcuts defined in `package.json` for common development tas
 | `dev`           | Starts the local development server with Vite.                                                                                                            |
 | `build`         | Creates a build of the project.                                                                                                                           |
 | `preview`       | Creates a build of the project and serves it locally                                                                                                      |
-| `test`          | Runs all automated tests. If no tests are found, it won’t fail the build.                                                                                 |
-| `test:coverage` | Runs tests and shows how much of your code is covered by tests. Fails if less than 90% of your branches, functions, lines, or statements are covered. |
+
 ## Backend
 | Script            | Description                                                                                                                                               |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -126,7 +120,7 @@ These scripts are shortcuts defined in `package.json` for common development tas
 | `migrate:prod`    | Apply all pending database migrations to production.                                                                                                      |
 | `prisma:generate` | Generate Prisma client from the schema.                                                                                                                   |
 | `test`            | Runs all Jest tests. If no tests exist, the command still succeeds without error.                                                                         |
-| `test:coverage`   | Runs tests and shows how much of your code is covered by tests. Fails if less than 90% of your branches, functions, lines, or statements are covered. |
+| `test:coverage`   | Runs tests and shows how much of your code is covered by tests. Fails if less than 90% of your branches, functions, lines, or statements are covered.     |
 
 # File Structure
 When installing new packages, make sure they go into the correct `package.json`. Backend-only packages belong in `backend/package.json`, frontend-only packages in `frontend/package.json`. The root `package.json` is mainly for scripts that coordinate both. If you think a package belongs at the root, check with the maintainers first.
@@ -207,8 +201,4 @@ backend
 |   |
 |   \---types            # TypeScript type definitions
 |           express.d.ts # Custom Express type definitions
-|
-\---tests                # Automated test files
-        placeholder.test.ts  # Example test file
-
 ```
