@@ -703,10 +703,25 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 
 #### 1.1 - PR Checks Acceptance Criteria
 
-- [ ]  All PRs trigger linting, testing, build, and coverage checks.
-- [ ]  Coverage threshold must be ≥90%.
-- [ ]  Unit tests must pass.
-- [ ]  Builds must pass before merge to main or develop.
+- [ ]  All PRs trigger
+   - [ ]  linting
+       - [ ]  Double quotes and semicolons 
+       - [ ]  Unused variables and imports
+       - [ ] Sorted imports
+       - [ ] const over let when variables are not reassigned
+       - [ ] Avoid `any`
+       - [ ] Remove excessive line breaks
+       - [ ] Tab indentation
+         - [ ] tabs instead of spaces
+         - [ ] 2 indent
+         - [ ] Remove excessive indentation
+       - [ ] All function must have a header comment that briefly explains its purpose, parameters, and return value if applicable
+   - [x] testing
+   - [x] build
+   - [x] coverage checks
+- [x]  Coverage threshold must be ≥90%.
+- [x]  Unit tests must pass.
+- [x]  Builds must pass before merge to main or develop.
 
 #### 1.2 - PR/Issue Templates Acceptance Criteria
 
@@ -733,34 +748,81 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 
 #### 2.1 - Create Project Acceptance Criteria
 
+##### Backend
+
 - [ ]  Users can create up to 100 projects.
 - [ ]  Each project must have a unique name.
 - [ ]  Each project must have a color.
 - [ ]  A default "Other" section is created with every project.
+#### Frontend
+- [ ]  Users can create up to 100 projects.
+    - [ ] Disable the button when the user hits 100 projects. When hovering over (and/or clicking on button), explain to the user the issue
+- [ ]  Each project must have a unique name (with trimmed string)
+    - [ ] If the user puts a project name that already exists, highlight the textbox red, and disabe the "Create Project" button
+- [ ]  Each project must have a color.
+    - [ ] Color picker
+    - [ ] Hex text box included
+- [ ]  A default "Other" section is created with every project.
+
+
 
 #### 2.2 - Update Project
 
+#### Backend
 - [ ]  Users can rename a project.
 - [ ]  Users can change the project’s color.
 - [ ]  Names must remain unique across all projects.
 - [ ]  Color picker updates must persist across sessions.
 
+#### Frontend
+- [ ]  Users can rename a project.
+    - [ ] "Edit project" button
+- [ ]  Users can change the project’s color.
+    - [ ] "Edit project" button
+- [ ]  Names must remain unique across all projects.
+    - [ ] See 2.1 acceptance criteria for how this is done
+- [ ]  Color picker updates must persist across sessions.
+
 #### 2.3 - Delete Project Acceptance Criteria
 
+##### Backend
+- [ ]  Deleting a project deletes all of its sections and tasks.
+
+##### Frontend
 - [ ]  Users must see a warning before deleting a project.
 - [ ]  Deleting a project deletes all of its sections and tasks.
 
 #### 2.4 - Create Section Acceptance Criteria
 
+##### Backend
 - [ ]  Sections require a name and a parent project.
 - [ ]  A project can have up to 100 sections including `Other`.
 - [ ]  Section names must be unique within a project.
+
+##### Frontend
+- [ ]  Sections require a name and a parent project.
+- [ ]  A project can have up to 100 sections including `Other`.
+- [ ]  Section names must be unique within a project.
+
 #### 2.5 - Update Section
 
+##### Backend
 - [ ]  Users can rename a section.
 - [ ]  Users can move a section to a different project.
 - [ ]  Section name must be unique within its (new) parent project.
+
+##### Frontend
+- [ ]  Users can rename a section.
+- [ ]  Users can move a section to a different project.
+- [ ]  Section name must be unique within its (new) parent project.
+
 #### 2.6 - Delete Section Acceptance Criteria
+
+##### Backend
+- [ ]  Deleting a section deletes all of its tasks.
+- [ ]  User cannot delete the `Other` section
+
+##### Frontend
 - [ ]  Users must see a warning before deleting a section.
 - [ ]  Deleting a section deletes all of its tasks.
 - [ ]  User cannot delete the `Other` section
