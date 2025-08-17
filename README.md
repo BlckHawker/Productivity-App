@@ -37,28 +37,12 @@ This application empowers individuals to take control of their day-to-day tasks,
 
 ### Requirements
 
-- Node.js `v`TDB
-- PostgreSQL `v`TDB
-- Docker (optional containerized setup)
-- npm
+- Node.js `v22.14.0`
+- PostgreSQL `v17`
+- npm `v10.9.2`
+- Docker v`TBD` (optional containerized setup)
 
 ---
-### Setup Instructions
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/BlckHawker/Productivity-App.git
-cd Productivity-App
-
-# 2. Install dependencies
-npm install
-
-# 3. Set up environment
-cp .env.example .env
-
-# 4. Start development server
-npm run dev
-```
 
 ### How to Make a Pull Request (PR)
 
@@ -158,6 +142,9 @@ Each version section should include the version number, release date, and catego
 - Deprecated label color presets
 
 ```
+
+For more information on development, read through the wiki.
+
 ---
 ## Contributor Roles
 - **Kovu Jackson-Bentley** – Project Maintainer / Lead Developer  

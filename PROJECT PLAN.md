@@ -703,10 +703,25 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 
 #### 1.1 - PR Checks Acceptance Criteria
 
-- [ ]  All PRs trigger linting, testing, build, and coverage checks.
-- [ ]  Coverage threshold must be ≥90%.
-- [ ]  Unit tests must pass.
-- [ ]  Builds must pass before merge to main or develop.
+- [ ]  All PRs trigger
+   - [ ]  linting
+       - [ ]  Double quotes and semicolons 
+       - [ ]  Unused variables and imports
+       - [ ] Sorted imports
+       - [ ] const over let when variables are not reassigned
+       - [ ] Avoid `any`
+       - [ ] Remove excessive line breaks
+       - [ ] Tab indentation
+         - [ ] tabs instead of spaces
+         - [ ] 2 indent
+         - [ ] Remove excessive indentation
+       - [ ] All function must have a header comment that briefly explains its purpose, parameters, and return value if applicable
+   - [x] testing
+   - [x] build
+   - [x] coverage checks
+- [x]  Coverage threshold must be ≥90%.
+- [x]  Unit tests must pass.
+- [x]  Builds must pass before merge to main or develop.
 
 #### 1.2 - PR/Issue Templates Acceptance Criteria
 
@@ -719,6 +734,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 - [ ]  Issues are added to board and default to Backlog.
 - [ ]  PRs and label changes move cards across columns.
 - [ ]  Board updates automatically via GitHub automation.
+
 ---
 ### Epic 2: Project & Section CRUD
 
@@ -733,34 +749,81 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 
 #### 2.1 - Create Project Acceptance Criteria
 
+##### Backend
+
 - [ ]  Users can create up to 100 projects.
 - [ ]  Each project must have a unique name.
 - [ ]  Each project must have a color.
 - [ ]  A default "Other" section is created with every project.
+#### Frontend
+- [ ]  Users can create up to 100 projects.
+    - [ ] Disable the button when the user hits 100 projects. When hovering over (and/or clicking on button), explain to the user the issue
+- [ ]  Each project must have a unique name (with trimmed string)
+    - [ ] If the user puts a project name that already exists, highlight the textbox red, and disabe the "Create Project" button
+- [ ]  Each project must have a color.
+    - [ ] Color picker
+    - [ ] Hex text box included
+- [ ]  A default "Other" section is created with every project.
+
+
 
 #### 2.2 - Update Project
 
+#### Backend
 - [ ]  Users can rename a project.
 - [ ]  Users can change the project’s color.
 - [ ]  Names must remain unique across all projects.
 - [ ]  Color picker updates must persist across sessions.
 
+#### Frontend
+- [ ]  Users can rename a project.
+    - [ ] "Edit project" button
+- [ ]  Users can change the project’s color.
+    - [ ] "Edit project" button
+- [ ]  Names must remain unique across all projects.
+    - [ ] See 2.1 acceptance criteria for how this is done
+- [ ]  Color picker updates must persist across sessions.
+
 #### 2.3 - Delete Project Acceptance Criteria
 
+##### Backend
+- [ ]  Deleting a project deletes all of its sections and tasks.
+
+##### Frontend
 - [ ]  Users must see a warning before deleting a project.
 - [ ]  Deleting a project deletes all of its sections and tasks.
 
 #### 2.4 - Create Section Acceptance Criteria
 
+##### Backend
 - [ ]  Sections require a name and a parent project.
 - [ ]  A project can have up to 100 sections including `Other`.
 - [ ]  Section names must be unique within a project.
+
+##### Frontend
+- [ ]  Sections require a name and a parent project.
+- [ ]  A project can have up to 100 sections including `Other`.
+- [ ]  Section names must be unique within a project.
+
 #### 2.5 - Update Section
 
+##### Backend
 - [ ]  Users can rename a section.
 - [ ]  Users can move a section to a different project.
 - [ ]  Section name must be unique within its (new) parent project.
+
+##### Frontend
+- [ ]  Users can rename a section.
+- [ ]  Users can move a section to a different project.
+- [ ]  Section name must be unique within its (new) parent project.
+
 #### 2.6 - Delete Section Acceptance Criteria
+
+##### Backend
+- [ ]  Deleting a section deletes all of its tasks.
+- [ ]  User cannot delete the `Other` section
+
+##### Frontend
 - [ ]  Users must see a warning before deleting a section.
 - [ ]  Deleting a section deletes all of its tasks.
 - [ ]  User cannot delete the `Other` section
@@ -893,6 +956,126 @@ Once the app is production-ready or multi-user features are introduced, hosting 
     - [ ]  Dynamic reminders (relative to deadline/desired date)
 - [ ]  Users can define recurrence rules for reminders:
     - [ ]  every x:
+=======
+---
+### Epic 2: Project & Section CRUD
+
+|**Name**|**Description**|**User Story**|
+|---|---|---|
+|**2.1 - Create Project**|Users can create up to 100 named, color-coded projects.|As a user, I want to create projects with unique names and assign colors so that I can visually categorize my workstreams.|
+|**2.2 - Update Project**|Projects can be renamed or recolored.|As a user, I want to rename or recolor a project so I can adapt to changing needs or preferences.|
+|**2.3 - Delete Project**|Deleting a project removes all nested sections and tasks.|As a user, I want to delete a project and be warned if its sections and tasks will be removed, so I don’t delete important work by accident.|
+|**2.4 - Create Section**|Sections exist within projects and are required for task organization.|As a user, I want to organize my tasks into named sections under each project so I can better track grouped work.|
+|**2.5 - Update Section**|Sections can be renamed or reassigned to a different project.|As a user, I want to rename or move sections so I can restructure how I organize my tasks.|
+|**2.6 - Delete Section**|Deleting a section removes all tasks within it.|As a user, I want to delete a section and its contents after confirmation, so I can clean up my workspace safely.|
+
+#### 2.1 - Create Project Acceptance Criteria
+
+- [ ]  Users can create up to 100 projects.
+- [ ]  Each project must have a unique name.
+- [ ]  Each project must have a color.
+- [ ]  A default "Other" section is created with every project.
+
+#### 2.2 - Update Project
+
+- [ ]  Users can rename a project.
+- [ ]  Users can change the project’s color.
+- [ ]  Names must remain unique across all projects.
+- [ ]  Color picker updates must persist across sessions.
+
+#### 2.3 - Delete Project Acceptance Criteria
+
+- [ ]  Users must see a warning before deleting a project.
+- [ ]  Deleting a project deletes all of its sections and tasks.
+
+#### 2.4 - Create Section Acceptance Criteria
+
+- [ ]  Sections require a name and a parent project.
+- [ ]  A project can have up to 100 sections including `Other`.
+- [ ]  Section names must be unique within a project.
+#### 2.5 - Update Section
+
+- [ ]  Users can rename a section.
+- [ ]  Users can move a section to a different project.
+- [ ]  Section name must be unique within its (new) parent project.
+#### 2.6 - Delete Section Acceptance Criteria
+- [ ]  Users must see a warning before deleting a section.
+- [ ]  Deleting a section deletes all of its tasks.
+- [ ]  User cannot delete the `Other` section
+
+---
+### Epic 3: Task Creation & Structure
+
+|**Name**|**Description**|**User Story**|
+|---|---|---|
+|**3.1 - Create Task**|Users can create one-time or recurring tasks with multiple fields.|As a user, I want to create tasks with details like deadline, size, and reminders so I can manage my to-dos effectively.|
+|**3.2 - Update Task**|Tasks can be edited to reflect changes.|As a user, I want to update tasks after creation so they stay accurate and useful.|
+|**3.3 - Add Subtasks**|Tasks can have up to 20 levels of nested subtasks with 100 incomplete per level|As a user, I want to break down large tasks into subtasks, so I can track progress on complex work.|
+|**3.4 - Prevent Recursion**|System blocks infinite subtask loops.|As a developer, I want the system to detect and prevent circular task relationships so I don’t create recursive logic bugs.|
+|**3.5 - Complete Task Logic**|Completion triggers the appropriate behavior based on type/recurrence.|As a user, I want task completion to behave correctly depending on whether the task is recurring or has subtasks, so I don’t lose progress.|
+
+#### 3.1 - Create Task Acceptance Criteria
+
+- [ ]  Tasks must have a title and section (defaults to `Other`).
+- [ ]  Optional fields
+	- [ ] description
+	- [ ] desired date
+	- [ ] deadline
+	- [ ] priority (default `None`)
+	- [ ] size (default `None`)
+	- [ ] labels
+	- [ ] reminders
+- [ ]  Tasks must automatically record creation date.
+#### 3.2 - Update Task Acceptance Criteria
+
+- [ ]  User can edit any field of a task, including name, description, deadline, desired date, reminders, labels, recurrence, size, etc.
+- [ ] Changes are autosaved and persisted locally and in the cloud.
+- [ ] Editing a recurring task only affects:
+    - [ ] The current instance if the recurrence rule says “generate new on complete.”
+    - [ ] All future tasks if recurrence is updated in a recurring template.
+- [ ] Editing a task with subtasks does not break subtask structure.
+- [ ] If the user changes a date field, any relative reminder updates accordingly if it was originally set relative.
+- [ ] The UI clearly differentiates between editing a task instance vs. editing a recurring rule/template.
+- [ ] A task cannot be updated to create a circular subtask reference (e.g., making its parent its own subtask).
+
+#### 3.3 - Add Subtasks Acceptance Criteria
+
+- [ ]  Subtasks can be nested up to 20 levels deep.
+- [ ]  A task can have up to 100 incomplete subtasks at any level.
+- [ ]  Subtasks inherit their parent’s project and section.
+- [ ]  Subtasks behave independently in filtered and sorted views.
+
+#### 3.4 - Prevent Recursion Acceptance Criteria
+
+- [ ]  System must detect and block circular subtask relationships.
+- [ ]  Prevent direct or indirect self-reference of tasks.
+
+#### 3.5 - Complete Task Logic Acceptance Criteria
+
+- [ ]  Marking a task complete sets its `completed_at` timestamp.
+- [ ]  A completed task no longer appears in active views unless filtered specifically.
+- [ ]  Completing a task with incomplete subtasks shows a confirmation prompt.
+- [ ] Parent task auto-completes only if all subtasks are completed (if auto-complete toggle is enabled).
+- [ ] Recurring tasks:
+    - [ ] Marking the task as complete immediately generates the next instance based on the recurrence rule.
+    - [ ] New instance inherits all relevant fields (description, reminders, labels, subtasks, etc.).
+    - [ ] Generated instance resets completion status and applies recurrence offsets (e.g., "+1 week").
+- [ ] Undoing completion restores the previous task state and deletes the next instance (if auto-generated).
+- [ ] Tasks in completed state remain editable unless explicitly archived or locked.
+
+---
+### Epic 4: Task Recurrence
+
+| **Name**                            | **Description**                                                        | **User Story**                                                                                                                           |
+| ----------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **4.1 - Task Recurrence**           | Recurring tasks automatically regenerate new instances when completed. | As a user, I want tasks to repeat according to my schedule so I don’t have to manually recreate them every time.                         |
+| **4.2 - Missed Recurrence Logic**   | Missed recurring tasks don’t auto-regenerate; user must reschedule.    | As a user, I want the app to handle overdue recurring tasks differently so I can consciously reschedule instead of losing track of them. |
+| **4.3 - Visual Urgency Indicators** | UI symbols show urgency based on deadline/desired dates.               | As a user, I want visual urgency indicators so I can quickly scan which tasks are overdue or coming up soon.                             |
+
+#### 4.1 - Task Recurrence Acceptance Criteria
+
+- [ ]  Recurrence supports:
+    - [ ]  every x units
         - [ ]  minutes
         - [ ]  hours
         - [ ]  days

@@ -1,13 +1,13 @@
 ## [Unreleased]
 ### Added
-- CHANGELOG Document
-- Issue templates
 
 ### Changed
-- Readme to include purpose and how to use CHANGELOG
-- PR templates to include a checkbox to verify changes are added to CHANGELOG
-
 
 ### Fixed
 
 ### Removed
+
+## [0.1.0] - 2025-08-17
+### Added
+- Frontend and backend scaffolding
+- Basic README and Wiki project setup
