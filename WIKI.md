@@ -42,14 +42,19 @@ npm install
     - `DATABASE_LOCALHOST` – Hostname of the database (`localhost` for local development)
     - `DATABASE_PORT` – Database port (default: `5432`)
     - `DATABASE_NAME` – Name of your development database
-    - `DATABASE_URL` – Complete database URL. This should not be changed from `example.env`
+    - `DATABASE_URL` – Complete database URL. This should **not** be changed from `example.env`
 
-4. Generate the Prisma client
+4. expand the dependencies
+```bash
+npm run expand-env
+```
+
+5. Generate the Prisma client
 ```bash
 npm run prisma:generate
 ```
 
-5. Apply initial database migrations:
+6. Apply initial database migrations:
 ```bash
 npm run migrate:dev
 ```
@@ -95,7 +100,7 @@ These scripts are shortcuts defined in `package.json` for common development tas
 | `build`                  | Build both frontend and backend.                        |
 | `build:frontend`         | Build the frontend only.                                |
 | `build:backend`          | Build the backend only.                                 |
-| `test`                   | Run frontend and backend tests at the same time        |
+| `test`                   | Run frontend and backend tests at the same time         |
 | `test:backend`           | Install backend dependencies, then run backend tests.   |
 | `test:frontend`          | Install frontend dependencies, then run frontend tests. |
 | `test:coverage`          | Run coverage tests for both frontend and backend.       |

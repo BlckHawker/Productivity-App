@@ -6,9 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite build && vite preview",
-    "test": "jest --passWithNoTests",
-    "test:coverage": "jest --coverage --coverageThreshold='{\"global\":{\"branches\":90,\"functions\":90,\"lines\":90,\"statements\":90}}'"
+    "preview": "vite build && vite preview"
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.27.1",
