@@ -4,6 +4,7 @@
 ### Changed
 
 ### Fixed
+- Project plan formatting
 
 ### Removed
 
