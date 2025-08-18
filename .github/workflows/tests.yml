@@ -25,8 +25,17 @@ jobs:
       - name: Check npm version
         run: npm --version
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install backend dependencies
+        run: npm install --prefix backend
+
+      - name: Build backend
+        run: npm run build --prefix backend
+
+      - name: Install frontend dependencies
+        run: npm install --prefix frontend
+
+      - name: Build frontend
+        run: npm run build --prefix frontend
 
       - name: Run unit tests
         run: npm run test
