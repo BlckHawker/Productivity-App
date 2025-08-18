@@ -34,7 +34,8 @@
     "express": "^5.1.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.5",
-    "prisma": "^6.13.0"
+    "prisma": "^6.13.0",
+    "status-code-enum": "^1.0.0"
   },
   "devDependencies": {
     "@types/axios": "^0.9.36",
