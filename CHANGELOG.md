@@ -2,7 +2,7 @@
 ### Added
 
 - Header comment check to pr checklist
-
+- A dependency to make HTTP codes an enum
 ### Changed
 
 ### Fixed
