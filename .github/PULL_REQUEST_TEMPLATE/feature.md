@@ -70,3 +70,5 @@ This PR introduces a new feature that allows users to filter and sort data entri
 - [ ] All acceptance criteria are met
 - [ ] Documentation updated if applicable
 - [ ] Changelog updated
+- [ ] Files changed/added have a header comment
+- [ ] All changed/added function have header comments
