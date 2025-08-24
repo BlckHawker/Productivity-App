@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "types": ["jest"]
+    "types": ["jest"],
+    "noImplicitAny": true
   },
   "include": ["src", "tests"],
   "references": [
