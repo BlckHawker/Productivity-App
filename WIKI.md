@@ -61,6 +61,11 @@ npm run migrate:dev
 
 ## 4. Frontend Setup
 
+1. If using VSCode:
+	1. install the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) exstention 
+	2. Enable ESLint debug mode in the exstention settings
+	<img width="1155" height="167" alt="image" src="https://github.com/user-attachments/assets/4f573d11-4225-493e-8b3f-928675092720" />
+
 1. Navigate to the frontend folder:
 ```bash
 cd ../frontend
