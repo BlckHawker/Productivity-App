@@ -4,11 +4,11 @@ import { PrismaClient } from "../generated/prisma/index.js";
 import dotenv from "dotenv";
 import dotenvExpand from "dotenv-expand";
 import router from "./router.js";
+import swaggerDocs from "./swagger/swagger.js";
 
+const port = 3000;
 async function startServer() {
   try {
-    const port = 3000;
-
     // Load and expand .env variables
     const env = dotenv.config();
     dotenvExpand.expand(env);
@@ -28,7 +28,9 @@ async function startServer() {
     router(app);
 
 
-    app.listen(port, () => console.log(`Listening to port ${port}`));
+    app.listen(port, () => {
+      console.log(`Listening to port ${port}`)
+  });
   } catch (e) {
     console.error('Startup error:', e);
     process.exit(1);
@@ -36,3 +38,5 @@ async function startServer() {
 }
 
 startServer();
+
+export { port }
