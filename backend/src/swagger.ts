@@ -14,7 +14,7 @@ const options: swaggerJsdoc.Options = {
             version: "0.1.0"
         }
     },
-    apis: [path.resolve(__dirname, "../requestHandlers/*.ts")]
+    apis: [path.resolve(__dirname, "./requestHandlers/*.ts")]
 }
 
 const swaggerSpecs = swaggerJsdoc(options);

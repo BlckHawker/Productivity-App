@@ -5,7 +5,7 @@ import * as utils from "./utils.js"
 import { Express } from 'express';
 import cors from 'cors';
 import * as task from './requestHandlers/task.js'
-import swaggerDocs from "./swagger/swagger.js";
+import swaggerDocs from "./swagger.js";
 import { port } from "./server.js";
 
 export default (app: Express) => {
