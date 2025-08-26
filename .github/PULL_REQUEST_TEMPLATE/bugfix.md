@@ -64,3 +64,5 @@ npm run test -- taskController.test.js
 - [ ] Linting and formatting pass
 - [ ] Documentation updated (if needed)
 - [ ] Changelog updated
+- [ ] Files changed/added have a header comment
+- [ ] All changed/added function have header comments
