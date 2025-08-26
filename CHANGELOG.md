@@ -1,7 +1,7 @@
 ## [Unreleased]
 ### Added
-
 - Header comment check to pr checklist
+- ESLint rule for TODO and FIXME comments
 
 ### Changed
 
