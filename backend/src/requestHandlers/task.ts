@@ -20,7 +20,7 @@ const getAllTasks = async (req: Request, res: Response): Promise<Response> => {
  *     summary: Get all tasks
  *     description: Fetches all tasks from the database.
  *     tags:
- *       - Tasks
+ *       - Task
  *     responses:
  *       200:
  *         description: A list of tasks
@@ -53,6 +53,13 @@ const getAllTasks = async (req: Request, res: Response): Promise<Response> => {
  *         description: No tasks were found
  */
 
+
+/**
+ * Create task request
+ * @param {Request} req 
+ * @param {Response} res 
+ * @returns 
+ */
 const createTask = async (req: Request, res: Response): Promise<Response> => {
 
     // validate arguments
@@ -69,3 +76,64 @@ export {
     getAllTasks,
     createTask
 }
+
+/**
+ * @swagger
+ * /createTask:
+ *   post:
+ *     summary: Create a task
+ *     description: Creates a new task in the database.
+ *     tags:
+ *       - Task
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "wash the dishes"
+ *               complete:
+ *                 type: boolean
+ *                 description: Whether the task is complete (defaults to false if not provided)
+ *                 example: false
+ *     responses:
+ *       200:
+ *         description: Task created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 2
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: "2025-08-26T18:46:37.972Z"
+ *                 name:
+ *                   type: string
+ *                   example: "wash the dishes"
+ *                 complete:
+ *                   type: boolean
+ *                   example: false
+ *       500:
+ *          description: Internal Server Error
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: |
+ *                                  Invalid `prisma.task.create()` invocation:
+ *
+ *
+ *                                  Unique constraint failed on the fields: (`name`)
+ */
