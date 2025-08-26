@@ -4,7 +4,6 @@ import { PrismaClient } from "../generated/prisma/index.js";
 import dotenv from "dotenv";
 import dotenvExpand from "dotenv-expand";
 import router from "./router.js";
-import swaggerDocs from "./swagger/swagger.js";
 
 const port = 3000;
 async function startServer() {
