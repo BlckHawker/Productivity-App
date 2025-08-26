@@ -1,6 +1,6 @@
 ## [Unreleased]
 ### Added
-
+- Swagger API documentation
 - Header comment check to pr checklist
 
 ### Changed
