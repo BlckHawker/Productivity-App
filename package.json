@@ -14,6 +14,7 @@
     "@types/jest": "^30.0.0",
     "eslint": "^9.34.0",
     "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-require-explicit-generics": "^1.0.0",
     "globals": "^16.3.0",
     "jest": "^30.0.5",
     "jiti": "^2.5.1",
