@@ -4,6 +4,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
 import { defineConfig } from "eslint/config";
+
 const requireExplicitGenerics = require("eslint-plugin-require-explicit-generics");
 
 export default defineConfig([
@@ -19,6 +20,20 @@ export default defineConfig([
     extends: ["js/recommended"], 
     languageOptions: { globals: {...globals.browser, ...globals.node} 
     }
+
+export default defineConfig([
+  { 
+    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"], 
+    plugins: { js }, 
+    rules: {
+      "no-warning-comments": [
+        "error"
+      ]
+    },
+    extends: ["js/recommended"], 
+    languageOptions: { 
+      globals: {...globals.browser, ...globals.node} 
+    } 
   },
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
