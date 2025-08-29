@@ -12,10 +12,12 @@ describe('task route handlers', () => {
 
     beforeEach(() => {
         req = { prisma: {}, body: {} };
-        res = {
+        const resPartial: Partial<jest.Mocked<Response>> = {
             status: jest.fn().mockReturnThis(),
-            json: jest.fn().mockReturnThis()
-        } as any;
+            json: jest.fn().mockReturnThis(),
+        };
+
+        res = resPartial as jest.Mocked<Response>;
 
         jest.clearAllMocks();
     });
@@ -44,6 +46,23 @@ describe('task route handlers', () => {
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.json).toHaveBeenCalledWith({ success: false, message: 'invalid' });
             expect(taskController.createTaskController).not.toHaveBeenCalled();
+        });
+
+        it("returns 409 if name already exists as a task name", async () => {
+
+            let name = "test";
+            let message = `A task named \"${name}\" already exists.`;
+            req.body = { name, complete: true };
+            
+            (utils.assertArgumentsString as jest.Mock).mockReturnValue({ success: true });
+
+            const controllerFn = jest.fn().mockResolvedValue(new Error(`Unique constraint failed on the fields: (\`name\`)`));
+            (taskController.createTaskController as jest.Mock).mockReturnValue(controllerFn);
+
+            await createTask(req as Request, res);
+
+            expect(res.status).toHaveBeenCalledWith(409);
+            expect(res.json).toHaveBeenCalledWith({ message });
         });
 
         it('calls controller and sanitizeResponse when name is valid', async () => {

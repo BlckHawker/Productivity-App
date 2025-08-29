@@ -1,5 +1,6 @@
 ## [Unreleased]
 ### Added
+- Swagger API documentation
 - Header comment check to pr checklist
 - Explicit typing ESLint rule for useState
 - ESLint rule for TODO and FIXME comments
