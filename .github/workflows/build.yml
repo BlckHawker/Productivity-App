@@ -26,19 +26,26 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install dependencies (root)
-        run: npm install
+      # Root
+      - name: Clean install (root)
+        run: |
+          rm -rf node_modules package-lock.json
+          npm ci
 
       # Backend
-      - name: Install backend dependencies
-        run: npm install --prefix backend
+      - name: Clean install (backend)
+        run: |
+          rm -rf backend/node_modules backend/package-lock.json
+          npm ci --prefix backend
 
       - name: Build backend
         run: npm run build --prefix backend
 
       # Frontend
-      - name: Install frontend dependencies
-        run: npm install --prefix frontend
+      - name: Clean install (frontend)
+        run: |
+          rm -rf frontend/node_modules frontend/package-lock.json
+          npm ci --prefix frontend
 
       - name: Build frontend
         run: npm run build --prefix frontend
