@@ -69,6 +69,12 @@ const createTask = async (req: Request, res: Response): Promise<Response> => {
     if (!validArgs.success) return res.status(400).json(validArgs);
 
     const response = await taskController.createTaskController(req.prisma)(name,complete);
+
+    if (response instanceof Error && response.message.includes(`Unique constraint failed on the fields: (\`name\`)`)) {
+    return res.status(409).json({ 
+        message: `A task named "${name}" already exists.` 
+    });
+}
     return utils.sanitizeResponse(response, res, 'Could not create task'); //todo verify this message404 make sense
 };
 
@@ -122,8 +128,8 @@ export {
  *                 complete:
  *                   type: boolean
  *                   example: false
- *       500:
- *          description: Internal Server Error
+ *       409:
+ *          description: Task name already exists
  *          content:
  *              application/json:
  *                  schema:
@@ -131,9 +137,5 @@ export {
  *                      properties:
  *                          message:
  *                              type: string
- *                              example: |
- *                                  Invalid `prisma.task.create()` invocation:
- *
- *
- *                                  Unique constraint failed on the fields: (`name`)
+ *                              example: A task named "laundry" already exists.
  */
