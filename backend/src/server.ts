@@ -1,9 +1,9 @@
 
 import express from "express";
-import { PrismaClient } from "../generated/prisma/index.ts";
+import { PrismaClient } from "../generated/prisma/index.js";
 import dotenv from "dotenv";
 import dotenvExpand from "dotenv-expand";
-import router from "./router.ts";
+import router from "./router.js";
 
 async function startServer() {
   try {

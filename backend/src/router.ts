@@ -1,10 +1,10 @@
 /**
  * Route all incoming requests
  */
-import * as utils from "./utils.ts"
+import * as utils from "./utils"
 import { Express } from 'express';
 import cors from 'cors';
-import * as task from './requestHandlers/task.ts'
+import * as task from './requestHandlers/task'
 
 export default (app: Express) => {
     app.use(cors());

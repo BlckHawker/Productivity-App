@@ -14,8 +14,8 @@
     "migrate:dev": "prisma migrate dev --name init",
     "migrate:prod": "prisma migrate deploy",
     "prisma:generate": "prisma generate",
-    "prepare:test": "node --loader ts-node/esm scripts/change-imports.ts ts",
-    "prepare:build": "node --loader ts-node/esm scripts/change-imports.ts js",
+    "prepare:test": "node --loader ts-node/esm scripts/change-imports.ts test",
+    "prepare:build": "node --loader ts-node/esm scripts/change-imports.ts build",
     "test": "jest --passWithNoTests",
     "test:coverage": "jest --coverage"
   },
