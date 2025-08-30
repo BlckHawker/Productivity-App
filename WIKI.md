@@ -124,6 +124,10 @@ These scripts are shortcuts defined in `package.json` for common development tas
 | `migrate:dev`     | Apply development database changes                                                                                                                        |
 | `migrate:prod`    | Apply all pending database migrations to production.                                                                                                      |
 | `prisma:generate` | Generate Prisma client from the schema.                                                                                                                   |
+| `prepare:test` | Change imports to be compatible for testing                                                                                                                   |
+| 
+| `prepare:build` | Change imports to be compatible for building                                                                                                                    |
+| 
 | `test`            | Runs all Jest tests. If no tests exist, the command still succeeds without error.                                                                         |
 | `test:coverage`   | Runs tests and shows how much of your code is covered by tests. Fails if less than 90% of your branches, functions, lines, or statements are covered.     |
 
@@ -175,35 +179,35 @@ frontend
 ## Backend
 ```
 backend
-|   .env                 # Local environment variables
-|   .env.prisma          # Environment variables specifically for Prisma
-|   .gitignore           # Files/folders Git should ignore
-|   example.env          # Example environment variables for setup
-|   package-lock.json    # (auto-generated)
-|   package.json         # Project info, dependencies, and scripts
-|   tsconfig.json        # TypeScript configuration for the backend
+|   .env                  # Local environment variables
+|   .env.prisma           # Environment variables specifically for Prisma
+|   .gitignore            # Files/folders Git should ignore
+|   example.env           # Example environment variables for setup
+|   package-lock.json     # (auto-generated)
+|   package.json          # Project info, dependencies, and scripts
+|   tsconfig.json         # TypeScript configuration for the backend
 |
-+---prisma               # Database schema and migration files
-|   |   schema.prisma    # Prisma database schema definition
++---prisma                # Database schema and migration files
+|   |   schema.prisma     # Prisma database schema definition
 |
-+---scripts              # Utility scripts for backend setup/maintenance
-|       expand-env.ts    # Script to process/expand environment variables
-|
-+---src                  # Backend source code
-|   |   prisma.ts        # Prisma client instance for database access
-|   |   router.ts        # Central API route definitions
-|   |   server.ts        # Main server entry point
-|   |   utils.ts         # Helper functions used in backend code
-|   |
-|   +---controllers      # Middle layer: calls services
-|   |       task.ts      # Task-related controller functions
-|   |
-|   +---requestHandlers  # Handles HTTP requests/responses
-|   |       task.ts      # Express request handlers for task routes
-|   |
-|   +---services         # DB queries via Prisma
-|   |       task.ts      # Task-related service functions
-|   |
-|   \---types            # TypeScript type definitions
-|           express.d.ts # Custom Express type definitions
++---scripts               # Utility scripts for backend setup/maintenance
+|       expand-env.ts     # Script to process/expand environment variables
+|       change-imports.ts # Script to easily change imports to be compatible for either building or testing
++---src                   # Backend source code
+|   |   prisma.ts         # Prisma client instance for database access
+|   |   router.ts         # Central API route definitions
+|   |   server.ts         # Main server entry point
+|   |   utils.ts          # Helper functions used in backend code
+|   | 
+|   +---controllers       # Middle layer: calls services
+|   |       task.ts       # Task-related controller functions
+|   | 
+|   +---requestHandlers   # Handles HTTP requests/responses
+|   |       task.ts       # Express request handlers for task routes
+|   | 
+|   +---services          # DB queries via Prisma
+|   |       task.ts       # Task-related service functions
+|   | 
+|   \---types             # TypeScript type definitions
+|           express.d.ts  # Custom Express type definitions
 ```
