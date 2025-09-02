@@ -35,6 +35,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.1.5",
     "prisma": "^6.13.0",
+    "status-code-enum": "^1.0.0",
     "productivity-app": "file:.."
   },
   "devDependencies": {
