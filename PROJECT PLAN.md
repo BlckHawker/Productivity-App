@@ -169,13 +169,13 @@ Tasks are visually tagged with urgency indicators based on deadline/desired date
 *inspired by GitHub Projects views*
 
 A view is a saved configuration of:
-	- Filter rules
-	- Sort settings
-	- Manual task ordering
+- Filter rules
+- Sort settings
+- Manual task ordering
 
 Users can:
-	- Save up to 20 views across all projects
-	- Give each view a custom name. View names must be unique
+- Save up to 20 views across all projects
+- Give each view a custom name. View names must be unique
 ### Filter & Search
 
 Users can filter or search for tasks by any of the following attributes:
@@ -210,17 +210,18 @@ Filters can be applied globally or within selected project(s).
 	- Size (None ➜ XL)
 	- Project name (alphabetical)
 	- Section name (alphabetical)
-    - If multiple sections across projects have the same name, their parent project will postfix the name for clarity in sorted views.
-	  - Example (sorted alphabetically by section):
-		- In Progress – Personal
-		- In Progress – Work
-		- To Do – Work
+        - If multiple sections across projects have the same name, their parent project will postfix the name for clarity in sorted views.
+            - Example (sorted alphabetically by section):
+                - In Progress – Personal
+                - In Progress – Work
+                - To Do – Work
 
- ##### Saved Sorts
+#### Saved Sorts
 - Each saved view can store a default sorting method and direction (ascending or descending), which is applied automatically when the view is loaded.
 - Manual sort overrides are saved per view and are not global
 
-**Example Scenarios**
+
+##### Example Scenarios
 
 **Example 1: Manual Reordering in View**
 1. User creates a "Today" view with the following tasks in order from top to bottom by default:
@@ -283,8 +284,7 @@ Filters can be applied globally or within selected project(s).
 - Save error logs for review
   
 ```csv
-
-  Row,Error
+Row,Error
 
 3,Missing 'Task Title'
 
@@ -387,28 +387,23 @@ To streamline development, ensure consistency, and enable easier contributions, 
 
 - Workflows will include:
 
-  - `lint`: Ensures consistent formatting and coding standards
+    - `lint`: Ensures consistent formatting and coding standards
 
-  - `test`: Runs all unit and integration tests
+    - `test`: Runs all unit and integration tests
 
-  - `coverage`: Fails builds if coverage falls below 90%
+    - `coverage`: Fails builds if coverage falls below 90%
 
-  - `build`: Verifies that the codebase compiles without error
+    - `build`: Verifies that the codebase compiles without error
 
   
 
 ### Pull Request Templates
 
 - Standardized PR templates will guide contributors to:
-
-  - Describe changes clearly
-
-  - Link related issues
-
-  - List testing steps
-
-  - Include media
-
+    - Describe changes clearly
+    - Link related issues
+    - List testing steps
+    - Include media
 - Templates will auto-apply labels (ex: `feature`, `bug`) based on selected options.
 
   
@@ -416,11 +411,8 @@ To streamline development, ensure consistency, and enable easier contributions, 
 ### Issue Templates
 
 - Users can create issues from predefined templates:
-
-  - Bug Report
-
-  - Feature Request
-
+    - Bug Report
+    - Feature Request
 - Issue templates will also auto-apply appropriate labels for triage and categorization.
 
   
@@ -430,29 +422,17 @@ To streamline development, ensure consistency, and enable easier contributions, 
 - A GitHub Projects board (e.g., `Project v1`) will be used for feature and task tracking.
 
 - When an issue is created:
-
-  - It will be automatically added to the board
-
-  - It will be placed in the **Backlog** column by default
-
+    - It will be automatically added to the board
+    - It will be placed in the **Backlog** column by default
 - As issues are triaged or PRs are linked, automation will move cards across columns (e.g., In Progress, In Review, Done).
-
-  
-
 ### Branch Protection & Contribution Flow
 
 - The `main` branch will be protected:
-
-  - Require passing CI/CD checks
-
-  - No direct commits or force pushes
-
+    - Require passing CI/CD checks
+    - No direct commits or force pushes
 - An additional branch `develop` is where all prs will target.
-
-  -  Requires at least one review
-
-  - Once features are are tested, they will be merged into `main` by a maintainer
-
+    -  Requires at least one review
+    - Once features are are tested, they will be merged into `main` by a maintainer
 - Feature branches follow the format: `feature/feature-name`, `fix/bug-description`, etc.
 
   
@@ -461,13 +441,9 @@ To streamline development, ensure consistency, and enable easier contributions, 
 ### Local Developer Tools
 
 - Pre-commit hooks (`husky`, `lint-staged`) will be created to fully verify:
-
-  - Code is linted
-
-  - Unit tests run without issue
-
-  - code coverage criteria is met
-
+    - Code is linted
+    - Unit tests run without issue
+    - code coverage criteria is met
 - A `.env.example` file will be included for setting up local dev environments
 
   
@@ -541,99 +517,76 @@ The project aims to support both **web** and **mobile** interfaces. Decisions wi
 
 - **Double quotes and semicolons (`Prettier`)**
 
-  - Before: `const name = 'App'`
-
-  - After:  `const name = "App";`
+    - Before: `const name = 'App'`
+    - After:  `const name = "App";`
 
   
 
 - **Unused variables and imports (`eslint-plugin-unused-imports`)**
 
-  - Before: `import fs from 'fs';`
-
-  - After: *(remove if unused)*
+    - Before: `import fs from 'fs';`
+    - After: *(remove if unused)*
 
   
 
 - **Sorted imports (`eslint-plugin-import`)**
 
-  - Before:  
+    - Before:  
 
-    ```ts
-
-    import z from './z';
-
-    import a from './a';
-
-    ```
-
-  - After:  
-
-    ```ts
-
-    import a from './a';
-
-    import z from './z';
-
-    ```
+    ``` ts
+      import z from './z';
+       import a from './a';
+    ```
+    - After:  
+    ``` ts
+      import a from './a';
+      import z from './z';
+    ```
 
   
 
 - **Prefer `const` over `let` when variables are not reassigned**
 
-  - Before: `let count = 10;`
-
-  - After: `const count = 10;`
-
-  
+    - Before: `let count = 10;`
+    - After: `const count = 10;`
 
 - **Avoid `any` and use explicit types**
 
-  - Before: `function log(data: any) {}`
-
-  - After: `function log(data: string) {}`
-
-  
+    - Before: `function log(data: any) {}`
+    - After: `function log(data: string) {}`
 
 - **Remove excessive line breaks**
 
-  - Before:
+    - Before:
 
-    ```ts
+    ``` ts
+    const a = 5;
 
-    const a = 5;
 
-    const b = 10;
 
-    ```
+    const b = 10;
+    ```
 
-  - After:
 
-    ```ts
+    - After:
 
-    const a = 5;
-
-    const b = 10;
-
-    ```
+    ```ts
+    const a = 5;
+    const b = 10;
+    ```
 
   
 
 - **Tab indentation**
 
-  - Enforce consistent use of tabs instead of spaces.
-
-  - Remove excessive indentation
-
-  
-
-- All files must have a comment stating the generual purpose of the file
+    - Enforce consistent use of tabs instead of spaces.
+    - Remove excessive indentation
 
   
+
+- All files must have a comment stating the generual purpose of the file  
 
 - All function must have a header comment that briefly explains its purpose, paramters, and return value if applicable **is this worded well and is it actually poosible to lint?**
-
-  
 
 These rules improve readability and reduce cognitive load when navigating the codebase.
 
