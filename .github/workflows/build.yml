@@ -31,14 +31,12 @@ jobs:
         run: |
           rm -rf node_modules package-lock.json
           npm i
-          npm ci
 
       # Backend
       - name: Clean install (backend)
         run: |
           rm -rf backend/node_modules backend/package-lock.json
-          npm i
-          npm ci --prefix backend
+          npm install --prefix backend
 
       - name: Build backend
         run: npm run build --prefix backend
@@ -47,8 +45,7 @@ jobs:
       - name: Clean install (frontend)
         run: |
           rm -rf frontend/node_modules frontend/package-lock.json
-          npm i
-          npm ci --prefix frontend
+          npm install --prefix frontend
 
       - name: Build frontend
         run: npm run build --prefix frontend
