@@ -1,7 +1,7 @@
-# Use node verison 22 as our base image
+# Use node version 22 as our base image
 FROM node:22
 
-# Copy the package.json and package-lock.json
+# Copy the package.json package-lock.json (if available)
 COPY package*.json ./
 
 #Install app dependencies

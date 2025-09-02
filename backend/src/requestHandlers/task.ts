@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import * as taskController from "../controllers/task" 
-import * as utils from "../utils"
+import * as taskController from "../controllers/task.js" 
+import * as utils from "../utils.js"
 import { StatusCode } from 'status-code-enum'
 
 const getAllTasks = async (req: Request, res: Response): Promise<Response> => {

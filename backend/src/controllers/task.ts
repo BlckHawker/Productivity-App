@@ -1,5 +1,5 @@
 import { PrismaClient, Task } from "../../generated/prisma";
-import * as taskServices from "../services/task"
+import * as taskServices from "../services/task.js"
 
 const getAllTasksController = async(prisma: PrismaClient): Promise<Task[] | Error> => {
     try {
