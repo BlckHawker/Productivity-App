@@ -3,7 +3,7 @@
  * Displays testing creation task code to verify backend support. Does not reflect final file structure
  */
 import * as taskApi from './api/task'
-import type { Task } from "./interfaces.js";
+import type {Task} from "./interfaces.js";
 import React from "react";
 import { useState, useEffect } from 'react';
 
@@ -43,7 +43,7 @@ export function App(): React.ReactElement {
 	};
 
 	
-	//todo give comment header
+	// todo give comment header
 	function updateError(foo: object) {
 		const bool = foo instanceof Error;
 		if (bool) {
