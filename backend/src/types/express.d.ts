@@ -1,7 +1,6 @@
-import { PrismaClient } from '../../generated/prisma';
-import { Request } from 'express';
+import { PrismaClient } from "../../generated/prisma";
 
-declare module 'express-serve-static-core' {
+declare module "express-serve-static-core" {
   interface Request {
     prisma: PrismaClient;
   }

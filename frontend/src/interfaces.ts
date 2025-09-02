@@ -9,4 +9,4 @@ interface Task {
 
 export type {
     Task
-}
+};

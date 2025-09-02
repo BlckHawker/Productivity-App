@@ -1,9 +1,9 @@
 //todo add file header
-import * as utils from "./utils.js"
+import * as utils from "./utils.js";
 
 //todo add header comment
 const getAllTasks = async () => {
-    const response = await utils.getAPICall(`/task`);
+    const response = await utils.getAPICall("/task");
     if (response.message) {
         return new Error(response.message);
     }
@@ -17,9 +17,9 @@ const createTask = async (name: string) => {
     return new Error(response.message);
   }
   return response;
-}
+};
 
 export {
   getAllTasks,
   createTask
-}
+};

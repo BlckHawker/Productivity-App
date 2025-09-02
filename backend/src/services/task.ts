@@ -2,7 +2,7 @@ import { PrismaClient, Task } from "../../generated/prisma";
 const getAllTasks = async (prisma: PrismaClient): Promise<Task[]>  => {
     const tasks = await prisma.task.findMany();
     return tasks as Task[];
-}
+};
 
 
 const createTask = (prisma: PrismaClient) => async (name: string, complete?: boolean): Promise<Task> => {
@@ -12,8 +12,8 @@ const createTask = (prisma: PrismaClient) => async (name: string, complete?: boo
       complete: complete ?? false,
     },
   });
-  return task
-}
+  return task;
+};
 
 export {
     getAllTasks,

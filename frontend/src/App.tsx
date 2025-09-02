@@ -2,10 +2,10 @@
  * Root component for the frontend React application.
  * Displays testing creation task code to verify backend support. Does not reflect final file structure
  */
-import * as taskApi from './api/task'
+import * as taskApi from "./api/task";
 import type {Task} from "./interfaces.js";
 import React from "react";
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 
 /**
  * Renders the main application UI.
@@ -21,9 +21,9 @@ export function App(): React.ReactElement {
 	useEffect(() => {
 		async function fetchData() {
 		const getTasksResponse = await taskApi.getAllTasks() as Task[];
-		console.log(getTasksResponse)
+		console.log(getTasksResponse);
 		if(!updateError(getTasksResponse)) {
-			setTasks(getTasksResponse)
+			setTasks(getTasksResponse);
 		}
 
 	}
@@ -34,8 +34,8 @@ export function App(): React.ReactElement {
 		setError("");
 
 		//API call to create a task
-		const getCreateTaskResponse = await taskApi.createTask(currentTaskName) as Task
-		console.log(getCreateTaskResponse)
+		const getCreateTaskResponse = await taskApi.createTask(currentTaskName) as Task;
+		console.log(getCreateTaskResponse);
 		if(!updateError(getCreateTaskResponse)) {
 			setTasks([...tasks, getCreateTaskResponse]);
 			setCurrentTaskName("");
