@@ -7,8 +7,8 @@ import cors from "cors";
 import * as task from "./requestHandlers/task.js";
 
 export default (app: Express) => {
-    app.use(cors());
-    app.get("/task", task.getAllTasks);
-    app.post("/createTask", task.createTask);
-    app.use(utils.notFound);
+	app.use(cors());
+	app.get("/task", task.getAllTasks);
+	app.post("/createTask", task.createTask);
+	app.use(utils.notFound);
 };

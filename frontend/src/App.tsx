@@ -20,14 +20,14 @@ export function App(): React.ReactElement {
 	//fetch tasks from backend
 	useEffect(() => {
 		async function fetchData() {
-		const getTasksResponse = await taskApi.getAllTasks() as Task[];
-		console.log(getTasksResponse);
-		if(!updateError(getTasksResponse)) {
-			setTasks(getTasksResponse);
-		}
+			const getTasksResponse = await taskApi.getAllTasks() as Task[];
+			console.log(getTasksResponse);
+			if(!updateError(getTasksResponse)) {
+				setTasks(getTasksResponse);
+			}
 
-	}
-	fetchData();
+		}
+		fetchData();
 	}, []);
 
 	const handleCreateTask = async () => {

@@ -7,73 +7,73 @@ jest.mock("../../../src/controllers/task.ts");
 jest.mock("../../../src/utils.ts");
 
 describe("task route handlers", () => {
-    let req: Partial<Request> & { prisma?: any };
-    let res: jest.Mocked<Response>;
+	let req: Partial<Request> & { prisma?: any };
+	let res: jest.Mocked<Response>;
 
-    beforeEach(() => {
-        req = { prisma: {}, body: {} };
-        res = {
-            status: jest.fn().mockReturnThis(),
-            json: jest.fn().mockReturnThis()
-        } as any;
+	beforeEach(() => {
+		req = { prisma: {}, body: {} };
+		res = {
+			status: jest.fn().mockReturnThis(),
+			json: jest.fn().mockReturnThis()
+		} as any;
 
-        jest.clearAllMocks();
-    });
+		jest.clearAllMocks();
+	});
 
-    describe("getAllTasks", () => {
-        it("calls controller and passes result to sanitizeResponse", async () => {
-            const controllerResult = [{ id: 1 }];
-            (taskController.getAllTasksController as jest.Mock).mockResolvedValue(controllerResult);
-            (utils.sanitizeResponse as jest.Mock).mockReturnValue("sanitized");
+	describe("getAllTasks", () => {
+		it("calls controller and passes result to sanitizeResponse", async () => {
+			const controllerResult = [{ id: 1 }];
+			(taskController.getAllTasksController as jest.Mock).mockResolvedValue(controllerResult);
+			(utils.sanitizeResponse as jest.Mock).mockReturnValue("sanitized");
 
-            const result = await getAllTasks(req as Request, res);
+			const result = await getAllTasks(req as Request, res);
 
-            expect(taskController.getAllTasksController).toHaveBeenCalledWith(req.prisma);
-            expect(utils.sanitizeResponse).toHaveBeenCalledWith(controllerResult, res, "No tasks were found");
-            expect(result).toBe("sanitized");
-        });
-    });
+			expect(taskController.getAllTasksController).toHaveBeenCalledWith(req.prisma);
+			expect(utils.sanitizeResponse).toHaveBeenCalledWith(controllerResult, res, "No tasks were found");
+			expect(result).toBe("sanitized");
+		});
+	});
 
-    describe("createTask", () => {
-        it("returns 400 if name is invalid", async () => {
-            req.body = { name: 123 }; // not a string
-            (utils.assertArgumentsString as jest.Mock).mockReturnValue({ success: false, message: "invalid" });
+	describe("createTask", () => {
+		it("returns 400 if name is invalid", async () => {
+			req.body = { name: 123 }; // not a string
+			(utils.assertArgumentsString as jest.Mock).mockReturnValue({ success: false, message: "invalid" });
 
-            await createTask(req as Request, res);
+			await createTask(req as Request, res);
 
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ success: false, message: "invalid" });
-            expect(taskController.createTaskController).not.toHaveBeenCalled();
-        });
+			expect(res.status).toHaveBeenCalledWith(400);
+			expect(res.json).toHaveBeenCalledWith({ success: false, message: "invalid" });
+			expect(taskController.createTaskController).not.toHaveBeenCalled();
+		});
 
-        it("calls controller and sanitizeResponse when name is valid", async () => {
-            req.body = { name: "test", complete: true };
-            (utils.assertArgumentsString as jest.Mock).mockReturnValue({ success: true });
+		it("calls controller and sanitizeResponse when name is valid", async () => {
+			req.body = { name: "test", complete: true };
+			(utils.assertArgumentsString as jest.Mock).mockReturnValue({ success: true });
 
-            const controllerFn = jest.fn().mockResolvedValue("controller-result");
-            (taskController.createTaskController as jest.Mock).mockReturnValue(controllerFn);
-            (utils.sanitizeResponse as jest.Mock).mockReturnValue("sanitized");
+			const controllerFn = jest.fn().mockResolvedValue("controller-result");
+			(taskController.createTaskController as jest.Mock).mockReturnValue(controllerFn);
+			(utils.sanitizeResponse as jest.Mock).mockReturnValue("sanitized");
 
-            const result = await createTask(req as Request, res);
+			const result = await createTask(req as Request, res);
 
-            expect(utils.assertArgumentsString).toHaveBeenCalledWith({ name: "test" });
-            expect(taskController.createTaskController).toHaveBeenCalledWith(req.prisma);
-            expect(controllerFn).toHaveBeenCalledWith("test", true);
-            expect(utils.sanitizeResponse).toHaveBeenCalledWith("controller-result", res, "Could not create task");
-            expect(result).toBe("sanitized");
-        });
+			expect(utils.assertArgumentsString).toHaveBeenCalledWith({ name: "test" });
+			expect(taskController.createTaskController).toHaveBeenCalledWith(req.prisma);
+			expect(controllerFn).toHaveBeenCalledWith("test", true);
+			expect(utils.sanitizeResponse).toHaveBeenCalledWith("controller-result", res, "Could not create task");
+			expect(result).toBe("sanitized");
+		});
 
-        it("defaults complete to false when not boolean", async () => {
-            req.body = { name: "test", complete: "not-a-boolean" };
-            (utils.assertArgumentsString as jest.Mock).mockReturnValue({ success: true });
+		it("defaults complete to false when not boolean", async () => {
+			req.body = { name: "test", complete: "not-a-boolean" };
+			(utils.assertArgumentsString as jest.Mock).mockReturnValue({ success: true });
 
-            const controllerFn = jest.fn().mockResolvedValue("result");
-            (taskController.createTaskController as jest.Mock).mockReturnValue(controllerFn);
-            (utils.sanitizeResponse as jest.Mock).mockReturnValue("sanitized");
+			const controllerFn = jest.fn().mockResolvedValue("result");
+			(taskController.createTaskController as jest.Mock).mockReturnValue(controllerFn);
+			(utils.sanitizeResponse as jest.Mock).mockReturnValue("sanitized");
 
-            await createTask(req as Request, res);
+			await createTask(req as Request, res);
 
-            expect(controllerFn).toHaveBeenCalledWith("test", false);
-        });
-    });
+			expect(controllerFn).toHaveBeenCalledWith("test", false);
+		});
+	});
 });
