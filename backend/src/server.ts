@@ -28,7 +28,17 @@ async function startServer() {
     router(app);
 
 
-    app.listen(port, () => console.log(`Listening to port ${port}`));
+    const server = app.listen(port, () => console.log(`Listening to port ${port}`));
+
+    server.on("error", (err: any) => {
+    if (err.code === "EADDRINUSE") {
+      console.error(`Port ${port} is already in use. Did you forget to stop Docker?`);
+      process.exit(1);
+    } else {
+      console.error("Server error:", err);
+      process.exit(1);
+    }
+});
   } catch (e) {
     console.error('Startup error:', e);
     process.exit(1);
