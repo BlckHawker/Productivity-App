@@ -118,16 +118,16 @@ These scripts are shortcuts defined in `package.json` for common development tas
 | Script            | Description                                                                                                                                               |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `dev`             | Generate Prisma client, then start the server in development mode.                                                                                        |
+| `clear`           | Removes all data from db's tables                                                                                            |
+| `seed`           | Runs `clear` and populates the tables with seeded data.                                                                                            |
 | `build`           | Generate Prisma client, then compile TypeScript to JavaScript.                                                                                            |
 | `start`           | Run the compiled production server.                                                                                                                       |
 | `expand-env`      | Run a script to process environment variables.                                                                                                            |
 | `migrate:dev`     | Apply development database changes                                                                                                                        |
 | `migrate:prod`    | Apply all pending database migrations to production.                                                                                                      |
 | `prisma:generate` | Generate Prisma client from the schema.                                                                                                                   |
-| `prepare:test` | Change imports to be compatible for testing                                                                                                                   |
-| 
-| `prepare:build` | Change imports to be compatible for building                                                                                                                    |
-| 
+| `prepare:test` | Change imports to be compatible for testing                                                                                                              
+| `prepare:build` | Change imports to be compatible for building                                                                                                                     
 | `test`            | Runs all Jest tests. If no tests exist, the command still succeeds without error.                                                                         |
 | `test:coverage`   | Runs tests and shows how much of your code is covered by tests. Fails if less than 90% of your branches, functions, lines, or statements are covered.     |
 
@@ -191,8 +191,10 @@ backend
 |   |   schema.prisma     # Prisma database schema definition
 |
 +---scripts               # Utility scripts for backend setup/maintenance
-|       expand-env.ts     # Script to process/expand environment variables
 |       change-imports.ts # Script to easily change imports to be compatible for either building or testing
+|       clear-db.ts       # Script to clear the data within the db's tables
+|       expand-env.ts     # Script to process/expand environment variables
+|       seed-db.ts        # Script to overwite db's tables with preseeded data
 +---src                   # Backend source code
 |   |   prisma.ts         # Prisma client instance for database access
 |   |   router.ts         # Central API route definitions
