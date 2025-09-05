@@ -211,3 +211,28 @@ backend
 |   \---types             # TypeScript type definitions
 |           express.d.ts  # Custom Express type definitions
 ```
+
+# Database Schema
+
+## Project
+
+| Name        | Type     | Description                  | Notes                                                                                                           |
+| ----------- | -------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| id          | INTEGER  | Primary Key                  | auto increment, unique, max of 100 projects within the database                                                  |
+| color       | VARCHAR  | File path of panel image     | Max length of 7. Can be stored as `#000` or `#000000`. May need a validator to verify the string is a hex code. |
+| name        | VARCHAR  | The name of the project.     | Must be unique. Case insensitive. Trim trailing spaces. Can't be an empty string.                               |
+| created\_at | DATETIME | When project was created.    | default `CURRENT_TIMESTAMP`                                                                                     |
+| updated\_at | DATETIME | When the project was updated | auto-update trigger                                                                                             |
+
+
+  
+## Section
+
+| Name        | Type     | Description                                  | Notes                                                                                                     |
+| ----------- | -------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| id          | INTEGER  | Primary Key                                  | auto increment, unique, max of 100 sections within the project                                             |
+| project\_id | INTEGER  | The id of the project the section is part of | foreign key of `project`                                                                                  |
+| name        | VARCHAR  | The name of the section.                     | Must be unique within the same project. Case insensitive. Trim trailing spaces. Can't be an empty string. |
+| is\_other   | BOOLEAN  | If this is the `Other` section               | Default `false`, only one `true` per project                                                              |
+| created\_at | DATETIME | When the section was created.                | default `CURRENT_TIMESTAMP`                                                                               |
+| updated\_at | DATETIME | When the section was last updated.           | auto-update trigger                                                                                       |
