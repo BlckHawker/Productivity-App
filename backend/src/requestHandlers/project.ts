@@ -23,6 +23,13 @@ const createProject = async (req: Request, res: Response) => {
     if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
 
     const response = await projectController.createProject(req.prisma)(name,color);
+
+    if(response instanceof Error && response.message.includes(`Unique constraint failed on the fields: (\`name\`)`)) {
+            return res.status(StatusCode.ClientErrorConflict).json({ 
+            message: `A project named "${name}" already exists.` 
+        })
+    }
+
     return utils.sanitizeResponse(response, res, "Contact developers if this line appears. createProject request handler");
 
 };
@@ -86,6 +93,16 @@ const createProject = async (req: Request, res: Response) => {
  *                          message:
  *                              type: string
  *                              example: "Invalid name: must be typeof string \nInvalid color: must be a valid hex color (e.g. #000 or #000000)"
+ *       409:
+ *          description: Existing Project
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: "A project named \"name\" already exists."
  */
 
 export {
