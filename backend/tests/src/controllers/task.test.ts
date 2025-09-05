@@ -1,6 +1,6 @@
-import { PrismaClient, Task } from "../../../generated/prisma";
 import * as taskController from "../../../src/controllers/task.ts";
 import * as taskService from "../../../src/services/task.ts";
+import { PrismaClient, Task } from "../../../generated/prisma";
 
 jest.mock("../../../src/services/task");
 

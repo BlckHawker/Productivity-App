@@ -1,8 +1,15 @@
-//todo add header comment
-
+/*
+ * Provides helper functions to make GET and POST requests to the backend API.
+ * Uses the base URL defined in environment variables.
+ */
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-//todo add header comment
+/**
+ * Perform a GET request to the backend API.
+ *
+ * @param {string} url - The endpoint path (relative to baseUrl).
+ * @returns {Promise<any | Error>} Parsed JSON response or an Error if the request fails.
+ */
 const getAPICall = async (url: string) => {
 	return await fetch(`${baseUrl}${url}`, {
 		headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
@@ -19,7 +26,13 @@ const getAPICall = async (url: string) => {
 		});
 };
 
-//todo add header comment
+/**
+ * Perform a POST request to the backend API.
+ *
+ * @param {string} url - The endpoint path (relative to baseUrl).
+ * @param {object} body - The request payload to send in the POST.
+ * @returns {Promise<any | Error>} Parsed JSON response or an Error if the request fails.
+ */
 const postAPICall = async (url: string, body: object) => {
 	return await fetch(`${baseUrl}${url}`, {
 		body:    JSON.stringify(body),

@@ -1,21 +1,26 @@
-import { Request, Response } from "express";
 import * as taskController from "../../../src/controllers/task.ts";
 import * as utils from "../../../src/utils.ts";
+import { Request, Response } from "express";
 import { createTask, getAllTasks } from "../../../src/requestHandlers/task.ts";
 
 jest.mock("../../../src/controllers/task.ts");
 jest.mock("../../../src/utils.ts");
 
 describe("task route handlers", () => {
-	let req: Partial<Request> & { prisma?: any };
-	let res: jest.Mocked<Response>;
+	type MockResponse = {
+	status: jest.Mock;
+	json: jest.Mock;
+} & Partial<Response>;
+
+	let req: Partial<Request> & { prisma?: unknown };
+	let res: MockResponse;
 
 	beforeEach(() => {
 		req = { prisma: {}, body: {} };
 		res = {
 			status: jest.fn().mockReturnThis(),
 			json: jest.fn().mockReturnThis()
-		} as any;
+		};
 
 		jest.clearAllMocks();
 	});
@@ -26,7 +31,7 @@ describe("task route handlers", () => {
 			(taskController.getAllTasksController as jest.Mock).mockResolvedValue(controllerResult);
 			(utils.sanitizeResponse as jest.Mock).mockReturnValue("sanitized");
 
-			const result = await getAllTasks(req as Request, res);
+			const result = await getAllTasks(req as Request, res as Response);
 
 			expect(taskController.getAllTasksController).toHaveBeenCalledWith(req.prisma);
 			expect(utils.sanitizeResponse).toHaveBeenCalledWith(controllerResult, res, "No tasks were found");
@@ -39,7 +44,7 @@ describe("task route handlers", () => {
 			req.body = { name: 123 }; // not a string
 			(utils.assertArgumentsString as jest.Mock).mockReturnValue({ success: false, message: "invalid" });
 
-			await createTask(req as Request, res);
+			await createTask(req as Request, res as Response);
 
 			expect(res.status).toHaveBeenCalledWith(400);
 			expect(res.json).toHaveBeenCalledWith({ success: false, message: "invalid" });
@@ -54,7 +59,7 @@ describe("task route handlers", () => {
 			(taskController.createTaskController as jest.Mock).mockReturnValue(controllerFn);
 			(utils.sanitizeResponse as jest.Mock).mockReturnValue("sanitized");
 
-			const result = await createTask(req as Request, res);
+			const result = await createTask(req as Request, res as Response);
 
 			expect(utils.assertArgumentsString).toHaveBeenCalledWith({ name: "test" });
 			expect(taskController.createTaskController).toHaveBeenCalledWith(req.prisma);
@@ -71,7 +76,7 @@ describe("task route handlers", () => {
 			(taskController.createTaskController as jest.Mock).mockReturnValue(controllerFn);
 			(utils.sanitizeResponse as jest.Mock).mockReturnValue("sanitized");
 
-			await createTask(req as Request, res);
+			await createTask(req as Request, res as Response);
 
 			expect(controllerFn).toHaveBeenCalledWith("test", false);
 		});

@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
 import * as taskController from "../controllers/task"; 
 import * as utils from "../utils";
+import { Request, Response } from "express";
 
 const getAllTasks = async (req: Request, res: Response): Promise<Response> => {
 	const response = await taskController.getAllTasksController(req.prisma);
@@ -16,7 +16,7 @@ const createTask = async (req: Request, res: Response): Promise<Response> => {
 	if (!validArgs.success) return res.status(400).json(validArgs);
 
 	const response = await taskController.createTaskController(req.prisma)(name,complete);
-	return utils.sanitizeResponse(response, res, "Could not create task"); //todo verify this message404 make sense
+	return utils.sanitizeResponse(response, res, "Could not create task");
 };
 
 export {

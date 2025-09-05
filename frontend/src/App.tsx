@@ -43,7 +43,13 @@ export function App(): React.ReactElement {
 	};
 
 	
-	// todo give comment header
+	/**
+	 * Checks if the given object is an Error instance.
+	 * If it is, updates the error state with its message.
+	 *
+	 * @param foo - Any object to check
+	 * @returns true if foo is an Error, otherwise false
+	 */
 	function updateError(foo: object) {
 		const bool = foo instanceof Error;
 		if (bool) {

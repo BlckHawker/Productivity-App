@@ -1,7 +1,11 @@
-//todo write a header comment for this file
-import fs from "fs";
+/* 
+ * Script to generate a `.env.prisma` file with only the required database-related
+ * environment variables.
+ */
+
 import dotenv from "dotenv";
 import dotenvExpand from "dotenv-expand";
+import fs from "fs";
 
 const env = dotenv.config();
 dotenvExpand.expand(env);

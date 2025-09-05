@@ -9,6 +9,16 @@ import {
 	sanitizeResponse
 } from "../../src/utils.ts";
 
+type MockResponse = {
+	status: jest.Mock;
+	json: jest.Mock;
+} & Partial<Response>;
+
+type MockRequest = {
+	method: string;
+	originalUrl: string;
+} & Partial<Request>;
+
 describe("assertArguments", () => {
 	test("should return success when all arguments pass predicate", () => {
 		const result = assertArguments({ a: 1, b: 2 }, v => v > 0, "must be positive");
@@ -65,46 +75,46 @@ describe("assertArgumentsString", () => {
 	test("should fail if any string is empty", () => {
 		const result = assertArgumentsString({ a: "" });
 		expect(result.success).toBe(false);
-		expect(result.message).toContain("must be typeof string");
+		expect(result.message).toContain("must be a non-empty string");
 	});
 });
 
 describe("sanitizeResponse", () => {
-	let res: jest.Mocked<Response>;
+	let res: MockResponse;
 
 	beforeEach(() => {
 		res = {
 			status: jest.fn().mockReturnThis(),
 			json: jest.fn().mockReturnThis()
-		} as any;
+		};
 	});
 
 	test("should return 404 for null", () => {
-		sanitizeResponse(null, res);
+		sanitizeResponse(null, res as Response);
 		expect(res.status).toHaveBeenCalledWith(404);
 		expect(res.json).toHaveBeenCalledWith({ message: "404 not found" });
 	});
 
 	test("should return 404 for empty array", () => {
-		sanitizeResponse([], res, "No data");
+		sanitizeResponse([], res as Response, "No data");
 		expect(res.status).toHaveBeenCalledWith(404);
 		expect(res.json).toHaveBeenCalledWith({ message: "No data" });
 	});
 
 	test("should return 404 for Error containing \"not found\"", () => {
-		sanitizeResponse(new Error("User not found"), res);
+		sanitizeResponse(new Error("User not found"), res as Response);
 		expect(res.status).toHaveBeenCalledWith(404);
 		expect(res.json).toHaveBeenCalledWith({ message: "User not found" });
 	});
 
 	test("should return 500 for other Errors", () => {
-		sanitizeResponse(new Error("Something broke"), res);
+		sanitizeResponse(new Error("Something broke"), res as Response);
 		expect(res.status).toHaveBeenCalledWith(500);
 		expect(res.json).toHaveBeenCalledWith({ message: "Something broke" });
 	});
 
 	test("should return 200 for valid data", () => {
-		sanitizeResponse({ id: 1 }, res);
+		sanitizeResponse({ id: 1 }, res as Response);
 		expect(res.status).toHaveBeenCalledWith(200);
 		expect(res.json).toHaveBeenCalledWith({ id: 1 });
 	});
@@ -112,13 +122,13 @@ describe("sanitizeResponse", () => {
 
 describe("notFound", () => {
 	test("should return 404 with correct message", () => {
-		const req = { method: "GET", originalUrl: "/test" } as Request;
-		const res = {
+		const req: MockRequest = { method: "GET", originalUrl: "/test" } as Request;
+		const res: MockResponse  = {
 			status: jest.fn().mockReturnThis(),
 			json: jest.fn().mockReturnThis()
-		} as any;
+		};
 
-		notFound(req, res);
+		notFound(req as Request, res as Response);
 
 		expect(res.status).toHaveBeenCalledWith(404);
 		expect(res.json).toHaveBeenCalledWith({ message: "'GET /test' is not a valid request" });

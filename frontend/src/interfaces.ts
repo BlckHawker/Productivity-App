@@ -1,4 +1,6 @@
-//todo add file header comment
+/**
+ * Contains TypeScript interfaces and types used throughout the project.
+ */
 
 interface Task {
     id: number,
