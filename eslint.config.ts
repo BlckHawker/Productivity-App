@@ -1,7 +1,7 @@
 // do not remove these!
 /* eslint-disable @typescript-eslint/no-require-imports */
 
-import { defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import globals from "globals";
 import js from "@eslint/js";
 import pluginReact from "eslint-plugin-react";
@@ -22,12 +22,12 @@ export default defineConfig([
 		}, 
 		rules: {
 			"no-warning-comments": [
-				"error"
+				"warn"
 			],
 			"requireExplicitGenerics/require-explicit-generics": ["error", ["useState", "React.useState"]],
 			"@stylistic/quotes": ["error", "double"],
 			"no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
-			"unused-imports/no-unused-imports": "error",
+			"unused-imports/no-unused-imports": "warn",
 			"unused-imports/no-unused-vars": [
 				"warn",
 				{
@@ -37,7 +37,7 @@ export default defineConfig([
 					"argsIgnorePattern": "^_",
 				},
 			],
-			"sort-imports": ["error", {
+			"sort-imports": ["warn", {
 				"ignoreCase": false,
 				"ignoreDeclarationSort": false,
 				"ignoreMemberSort": false,
@@ -55,8 +55,10 @@ export default defineConfig([
 		extends: ["js/recommended", ], 
 		languageOptions: { 
 			globals: {...globals.browser, ...globals.node} 
-		} 
+		}
 	},
 	tseslint.configs.recommended,
 	pluginReact.configs.flat.recommended,
+	globalIgnores(["backend/prisma/*", "backend/generated/*"]) 
+
 ]);

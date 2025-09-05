@@ -3,9 +3,9 @@
  * Displays testing creation task code to verify backend support. Does not reflect final file structure
  */
 import * as taskApi from "./api/task";
-import type {Task} from "./interfaces.js";
-import React from "react";
 import { useEffect, useState } from "react";
+import React from "react";
+import type {Task} from "./interfaces.js";
 
 /**
  * Renders the main application UI.
