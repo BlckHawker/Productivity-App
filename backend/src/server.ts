@@ -1,4 +1,3 @@
-
 import express from "express";
 import { PrismaClient } from "../generated/prisma/index.js";
 import dotenv from "dotenv";

@@ -7,7 +7,10 @@
     "build:frontend": "npm --prefix frontend run build",
     "build:backend": "npm --prefix backend run build",
     "test": "npm --prefix backend install && npm --prefix backend run test",
-    "test:coverage": "cd backend && npm run test:coverage"
+    "test:coverage": "cd backend && npm run test:coverage",
+    "lint": "npx eslint .",
+    "lint-fix": "npx eslint . --fix"
+
   },
   "devDependencies": {
     "@eslint/compat": "^1.3.2",

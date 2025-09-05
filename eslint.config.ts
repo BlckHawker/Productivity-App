@@ -45,7 +45,12 @@ export default defineConfig([
 				"allowSeparatedGroups": false
 			}],
 			"semi": ["error", "always"],
-			"indent": ["error", "tab"]
+			"indent": ["error", "tab"],
+			"@stylistic/no-multiple-empty-lines": ["error", {
+				"max": 2,
+				"maxEOF": 0,
+				"maxBOF": 0
+			}]
 		},
 		extends: ["js/recommended", ], 
 		languageOptions: { 
