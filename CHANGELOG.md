@@ -1,5 +1,6 @@
 ## [Unreleased]
 ### Added
+- Scripts to easily modify the database for debugging
 - Swagger API documentation
 - Add util scripts to configure for testing and running build
 - Header comment check to pr checklist
