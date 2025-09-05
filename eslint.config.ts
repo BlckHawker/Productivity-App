@@ -59,6 +59,6 @@ export default defineConfig([
 	},
 	tseslint.configs.recommended,
 	pluginReact.configs.flat.recommended,
-	globalIgnores(["backend/prisma/*", "backend/generated/*"]) 
+	globalIgnores(["backend/prisma/*", "backend/generated/*", "backend/dist/*", "frontend/dist/*"]) 
 
 ]);
