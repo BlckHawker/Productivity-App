@@ -1,10 +1,12 @@
 import { PrismaClient, Task } from "../../generated/prisma";
+
+//todo put header comment
 const getAllTasks = async (prisma: PrismaClient): Promise<Task[]>  => {
     const tasks = await prisma.task.findMany();
     return tasks as Task[];
 }
 
-
+//todo put header comment
 const createTask = (prisma: PrismaClient) => async (name: string, complete?: boolean): Promise<Task> => {
     const task = await prisma.task.create({
     data: {

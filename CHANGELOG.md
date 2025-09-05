@@ -1,5 +1,6 @@
 ## [Unreleased]
 ### Added
+- Swagger API documentation
 - Add util scripts to configure for testing and running build
 - Header comment check to pr checklist
 - Explicit typing ESLint rule for useState

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { StatusCode } from 'status-code-enum'
 
+//todo put header comment
 const assertArguments = (
     args: { [key: string]: any },
     predicate: (value: any) => boolean,
@@ -19,6 +20,7 @@ const assertArguments = (
     return { success: true };
 };
 
+//todo put header comment
 const assertArgumentsDefined = (args : object) =>{
     const validArgs = assertArguments(
         args,
@@ -28,6 +30,7 @@ const assertArgumentsDefined = (args : object) =>{
     return validArgs;
 };
 
+//todo put header comment
 const assertArgumentsNumber = (args: object) => {
     const validArgs = assertArguments(
         args,
@@ -37,6 +40,7 @@ const assertArgumentsNumber = (args: object) => {
     return validArgs;
 };
 
+//todo put header comment
 const assertArgumentsString = (args: object) => {
     const validArgs = assertArguments(
         args,
@@ -53,6 +57,7 @@ const assertArgumentsString = (args: object) => {
  * - ... => 200
  * @returns 
  */
+//todo put header comment
 const sanitizeResponse = (response : any, expressResponse: Response, message404 : string = '404 not found')=>{
     if (response == null || response instanceof Array && response.length === 0) return expressResponse.status(StatusCode.ClientErrorNotFound).json({ message: `${message404}` });
     if (response instanceof Error) {
@@ -67,6 +72,7 @@ const sanitizeResponse = (response : any, expressResponse: Response, message404 
     return expressResponse.status(StatusCode.SuccessOK).json(response);
 };
 
+//todo put header comment
 const notFound = (req: Request, res: Response): Response => {
     return res.status(StatusCode.ClientErrorNotFound).json({ message: `'${req.method} ${req.originalUrl}' is not a valid request` });
 };
