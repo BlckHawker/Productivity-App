@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "dev": "npm run prisma:generate && node --loader ts-node/esm src/server.ts",
+    "clear": "node --loader ts-node/esm scripts/clear-db.ts",
     "build": "npm run prisma:generate && tsc",
     "start": "node dist/server.js",
     "expand-env": "node --loader ts-node/esm scripts/expand-env.ts",
