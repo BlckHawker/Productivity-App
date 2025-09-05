@@ -13,7 +13,12 @@ import * as projectServices from "../services/project"
  */
 const createProject = (prisma: PrismaClient)  => async (name: string, color: string): Promise<Project | Error> => {
     try {
-        //todo check all the project within the db, throw an error if any of the names match this one (case-insensitive)
+        //check all the project within the db, throw an error if any of the names match this one (case-insensitive)
+        const existingProject = await projectServices.getProjectByName(prisma)(name);
+
+        if(existingProject !== null) {
+            return new Error(`Unique constraint failed on the fields: (\`name\`)`)
+        }
 
         return await projectServices.createProject(prisma)(name, color)
     }

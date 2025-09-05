@@ -12,7 +12,6 @@ import * as projectController from "../controllers/project"
  * @returns 
  */
 const createProject = async (req: Request, res: Response) => {
-    // validate arguments
     const name = (typeof req.body.name === 'string') ? req.body.name.trim() : '';
     const color = (typeof req.body.color === 'string') ? req.body.color.trim() : '';
 
