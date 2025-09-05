@@ -6,7 +6,7 @@ import { Express } from 'express';
 import cors from 'cors';
 import * as task from './requestHandlers/task'
 import swaggerDocs from "./swagger.js";
-import { port } from "./server.js";
+import { port } from "./server";
 
 export default (app: Express) => {
     app.use(cors());

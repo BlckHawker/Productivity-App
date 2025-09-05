@@ -72,7 +72,7 @@ const createTask = async (req: Request, res: Response): Promise<Response> => {
     const response = await taskController.createTaskController(req.prisma)(name,complete);
 
     if (response instanceof Error && response.message.includes(`Unique constraint failed on the fields: (\`name\`)`)) {
-        return res.status(409).json({ 
+        return res.status(StatusCode.ClientErrorConflict).json({ 
         message: `A task named "${name}" already exists.` 
     });
 }
