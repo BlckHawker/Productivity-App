@@ -12,8 +12,6 @@ import { port } from "./server";
 
 export default (app: Express) => {
     app.use(cors());
-    app.get('/task', task.getAllTasks);
-    app.post('/createTask', task.createTask);
     app.post('/createProject', project.createProject)
     swaggerDocs(app, port)
     app.use(utils.notFound);
