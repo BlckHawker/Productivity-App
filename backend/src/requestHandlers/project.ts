@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as utils from "../utils"
 import { StatusCode } from 'status-code-enum'
+import * as projectController from "../controllers/project"
 // Get project by id
 // Get project by name
 
@@ -12,15 +13,17 @@ import { StatusCode } from 'status-code-enum'
  */
 const createProject = async (req: Request, res: Response) => {
     // validate arguments
-    const name = (typeof req.body.name === 'string') ? req.body.name : '';
-    const color = (typeof req.body.color === 'string') ? req.body.color : '';
+    const name = (typeof req.body.name === 'string') ? req.body.name.trim() : '';
+    const color = (typeof req.body.color === 'string') ? req.body.color.trim() : '';
 
     const validArgs = utils.mergeResults(
         utils.assertArgumentsString({ name }),
         utils.assertArgumentsHexCode({ color })
     )
     if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
-    return utils.sanitizeResponse([], res, 'debug response'); //todo change this
+
+    const response = await projectController.createProject(req.prisma)(name,color);
+    return utils.sanitizeResponse(response, res, "Contact developers if this line appears. createProject request handler");
 
 };
 /**
@@ -48,6 +51,28 @@ const createProject = async (req: Request, res: Response) => {
  *                 description: hex code of the color related to this project
  *                 example: "#f00"
  *     responses:
+ *       200:
+ *          description: Project successfully created
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          id:
+ *                              type: number
+ *                              example: 1
+ *                          color:
+ *                              type: string
+ *                              example: "#f00"
+ *                          name:
+ *                              type: string
+ *                              example: "Work"
+ *                          created_at:
+ *                              type: string
+ *                              example: "2025-09-05T23:03:57.213Z"
+ *                          updated_at:
+ *                              type: string
+ *                              example: "2025-09-05T23:03:57.213Z"
  *       400:
  *          description: Bad Request
  *          content:
