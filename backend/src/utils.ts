@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
+import { StatusCode } from 'status-code-enum'
 
 //todo put header comment
 const assertArguments = (
@@ -58,22 +59,22 @@ const assertArgumentsString = (args: object) => {
  */
 //todo put header comment
 const sanitizeResponse = (response : any, expressResponse: Response, message404 : string = '404 not found')=>{
-    if (response == null || response instanceof Array && response.length === 0) return expressResponse.status(404).json({ message: `${message404}` });
+    if (response == null || response instanceof Array && response.length === 0) return expressResponse.status(StatusCode.ClientErrorNotFound).json({ message: `${message404}` });
     if (response instanceof Error) {
 
         // if error message includes 'not found', it's probably a 404 error
         if ('does not exist|not found'.split('|').some(msg => response.message.includes(msg)))
-            return expressResponse.status(404).json({ message: response.message ?? 'Not found' });
+            return expressResponse.status(StatusCode.ClientErrorNotFound).json({ message: response.message ?? 'Not found' });
 
         // otherwise, assume it's an internal error
-        return expressResponse.status(500).json({ message: response.message ?? 'Internal server error.' });
+        return expressResponse.status(StatusCode.ServerErrorInternal).json({ message: response.message ?? 'Internal server error.' });
     }
-    return expressResponse.status(200).json(response);
+    return expressResponse.status(StatusCode.SuccessOK).json(response);
 };
 
 //todo put header comment
 const notFound = (req: Request, res: Response): Response => {
-    return res.status(404).json({ message: `'${req.method} ${req.originalUrl}' is not a valid request` });
+    return res.status(StatusCode.ClientErrorNotFound).json({ message: `'${req.method} ${req.originalUrl}' is not a valid request` });
 };
 
 

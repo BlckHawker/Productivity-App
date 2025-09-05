@@ -1,13 +1,15 @@
 ## [Unreleased]
 ### Added
 - Swagger API documentation
+- Add util scripts to configure for testing and running build
 - Header comment check to pr checklist
 - Explicit typing ESLint rule for useState
 - ESLint rule for TODO and FIXME comments
-
+- A dependency to make HTTP codes an enum
 ### Changed
 
 ### Fixed
+- Project plan formatting
 
 ### Removed
 

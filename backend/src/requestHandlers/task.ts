@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as taskController from "../controllers/task" 
 import * as utils from "../utils"
+import { StatusCode } from 'status-code-enum'
 
 /**
  * Get All Tasks request
@@ -66,7 +67,7 @@ const createTask = async (req: Request, res: Response): Promise<Response> => {
     const name = (typeof req.body.name === 'string') ? req.body.name : '';
     const complete = (typeof req.body.complete === 'boolean') ? req.body.complete : false;
     const validArgs = utils.assertArgumentsString({ name });
-    if (!validArgs.success) return res.status(400).json(validArgs);
+    if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
 
     const response = await taskController.createTaskController(req.prisma)(name,complete);
 
