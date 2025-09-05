@@ -18,17 +18,18 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install backend dependencies
-        run: npm install --prefix backend
+      # Root
+      - name: Clean install (root)
+        run: |
+          rm -rf node_modules package-lock.json
+          npm i
 
-      - name: Build backend
-        run: npm run build --prefix backend
+      # Backend
+      - name: Clean install (backend)
+        run: |
+          rm -rf backend/node_modules backend/package-lock.json
+          npm install --prefix backend
 
-      - name: Install frontend dependencies
-        run: npm install --prefix frontend
-
-      - name: Build frontend
-        run: npm run build --prefix frontend
-
+      # Run test
       - name: Check coverage
         run: npm run test:coverage
