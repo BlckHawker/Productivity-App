@@ -177,12 +177,14 @@ Users can:
 - Save up to 20 views across all projects
 - Give each view a custom name. View names must be unique
 
+The system includes a default, non-deletable "Today" view that automatically shows all tasks with a desired date or deadline matching the current day. This view cannot be renamed, deleted, nor modified in any way.
+
 
 ### Filter
 
 Users can filter tasks by structured attributes. Filters allow conditions and ranges, and multiple filters can be combined (except for directly conflicting rules).
 
-Example conflict: You cannot combine "no desired date” with “desired date range."
+Example conflict: You cannot combine "no desired date" with "desired date range."
 
 Available filters:
 
@@ -246,18 +248,18 @@ Users can search tasks by exact values or free text.
 	- Submit tax form
 	- Water plants
 	- Zip up clothes
-2. User drags drag “Zip up clothes” to the top. The order is now:
+2. User drags drag "Zip up clothes" to the top. The order is now:
 	- Zip up clothes
 	- Submit tax form
 	- Water plants
-3. This order is saved and restored whenever the “Today” view is loaded
+3. This order is saved and restored whenever the "Today" view is loaded
 
 **Example 2: Manual Reordering with Filtered Results**
 
 1. User filters for:
 	- High-priority tasks due in the next 7 days
 2. Tasks are auto-sorted by deadline (oldest ➜ newest)
-3. They manually move “Finish Grant Report” to the top for visibility
+3. They manually move "Finish Grant Report" to the top for visibility
 4. That manual override is saved within that view only
 ## Import / Export Files
 
@@ -269,16 +271,16 @@ Users can search tasks by exact values or free text.
 	- This will also check for infinite recursions of subtasks
 	- Allow mapping fields when importing Todoist
 	- Examples
-		- Todoist's “Priority” → maps to this app’s “Priority Level”
-		- Todoist’s “Due Date” → maps to Desired Date
+		- Todoist's "Priority" → maps to this app’s "Priority Level"
+		- Todoist’s "Due Date" → maps to Desired Date
 		- Fields not available in source (e.g., Size) will be empty by default
 - Importing will overwrite all current tasks, sections, projects, views, etc. Users will be warned before proceeding.
 - Error logs for skipped or invalid entries.
 - When at least one error is found, the user will be told the rows that had errors and asked if they would still like to import the valid data (if any).
 - If there is no valid data, the user will not get the option import it. Only all the errors and a "OK" button will show.
 	- Example of errors:
-	      - “Row 3 skipped: Missing required field ‘Task Title’.”
-	      - “Row 7: Invalid priority level ‘Extreme’ – entry skipped.”
+	      - "Row 3 skipped: Missing required field ‘Task Title’."
+	      - "Row 7: Invalid priority level ‘Extreme’ – entry skipped."
 
 ### Export
 
@@ -298,7 +300,7 @@ Users can search tasks by exact values or free text.
 	  `Import failed: Missing required column "Task Title" in header.`
 - Skip/notify on duplicates or invalid values
 	- When duplicate task titles are found:
-	  `Line 12: Task “Water Plants” already exists in this project. Skipped.`
+	  `Line 12: Task "Water Plants" already exists in this project. Skipped.`
 - Save error logs for review
   
 ```csv
@@ -827,7 +829,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 - [ ]  User can edit any field of a task, including name, description, deadline, desired date, reminders, labels, recurrence, size, etc.
 - [ ] Changes are autosaved and persisted locally and in the cloud.
 - [ ] Editing a recurring task only affects:
-    - [ ] The current instance if the recurrence rule says “generate new on complete.”
+    - [ ] The current instance if the recurrence rule says "generate new on complete."
     - [ ] All future tasks if recurrence is updated in a recurring template.
 - [ ] Editing a task with subtasks does not break subtask structure.
 - [ ] If the user changes a date field, any relative reminder updates accordingly if it was originally set relative.
@@ -890,7 +892,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
     - [ ]  creation date
     - [ ]  reminders
 - [ ]  If a recurring task is incomplete past its deadline or desired date, it does not generate a new instance.
-- [ ]  A manual “Reschedule Task” action is available to regenerate the task.
+- [ ]  A manual "Reschedule Task" action is available to regenerate the task.
 - [ ]  Recurring subtasks and parent tasks follow the recurrence interaction rules:
     - [ ]  One-time subtasks under recurring parents are recreated only if completed.
     - [ ]  Recurring subtasks operate independently and recur only when completed.
@@ -898,7 +900,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 #### 4.2 - Missed Recurrence Logic
 
 - [ ]  If a recurring task is incomplete past its desired date or deadline, it does not generate a new instance.
-- [ ]  A “Reschedule Task” button appears instead.
+- [ ]  A "Reschedule Task" button appears instead.
 - [ ]  Rescheduling applies recurrence logic from the current date forward.
 - [ ]  Past recurrence intervals are not stacked or doubled (no auto-catch-up).
 
@@ -917,7 +919,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 
 | **Name**                                 | **Description**                                                                                    | **User Story**                                                                                                                                 |
 | ---------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| **5.1 - Smart Reminders**                | Reminders can be absolute or relative to deadlines or desired dates and support custom recurrence. | As a user, I want flexible reminder options (e.g., “every Monday”, “2 days before deadline”) so I never forget important work.                 |
+| **5.1 - Smart Reminders**                | Reminders can be absolute or relative to deadlines or desired dates and support custom recurrence. | As a user, I want flexible reminder options (e.g., "every Monday", "2 days before deadline") so I never forget important work.                 |
 | **5.2 - Reminder Notification Delivery** |                                                                                                    | As a user, I want to receive timely reminder notifications via the app and/or push system, so that I don’t forget to complete important tasks. |
 
 ---
@@ -1002,7 +1004,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 - [ ]  User can edit any field of a task, including name, description, deadline, desired date, reminders, labels, recurrence, size, etc.
 - [ ] Changes are autosaved and persisted locally and in the cloud.
 - [ ] Editing a recurring task only affects:
-    - [ ] The current instance if the recurrence rule says “generate new on complete.”
+    - [ ] The current instance if the recurrence rule says "generate new on complete."
     - [ ] All future tasks if recurrence is updated in a recurring template.
 - [ ] Editing a task with subtasks does not break subtask structure.
 - [ ] If the user changes a date field, any relative reminder updates accordingly if it was originally set relative.
@@ -1075,7 +1077,8 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 |**6.2 - Filter**|Users can filter tasks by structured attributes with ranges, presence checks, and inclusion/exclusion logic.|As a user, I want to filter tasks by criteria like priority, size, or date ranges so I can narrow my focus to only the tasks that matter.
 |**6.3 - Search**|Users can search tasks by free text or exact values.|As a user, I want to search tasks by title or description so I can quickly find specific tasks.|
 |**6.4 - Sorting**|Users can sort tasks by selected fields and save manual ordering per view.|As a user, I want to sort tasks by attributes like deadline or priority so I can work on the most urgent or important items first.|
-|**6.5 - Create Views**|Users can save custom combinations of filters, sorting, and manual order as named views.|As a user, I want to create reusable task views so I can switch between workflows like “Today” or “High Priority” without reconfiguring each time.|
+|**6.5 - Create Views**|Users can save custom combinations of filters, sorting, and manual order as named views.|As a user, I want to create reusable task views so I can switch between workflows like "Today" or "High Priority" without reconfiguring each time.|
+|**6.6 - Today View**|The system provides a built-in, non-deletable "Today" view.|As a user, I want a dedicated "Today" view so I can instantly see all tasks due today without creating a custom filter.|
 
 #### 6.1 - Label Tasks Acceptance Criteria
 
@@ -1128,8 +1131,6 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 - [ ] Manual drag-and-drop overrides are saved per view.  
 - [ ] Sorted order persists until changed by the user.  
 
----
-
 #### 6.5 - Create Views Acceptance Criteria
 - [ ] Users can create up to 20 saved views.  
 - [ ] Each view must have a unique name.  
@@ -1140,6 +1141,14 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 - [ ] When a view is loaded, its stored configuration is applied automatically.  
 - [ ] Manual reordering changes are saved within the view only (not global).  
 - [ ] Users can rename or delete saved views.  
+
+#### 6.6 - Create Views Acceptance Criteria
+- [ ] The app provides a built-in “Today” view.
+- [ ] The “Today” view automatically shows all tasks with either (at least one condition needs to be true): 
+    - [ ] Desired date = today  
+    - [ ] Deadline = today  
+- [ ] The "Today" view cannot be deleted, renamed, nor modified. This includes manually reording tasks
+- [ ] The "Today" view counts toward the 20 saved view limit.
 
 
 ---
@@ -1172,8 +1181,8 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 - [ ]  Users can confirm before applying imported data.
 - [ ]  Invalid rows are skipped and error messages are shown
 - [ ]  Import supports field mapping from Todoist format:
-    - [ ]  Todoist “Priority” ➜ maps to app “Priority Level”
-    - [ ]  Todoist “Due Date” ➜ maps to app “Desired Date”
+    - [ ]  Todoist "Priority" ➜ maps to app "Priority Level"
+    - [ ]  Todoist "Due Date" ➜ maps to app "Desired Date"
 - [ ]  Infinite recursion in subtasks is detected and blocked.
 - [ ]  Users are warned if trying to import when all rows are invalid.
 - [ ]  A downloadable error log is shown for skipped entries.
