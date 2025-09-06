@@ -23,10 +23,18 @@ const createProject = async (req: Request, res: Response) => {
 
     const response = await projectController.createProject(req.prisma)(name,color);
 
-    if(response instanceof Error && response.message.includes(`Unique constraint failed on the fields: (\`name\`)`)) {
+    if(response instanceof Error) {
+        if(response.message.includes("Unique constraint failed on the fields: (\`name\`)")) {
             return res.status(StatusCode.ClientErrorConflict).json({ 
-            message: `A project named "${name}" already exists.` 
-        })
+                message: `A project named "${name}" already exists.` 
+            })
+        }
+
+        if(response.message.includes("Reached maximum amount of projects")) {
+            return res.status(StatusCode.ClientErrorConflict).json({ 
+                message: response.message 
+            })
+        }
     }
 
     return utils.sanitizeResponse(response, res, "Contact developers if this line appears. createProject request handler");
