@@ -15,6 +15,10 @@ const createProject = (prisma: PrismaClient) => async (name: string, color: stri
   return project
 }
 
+const getProjectCount = async (prisma: PrismaClient): Promise<number> =>  {
+    return await prisma.project.count();
+}
+
 //todo put header comment
 const getProjectByName = (prisma: PrismaClient) => async(name: string): Promise<Project | null> => {
   const project = await prisma.project.findFirst({
@@ -30,5 +34,6 @@ return project
 
 export {
     createProject,
-    getProjectByName
+    getProjectByName,
+    getProjectCount
 }
