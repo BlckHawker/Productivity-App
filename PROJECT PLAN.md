@@ -176,18 +176,27 @@ A view is a saved configuration of:
 Users can:
 - Save up to 20 views across all projects
 - Give each view a custom name. View names must be unique
-### Filter & Search
 
-Users can filter or search for tasks by any of the following attributes:
-- Task title
-- Task description
-- Task date created
-- Task desired date
-- Task deadline
-- Task label(s)
-- Task priority
-- Task size
-- Section name (either within selected project(s) or globally. Will differentiate sections with same name by postfixing project name)
+
+### Filter
+
+Users can filter tasks by structured attributes. Filters allow conditions and ranges, and multiple filters can be combined (except for directly conflicting rules).
+
+Example conflict: You cannot combine "no desired date” with “desired date range."
+
+Available filters:
+
+- Description: whether a task has a description (yes/no).
+- Date created: by inclusive date range.
+Desired date:
+    - Presence (has date / no date).
+    - Inclusive date range.
+Deadline:
+    - Presence (has date / no date).
+    - Inclusive date range.
+- Labels: include and/or exclude specific labels.
+- Priority: include and/or exclude specific priority levels.
+- Size: include and/or exclude specific size levels.
 
 Filters can be applied globally or within selected project(s).
 	- If a user tries to delete a label used in any saved view, a warning will appear:
@@ -197,7 +206,16 @@ Filters can be applied globally or within selected project(s).
 		- View name #2
 > 	Deleting it will also remove the label from the view(s). Proceed?
 
-  
+### Search
+Users can search tasks by exact values or free text.
+
+- Available search fields:
+- Task title (fuzzy search).
+- Task description (fuzzy search).
+- Date created (exact date match).
+- Desired date (exact date match).
+- Deadline (exact date match).
+- Section name (within selected project(s) or globally; identical section names are disambiguated by postfixing project name).
 
 ### Sorting
 
@@ -1054,8 +1072,10 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 |**Name**|**Description**|**User Story**|
 |---|---|---|
 |**6.1 - Label Tasks**|Tasks can be labeled with color-coded tags.|As a user, I want to assign labels to tasks so I can group and search for them by theme or context.|
-|**6.2 - Create Views**|Saved filters/sorts/orderings for customized task dashboards.|As a user, I want to save custom views so I can switch between workflows like “Today” or “High Priority”.|
-|**6.3 - Sort Tasks**|Tasks can be sorted by any field and override manually per view.|As a user, I want to sort tasks by size, priority, desired date, or deadline, so I can focus on what matters most.|
+|**6.2 - Filter**|Users can filter tasks by structured attributes with ranges, presence checks, and inclusion/exclusion logic.|As a user, I want to filter tasks by criteria like priority, size, or date ranges so I can narrow my focus to only the tasks that matter.
+|**6.3 - Search**|Users can search tasks by free text or exact values.|As a user, I want to search tasks by title or description so I can quickly find specific tasks.|
+|**6.4 - Sorting**|Users can sort tasks by selected fields and save manual ordering per view.|As a user, I want to sort tasks by attributes like deadline or priority so I can work on the most urgent or important items first.|
+|**6.5 - Create Views**|Users can save custom combinations of filters, sorting, and manual order as named views.|As a user, I want to create reusable task views so I can switch between workflows like “Today” or “High Priority” without reconfiguring each time.|
 
 #### 6.1 - Label Tasks Acceptance Criteria
 
@@ -1069,32 +1089,58 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 	- View name #2
 	 Deleting it will also remove the label from the view(s). Proceed?
 
-#### 6.2 - Create Views Acceptance Criteria
+#### 6.2 - Filter Acceptance Criteria
 
-- [ ]  Users can save up to 20 named views.
-- [ ]  Each view stores:
-    - [ ]  A unique name
-    - [ ]  Filter conditions (e.g., label = “Work”, priority = “High”, a project = "Life")
-    - [ ]  Sort field (e.g., deadline) and direction (ascending/descending)
-    - [ ]  Manual drag-and-drop overrides
-- [ ]  Manual order is persistent per view.
-- [ ]  View loads with saved logic every time.
-- [ ]  Views can be renamed or deleted.
+- [ ] Users can filter tasks by the following attributes:
+    - [ ] Description (has/does not have)
+    - [ ] Date created (inclusive range)
+    - [ ] Desired date (presence, inclusive range)
+    - [ ] Deadline (presence, inclusive range)
+    - [ ] Labels (include/exclude)
+    - [ ] Priority (include/exclude)
+    - [ ] Size (include/exclude)
+- [ ] Filters can be combined unless conflicting (e.g., "no desired date" cannot be combined with "desired date range").
+- [ ] Filters can be applied globally or scoped to selected project(s).
+- [ ] Filter results update dynamically as conditions are changed.
 
 #### 6.3 - Sort Tasks Acceptance Criteria
+- [ ] Users can search tasks by:
+    - [ ] Task title (fuzzy search)
+    - [ ] Task description (fuzzy search)
+    - [ ] Date created (exact date)
+    - [ ] Desired date (exact date)
+    - [ ] Deadline (exact date)
+    - [ ] Section name (within selected project(s) or globally; identical section names are disambiguated with project name)
+ - [ ] Search results display only tasks that match the given query.
+ - [ ] Search can be used in combination with active filters.
 
-- [ ]  Users can sort by:
-    - [ ]  title
-    - [ ]  date created
-    - [ ]  desired date
-    - [ ]  deadline
-    - [ ]  priority
-    - [ ]  size
-    - [ ]  project name
-    - [ ]  section name
-	    - [ ] If multiple sections across projects have the same name, their parent project will postfix the name for clarity in sorted views.
-- [ ]  Manual sort order is saved per view and restored on load.
-- [ ]  Sorting disambiguates sections with same name by appending project name.
+#### 6.4 - Sorting Acceptance Criteria
+- [ ] Users can sort tasks by:  
+  - [ ] Title (alphabetical)  
+  - [ ] Date created (oldest/newest)  
+  - [ ] Desired date (oldest/newest)  
+  - [ ] Deadline (oldest/newest)  
+  - [ ] Priority (None → High)  
+  - [ ] Size (None → X-Large)  
+  - [ ] Project name (alphabetical)  
+  - [ ] Section name (alphabetical; duplicates disambiguated by appending project name)  
+- [ ] Sorting can be applied in ascending or descending order.  
+- [ ] Manual drag-and-drop overrides are saved per view.  
+- [ ] Sorted order persists until changed by the user.  
+
+---
+
+#### 6.5 - Create Views Acceptance Criteria
+- [ ] Users can create up to 20 saved views.  
+- [ ] Each view must have a unique name.  
+- [ ] A saved view stores:  
+  - [ ] Active filter conditions  
+  - [ ] Sorting method and direction  
+  - [ ] Manual task order  
+- [ ] When a view is loaded, its stored configuration is applied automatically.  
+- [ ] Manual reordering changes are saved within the view only (not global).  
+- [ ] Users can rename or delete saved views.  
+
 
 ---
 
