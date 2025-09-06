@@ -7,6 +7,7 @@
 - ESLint rule for TODO and FIXME comments
 - A dependency to make HTTP codes an enum
 ### Changed
+- Project plan more to include more detail in terms of sorting, filters, and the inclusion of a "today" view.
 
 ### Fixed
 - Project plan formatting
