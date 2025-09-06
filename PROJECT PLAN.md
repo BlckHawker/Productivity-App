@@ -78,7 +78,7 @@ One-time tasks are tasks that either (1) have no desired date or deadline, or (2
 		- Medium
 		- Large
 		- X-Large
-	- List of labels (optional)
+	- List of labels (optional, max of 10)
 	- List of reminders, with a maximum of 3 per task.
 		  - If the user tries to add a 4th reminder, they will be given the choice to remove one of the previous 3 reminders, or cancel adding the new one
 		- Reminders can either be:
@@ -1061,6 +1061,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 
 - [ ]  Users can create up to 100 unique labels.
 - [ ]  Labels have a name and color.
+- [ ]  A task can only have a max of 10 labels
 - [ ]  Deleting a label removes it from all tasks and saved views.
 - [ ]  If a label is attempted to be deleted that is used in any saved view, a warning must show listing affected views and require confirmation.
 	- [ ] `The label {label name} is used in the following saved view(s):
