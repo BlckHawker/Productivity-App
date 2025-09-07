@@ -4,6 +4,19 @@ import { StatusCode } from 'status-code-enum'
 import * as projectController from "../controllers/project"
 
 //todo Get project by name
+/**
+ * Get project by name request
+ * @param {Request} req 
+ * @param {Response} res 
+ * @returns 
+ */
+const getProjectByName = async (req: Request, res: Response) => {
+    const name = String(req.params.name);
+    const validArgs = utils.assertArgumentsString({ name });
+    if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+    const response = await projectController.getProjectByName(req.prisma)(name);
+    return utils.sanitizeResponse(response, res, `A project with the name "${name}" could not be found.`);
+}
 
 /**
  * Get project by id request
@@ -199,5 +212,6 @@ const createProject = async (req: Request, res: Response) => {
 
 export {
     createProject,
-    getProjectById
+    getProjectById,
+    getProjectByName
 }

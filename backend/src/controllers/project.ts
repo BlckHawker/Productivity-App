@@ -24,6 +24,25 @@ const getProjectById = (prisma: PrismaClient)  => async (id: number): Promise<Pr
     }
 }
 
+/**
+ * Get a project in the database by its id
+ *
+ * @param prisma - The PrismaClient instance used to access the database.
+ * @returns An asynchronous function:
+ *    - @param id - The id of the project.
+ *    - @returns A Promise resolving to the found `Project` on success, an `Error` if retrieving fails, or null if the project of that id doesn't exist.
+ */
+const getProjectByName = (prisma: PrismaClient)  => async (name: string): Promise<Project | Error | null> => {
+    try {
+        const project = await projectServices.getProjectByName(prisma)(name);
+        return project;
+    }
+
+    catch (err) {
+        return err as Error;
+    }
+}
+
 
 /**
  * Creates a new project in the database
@@ -61,5 +80,6 @@ const createProject = (prisma: PrismaClient)  => async (name: string, color: str
 export {
     createProject,
     getProjectById,
+    getProjectByName,
     MAX_PROJECTS
 }

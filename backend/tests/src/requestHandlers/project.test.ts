@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as projectController from "../../../src/controllers/project.ts";
 import * as utils from '../../../src/utils.ts';
-import { getProjectById, createProject } from '../../../src/requestHandlers/project.ts';
+import { getProjectById, createProject, getProjectByName } from '../../../src/requestHandlers/project.ts';
 import { StatusCode } from 'status-code-enum'
 
 jest.mock("../../../src/controllers/project.ts");
@@ -77,6 +77,58 @@ describe("Get project by id", () => {
         });
         await getProjectById(req as Request, res)
         expect(projectController.getProjectById).toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
+        expect(res.json).toHaveBeenCalledWith(project);
+    })
+})
+
+describe("Get project by name", () => {
+    beforeEach(() => {
+        resetTests();
+    });
+
+    test("400s if name is not a string", async () => {
+        (req as any).params = { name: 1 };
+        const obj = { success: false, message: 'invalid' };
+        (utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
+        await getProjectByName(req as Request, res)
+        expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
+        expect(res.json).toHaveBeenCalledWith(obj);
+        expect(projectController.getProjectByName).not.toHaveBeenCalled();
+    })
+
+    test("404s if a project with the given name is not found", async () => {
+        const name = "name";
+        (req as any).params = { name };
+        const obj = { success: true };
+        (utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
+        mockCurried(projectController.getProjectByName as jest.Mock, null);
+        const notFoundMessage = `A project with the name "${name}" could not be found.`;
+        jest.spyOn(utils, "sanitizeResponse").mockImplementation(
+            (_response, res, message) => {
+                res.status(StatusCode.ClientErrorNotFound).json({ message });
+                return res;
+        });
+        await getProjectByName(req as Request, res)
+        expect(projectController.getProjectByName).toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorNotFound);
+        expect(res.json).toHaveBeenCalledWith({ message: notFoundMessage });
+    })
+
+    test("200s and returns the found project", async () => {
+        const name = "name";
+        const project = { name };
+        (req as any).params = { name };
+        const obj = { success: true };
+        (utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
+        mockCurried(projectController.getProjectByName as jest.Mock, project);
+        jest.spyOn(utils, "sanitizeResponse").mockImplementation(
+            (_response, res) => {
+                res.status(StatusCode.SuccessOK).json(project);
+                return res;
+        });
+        await getProjectByName(req as Request, res)
+        expect(projectController.getProjectByName).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
         expect(res.json).toHaveBeenCalledWith(project);
     })
