@@ -14,8 +14,6 @@
         "src/types/express.d.ts",
         "src/services/",
         "src/swagger.ts"
-
-
     ],
     
     "coverageThreshold": {
