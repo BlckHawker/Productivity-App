@@ -4,7 +4,6 @@
 import * as utils from "./utils"
 import { Express } from 'express';
 import cors from 'cors';
-import * as task from './requestHandlers/task'
 import * as project from './requestHandlers/project'
 
 import swaggerDocs from "./swagger.js";
@@ -12,7 +11,10 @@ import { port } from "./server";
 
 export default (app: Express) => {
     app.use(cors());
-    app.post('/createProject', project.createProject)
+    app.post('/project/create', project.createProject)
+    app.get('/project/:id', project.getProjectById)
+
+    
     swaggerDocs(app, port)
     app.use(utils.notFound);
 };

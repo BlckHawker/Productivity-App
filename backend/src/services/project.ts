@@ -3,7 +3,6 @@
 import { PrismaClient, Project } from "../../generated/prisma";
 import prisma from "../prisma";
 
-
 //todo put header comment
 const createProject = (prisma: PrismaClient) => async (name: string, color: string): Promise<Project> => {
     const project = await prisma.project.create({
@@ -15,6 +14,7 @@ const createProject = (prisma: PrismaClient) => async (name: string, color: stri
   return project
 }
 
+//todo put header comment
 const getProjectCount = async (prisma: PrismaClient): Promise<number> =>  {
     return await prisma.project.count();
 }
@@ -32,8 +32,22 @@ const getProjectByName = (prisma: PrismaClient) => async(name: string): Promise<
 return project
 }
 
+//todo put header comment
+const getProjectById = (prisma: PrismaClient)  => async (id: number): Promise<Project | Error | null> => {
+  const project = await prisma.project.findFirst({
+  where: {
+    id: {
+      equals: id,
+    }
+  }
+});
+
+return project;
+}
+
 export {
     createProject,
     getProjectByName,
-    getProjectCount
+    getProjectCount,
+    getProjectById
 }

@@ -2,8 +2,94 @@ import { Request, Response } from 'express';
 import * as utils from "../utils"
 import { StatusCode } from 'status-code-enum'
 import * as projectController from "../controllers/project"
-// Get project by id
-// Get project by name
+
+//todo Get project by name
+
+//todo Get project by id
+/**
+ * Get project by id request
+ * @param {Request} req 
+ * @param {Response} res 
+ * @returns 
+ */
+const getProjectById = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const validArgs = utils.assertArgumentsNumber({ id });
+    if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+
+    const response = await projectController.getProjectById(req.prisma)(id);
+
+    //todo test
+    return utils.sanitizeResponse(response, res, `A project with the id "${id}" could not be found.`);
+}
+/**
+ * @swagger
+ * /project/{id}:
+ *   get:
+ *     summary: Get a project by id
+ *     description: Get a project by its id
+ *     tags:
+ *       - Project
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         required: true
+ *         description: Numeric id of the project to get
+ *     responses:
+ *       200:
+ *         description: Successful response with project data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   example: Work
+ *                 color:
+ *                   type: string
+ *                   example: "#FF5733"
+ *                 created_at:
+ *                   type: string
+ *                   example: "2025-09-07T17:34:03.434Z"
+ *                 updated_at:
+ *                   type: string
+ *                   example: "2025-09-07T17:34:03.434Z"
+ *       404:
+ *         description: Project not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "A project with the id \"1\" could not be found."
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid id: must be a valid number"
+ */
+
+
+
+
+
 
 /**
  * Create project request
@@ -42,7 +128,7 @@ const createProject = async (req: Request, res: Response) => {
 };
 /**
  * @swagger
- * /createProject:
+ * /project/create:
  *   post:
  *     summary: Create a project
  *     description: Creates a new project in the database.
@@ -113,5 +199,6 @@ const createProject = async (req: Request, res: Response) => {
  */
 
 export {
-    createProject
+    createProject,
+    getProjectById
 }
