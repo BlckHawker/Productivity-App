@@ -3,7 +3,6 @@ import * as utils from "../utils"
 import { StatusCode } from 'status-code-enum'
 import * as projectController from "../controllers/project"
 
-//todo Get project by name
 /**
  * Get project by name request
  * @param {Request} req 
