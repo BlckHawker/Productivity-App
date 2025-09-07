@@ -5,7 +5,6 @@ import * as projectController from "../controllers/project"
 
 //todo Get project by name
 
-//todo Get project by id
 /**
  * Get project by id request
  * @param {Request} req 
@@ -16,10 +15,7 @@ const getProjectById = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const validArgs = utils.assertArgumentsNumber({ id });
     if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
-
     const response = await projectController.getProjectById(req.prisma)(id);
-
-    //todo test
     return utils.sanitizeResponse(response, res, `A project with the id "${id}" could not be found.`);
 }
 /**
@@ -85,11 +81,6 @@ const getProjectById = async (req: Request, res: Response) => {
  *                   type: string
  *                   example: "Invalid id: must be a valid number"
  */
-
-
-
-
-
 
 /**
  * Create project request
