@@ -11,12 +11,75 @@ import * as projectController from "../controllers/project"
  * @returns 
  */
 const getProjectByName = async (req: Request, res: Response) => {
-    const name = String(req.params.name);
+    const name = String(req.params.name).trim();
     const validArgs = utils.assertArgumentsString({ name });
     if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
     const response = await projectController.getProjectByName(req.prisma)(name);
     return utils.sanitizeResponse(response, res, `A project with the name "${name}" could not be found.`);
 }
+/**
+ * @swagger
+ * /project/{name}:
+ *   get:
+ *     summary: Get a project by name
+ *     description: Get a project by its name (case insensitive)
+ *     tags:
+ *       - Project
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         schema:
+ *           type: string
+ *           example: "Work"
+ *         required: true
+ *         description: name of the project to get
+ *     responses:
+ *       200:
+ *         description: Successful response with project data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   example: Work
+ *                 color:
+ *                   type: string
+ *                   example: "#FF5733"
+ *                 created_at:
+ *                   type: string
+ *                   example: "2025-09-07T17:34:03.434Z"
+ *                 updated_at:
+ *                   type: string
+ *                   example: "2025-09-07T17:34:03.434Z"
+ *       404:
+ *         description: Project not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "A project with the name \"Work\" could not be found."
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid name: must be a valid string"
+ */
 
 /**
  * Get project by id request
