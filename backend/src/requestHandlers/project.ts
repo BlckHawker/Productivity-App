@@ -178,15 +178,23 @@ const createProject = async (req: Request, res: Response) => {
  *                              type: string
  *                              example: "Invalid name: must be typeof string \nInvalid color: must be a valid hex color (e.g. #000 or #000000)"
  *       409:
- *          description: Existing Project
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          message:
- *                              type: string
- *                              example: "A project named \"name\" already exists."
+ *         description: Conflict
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             examples:
+ *               existingProject:
+ *                 summary: Project already exists
+ *                 value:
+ *                   message: A project named "name" already exists.
+ *               maxProjects:
+ *                 summary: Max projects reached
+ *                 value:
+ *                   message: Reached maximum amount of projects
  */
 
 export {
