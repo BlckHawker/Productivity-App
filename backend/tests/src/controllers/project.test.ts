@@ -7,17 +7,16 @@ jest.mock("../../../src/services/project");
 const prismaMock = (props: object = {}) => ({ ...props } as jest.Mocked<PrismaClient>);
 jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
+const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
+    fn.mockReturnValueOnce(jest.fn().mockResolvedValueOnce(returnValue));
+};
+
+const mockCurriedError = (fn: jest.Mock, error: Error) => {
+    fn.mockReturnValueOnce(jest.fn().mockRejectedValueOnce(error));
+};
+
 describe("Create Project Controller", () => {
     const projectData = {name: "name", color: "#f00"};
-
-    const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
-        fn.mockReturnValueOnce(jest.fn().mockResolvedValueOnce(returnValue));
-    };
-
-    const mockCurriedError = (fn: jest.Mock, error: Error) => {
-    fn.mockReturnValueOnce(jest.fn().mockRejectedValueOnce(error));
-    };
-
     const createProject = (name = projectData.name, color = projectData.color) =>
   projectController.createProject(prismaMock())(name, color);
 
@@ -53,4 +52,34 @@ describe("Create Project Controller", () => {
     })
 
     
+})
+
+describe("Get project by id", () => {
+    test("If the service returns an error, it should return the error", async () => {
+        mockCurriedError(projectService.getProjectById as jest.Mock, new Error("Error message"));
+        const response = await projectController.getProjectById(prismaMock())(1);
+        expect(response).toBeInstanceOf(Error);
+    })
+
+    test("If service returns, then controller should return service value", async () => {
+        const projectData = {name: "a"}
+        mockCurried(projectService.getProjectById as jest.Mock, projectData);
+        const response = await projectController.getProjectById(prismaMock())(1);
+        expect(response).toEqual(projectData);
+    })
+})
+
+describe("Get project by name", () => {
+    test("If the service returns an error, it should return the error", async () => {
+        mockCurriedError(projectService.getProjectByName as jest.Mock, new Error("Error message"));
+        const response = await projectController.getProjectByName(prismaMock())("");
+        expect(response).toBeInstanceOf(Error);
+    })
+
+    test("If service returns, then controller should return service value", async () => {
+        const projectData = {name: "a"}
+        mockCurried(projectService.getProjectByName as jest.Mock, projectData);
+        const response = await projectController.getProjectByName(prismaMock())("");
+        expect(response).toEqual(projectData);
+    })
 })
