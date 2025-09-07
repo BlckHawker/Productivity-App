@@ -38,5 +38,6 @@ const createProject = (prisma: PrismaClient)  => async (name: string, color: str
 }
 
 export {
-    createProject
+    createProject,
+    MAX_PROJECTS
 }
