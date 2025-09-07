@@ -6,6 +6,7 @@ import {
     assertArgumentsNumber,
     assertArgumentsString,
     sanitizeResponse,
+    assertArgumentsHexCode,
     notFound
 } from "../../src/utils.ts"
 
@@ -30,6 +31,30 @@ describe('assertArguments', () => {
     test('should work without a custom message', () => {
         const result = assertArguments({ a: undefined }, () => false, '');
         expect(result.message).toBe('Invalid a');
+    });
+});
+
+describe("assertArgumentsHexCode", () => {
+    test("should return success for valid 3-digit hex", () => {
+        const result = assertArgumentsHexCode({ color: "#fff" });
+        expect(result).toEqual({ success: true });
+    });
+
+    test("should return success for valid 6-digit hex", () => {
+        const result = assertArgumentsHexCode({ color: "#A1B2C3" });
+        expect(result).toEqual({ success: true });
+    });
+
+    test("should return failure for invalid hex", () => {
+        const result = assertArgumentsHexCode({ color: "blue" });
+        expect(result.success).toBe(false);
+        expect(result.message).toContain("must be a valid hex color");
+    });
+
+    test("should return failure for missing #", () => {
+        const result = assertArgumentsHexCode({ color: "123456" });
+        expect(result.success).toBe(false);
+        expect(result.message).toContain("must be a valid hex color");
     });
 });
 
