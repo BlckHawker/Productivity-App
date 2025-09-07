@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as projectController from "../../../src/controllers/project.ts";
 import * as utils from '../../../src/utils.ts';
-import { getProjectById } from '../../../src/requestHandlers/project.ts';
+import { getProjectById, createProject } from '../../../src/requestHandlers/project.ts';
 import { StatusCode } from 'status-code-enum'
 
 jest.mock("../../../src/controllers/project.ts");
@@ -26,9 +26,9 @@ const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
         fn.mockReturnValueOnce(jest.fn().mockResolvedValueOnce(returnValue));
     };
 
-    const mockCurriedError = (fn: jest.Mock, error: Error) => {
+const mockCurriedError = (fn: jest.Mock, error: Error) => {
     fn.mockReturnValueOnce(jest.fn().mockRejectedValueOnce(error));
-    };
+};
 
 describe("Get project by id", () => {
     beforeEach(() => {
@@ -65,7 +65,7 @@ describe("Get project by id", () => {
 
     test("200s and returns the found project", async () => {
         const id = 1;
-        const project = { id, name: "name" };
+        const project = { id };
         (req as any).params = { id };
         const obj = { success: true };
         (utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
@@ -80,4 +80,61 @@ describe("Get project by id", () => {
         expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
         expect(res.json).toHaveBeenCalledWith(project);
     })
+})
+
+describe("create project", () => {
+    beforeEach(() => {
+        resetTests();
+    });
+
+    test("200s and returns the project on success", async () => {
+        const id = 1;
+        const project = { id };
+        (req as any).params = { id };
+        (utils.mergeResults as jest.Mock).mockReturnValue({success: true});
+        mockCurried(projectController.createProject as jest.Mock, project);
+        jest.spyOn(utils, "sanitizeResponse").mockImplementation(
+            (_response, res) => {
+                res.status(StatusCode.SuccessOK).json(project);
+                return res;
+        });
+        await createProject(req as Request, res as Response)
+        expect(projectController.createProject).toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
+        expect(res.json).toHaveBeenCalledWith(project);
+
+    })
+
+    test("400s when given an invalid data", async () => {
+        (utils.mergeResults as jest.Mock).mockReturnValue({success: false});
+        await createProject(req as Request, res as Response)
+        expect(projectController.createProject).not.toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
+
+    })
+
+    describe("409s", () => {
+        test(" when a project with an existing name is created", async () => {
+            const name = "name";
+            req.body.name = name;
+            (utils.mergeResults as jest.Mock).mockReturnValue({success: true});
+            mockCurried(projectController.createProject as jest.Mock, new Error("Unique constraint failed on the fields: (\`name\`)"));
+            await createProject(req as Request, res as Response)
+            expect(projectController.createProject).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
+            expect(res.json).toHaveBeenCalledWith({message: `A project named "${name}" already exists.`});
+        })
+
+        test(" when a project is created when max amount is created", async () => {
+            const message = "Reached maximum amount of projects";
+            (utils.mergeResults as jest.Mock).mockReturnValue({success: true});
+            mockCurried(projectController.createProject as jest.Mock, new Error(message));
+            await createProject(req as Request, res as Response)
+            expect(projectController.createProject).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
+            expect(res.json).toHaveBeenCalledWith({message});
+        })
+
+    })
+
 })
