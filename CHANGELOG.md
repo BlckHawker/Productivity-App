@@ -3,6 +3,14 @@
 - Header comment check to pr checklist
 - Explicit typing ESLint rule for useState
 - ESLint rule for TODO and FIXME comments
+- ESLint rules for the following:
+  - Semi-colons
+  - Double quotes
+  - Sorted imports
+  - Excessive line breaks
+  - Unused variables
+  - Const for unused variables
+  - Tab indentation
 
 ### Changed
 
