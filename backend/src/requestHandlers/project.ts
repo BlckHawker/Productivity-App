@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import * as utils from "../utils"
-import { StatusCode } from 'status-code-enum'
-import * as projectController from "../controllers/project"
+import { Request, Response } from "express";
+import * as utils from "../utils";
+import { StatusCode } from "status-code-enum";
+import * as projectController from "../controllers/project";
 
 
 /**
@@ -11,9 +11,9 @@ import * as projectController from "../controllers/project"
  * @returns 
  */
 const getAllProjects = async (req: Request, res: Response) => {
-    const response = await projectController.getAllProjects(req.prisma);
-    return utils.sanitizeResponse(response, res, "No projects were found");
-}
+	const response = await projectController.getAllProjects(req.prisma);
+	return utils.sanitizeResponse(response, res, "No projects were found");
+};
 
 /**
  * @swagger
@@ -75,12 +75,12 @@ const getAllProjects = async (req: Request, res: Response) => {
  * @returns 
  */
 const getProjectByName = async (req: Request, res: Response) => {
-    const name = String(req.query.name).trim();
-    const validArgs = utils.assertArgumentsString({ name });
-    if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
-    const response = await projectController.getProjectByName(req.prisma)(name);
-    return utils.sanitizeResponse(response, res, `A project with the name "${name}" could not be found.`);
-}
+	const name = String(req.query.name).trim();
+	const validArgs = utils.assertArgumentsString({ name });
+	if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+	const response = await projectController.getProjectByName(req.prisma)(name);
+	return utils.sanitizeResponse(response, res, `A project with the name "${name}" could not be found.`);
+};
 /**
  * @swagger
  * /project:
@@ -152,12 +152,12 @@ const getProjectByName = async (req: Request, res: Response) => {
  * @returns 
  */
 const getProjectById = async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    const validArgs = utils.assertArgumentsNumber({ id });
-    if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
-    const response = await projectController.getProjectById(req.prisma)(id);
-    return utils.sanitizeResponse(response, res, `A project with the id "${id}" could not be found.`);
-}
+	const id = Number(req.params.id);
+	const validArgs = utils.assertArgumentsNumber({ id });
+	if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+	const response = await projectController.getProjectById(req.prisma)(id);
+	return utils.sanitizeResponse(response, res, `A project with the id "${id}" could not be found.`);
+};
 /**
  * @swagger
  * /project/{id}:
@@ -229,32 +229,32 @@ const getProjectById = async (req: Request, res: Response) => {
  * @returns 
  */
 const createProject = async (req: Request, res: Response) => {
-    const name = (typeof req.body.name === 'string') ? req.body.name.trim() : '';
-    const color = (typeof req.body.color === 'string') ? req.body.color.trim() : '';
+	const name = (typeof req.body.name === "string") ? req.body.name.trim() : "";
+	const color = (typeof req.body.color === "string") ? req.body.color.trim() : "";
 
-    const validArgs = utils.mergeResults(
-        utils.assertArgumentsString({ name }),
-        utils.assertArgumentsHexCode({ color })
-    )
-    if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+	const validArgs = utils.mergeResults(
+		utils.assertArgumentsString({ name }),
+		utils.assertArgumentsHexCode({ color })
+	);
+	if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
 
-    const response = await projectController.createProject(req.prisma)(name,color);
+	const response = await projectController.createProject(req.prisma)(name,color);
 
-    if(response instanceof Error) {
-        if(response.message.includes("Unique constraint failed on the fields: (\`name\`)")) {
-            return res.status(StatusCode.ClientErrorConflict).json({ 
-                message: `A project named "${name}" already exists.` 
-            })
-        }
+	if(response instanceof Error) {
+		if(response.message.includes("Unique constraint failed on the fields: (\`name\`)")) {
+			return res.status(StatusCode.ClientErrorConflict).json({ 
+				message: `A project named "${name}" already exists.` 
+			});
+		}
 
-        if(response.message.includes("Reached maximum amount of projects")) {
-            return res.status(StatusCode.ClientErrorConflict).json({ 
-                message: response.message 
-            })
-        }
-    }
+		if(response.message.includes("Reached maximum amount of projects")) {
+			return res.status(StatusCode.ClientErrorConflict).json({ 
+				message: response.message 
+			});
+		}
+	}
 
-    return utils.sanitizeResponse(response, res, "Contact developers if this line appears. createProject request handler");
+	return utils.sanitizeResponse(response, res, "Contact developers if this line appears. createProject request handler");
 
 };
 /**
@@ -338,8 +338,8 @@ const createProject = async (req: Request, res: Response) => {
  */
 
 export {
-    getAllProjects,
-    createProject,
-    getProjectById,
-    getProjectByName
-}
+	getAllProjects,
+	createProject,
+	getProjectById,
+	getProjectByName
+};

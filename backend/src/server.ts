@@ -37,4 +37,4 @@ async function startServer() {
 
 startServer();
 
-export { port }
+export { port };

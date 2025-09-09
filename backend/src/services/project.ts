@@ -1,60 +1,59 @@
 // todo add file header comment
 
 import { PrismaClient, Project } from "../../generated/prisma";
-import prisma from "../prisma";
 
 //todo put header comment
 const getAllProjects = async (prisma: PrismaClient): Promise<Project[]> => {
-    const projects = await prisma.project.findMany({});
-  return projects
-}
+	const projects = await prisma.project.findMany({});
+	return projects;
+};
 
 //todo put header comment
 const createProject = (prisma: PrismaClient) => async (name: string, color: string): Promise<Project> => {
-    const project = await prisma.project.create({
-    data: {
-      name,
-      color
-    },
-  });
-  return project
-}
+	const project = await prisma.project.create({
+		data: {
+			name,
+			color
+		},
+	});
+	return project;
+};
 
 //todo put header comment
 const getProjectCount = async (prisma: PrismaClient): Promise<number> =>  {
-    return await prisma.project.count();
-}
+	return await prisma.project.count();
+};
 
 //todo put header comment
 const getProjectByName = (prisma: PrismaClient) => async(name: string): Promise<Project | null> => {
-  const project = await prisma.project.findFirst({
-  where: {
-    name: {
-      equals: name,
-      mode: 'insensitive'
-    }
-  }
-});
-return project
-}
+	const project = await prisma.project.findFirst({
+		where: {
+			name: {
+				equals: name,
+				mode: "insensitive"
+			}
+		}
+	});
+	return project;
+};
 
 //todo put header comment
 const getProjectById = (prisma: PrismaClient)  => async (id: number): Promise<Project | Error | null> => {
-  const project = await prisma.project.findFirst({
-  where: {
-    id: {
-      equals: id,
-    }
-  }
-});
+	const project = await prisma.project.findFirst({
+		where: {
+			id: {
+				equals: id,
+			}
+		}
+	});
 
-return project;
-}
+	return project;
+};
 
 export {
-    createProject,
-    getProjectByName,
-    getProjectCount,
-    getProjectById,
-    getAllProjects
-}
+	createProject,
+	getProjectByName,
+	getProjectCount,
+	getProjectById,
+	getAllProjects
+};
