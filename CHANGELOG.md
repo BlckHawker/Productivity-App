@@ -1,9 +1,10 @@
 ## [Unreleased]
 ### Added
 - API endpoints:
-  - Create task
-  - Get task by ID
-  - Get task by name (case insensitive)
+  - Create projects
+  - Get projects by ID
+  - Get projects by name (case insensitive)
+  - Get all projects
 - Schema documentation added to the Wiki
 - Scripts to easily modify the database for debugging
 - Swagger API documentation
