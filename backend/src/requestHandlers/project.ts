@@ -10,7 +10,7 @@ import * as projectController from "../controllers/project"
  * @returns 
  */
 const getProjectByName = async (req: Request, res: Response) => {
-    const name = String(req.params.name).trim();
+    const name = String(req.query.name).trim();
     const validArgs = utils.assertArgumentsString({ name });
     if (!validArgs.success) return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
     const response = await projectController.getProjectByName(req.prisma)(name);
@@ -18,14 +18,14 @@ const getProjectByName = async (req: Request, res: Response) => {
 }
 /**
  * @swagger
- * /project/{name}:
+ * /project:
  *   get:
  *     summary: Get a project by name
  *     description: Get a project by its name (case insensitive)
  *     tags:
  *       - Project
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: name
  *         schema:
  *           type: string

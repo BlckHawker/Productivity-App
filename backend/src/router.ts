@@ -12,8 +12,11 @@ import { port } from "./server";
 export default (app: Express) => {
     app.use(cors());
     app.post('/project/create', project.createProject)
+    //todo todo implement this
+    //app.get('/projects/', project.getAllProject)
     app.get('/project/:id', project.getProjectById),
-    app.get('/project/:name', project.getProjectByName)
+    app.get('/project', project.getProjectByName)
+
     swaggerDocs(app, port)
     app.use(utils.notFound);
 };

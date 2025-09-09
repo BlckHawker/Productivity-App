@@ -11,7 +11,7 @@ let req: Partial<Request> & { prisma?: any };
 let res: jest.Mocked<Response>;
 
 const resetTests = () => {
-    req = { prisma: {}, body: {} };
+    req = { prisma: {}, body: {}, query: {} };
     const resPartial: Partial<jest.Mocked<Response>> = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn().mockReturnThis(),
@@ -88,7 +88,7 @@ describe("Get project by name", () => {
     });
 
     test("400s if name is not a string", async () => {
-        (req as any).params = { name: 1 };
+        (req as any).query = { name: 1 };
         const obj = { success: false, message: 'invalid' };
         (utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
         await getProjectByName(req as Request, res)
@@ -99,7 +99,7 @@ describe("Get project by name", () => {
 
     test("404s if a project with the given name is not found", async () => {
         const name = "name";
-        (req as any).params = { name };
+        (req as any).query = { name };
         const obj = { success: true };
         (utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
         mockCurried(projectController.getProjectByName as jest.Mock, null);
@@ -116,9 +116,8 @@ describe("Get project by name", () => {
     })
 
     test("200s and returns the found project", async () => {
-        const name = "name";
-        const project = { name };
-        (req as any).params = { name };
+        const project = { name: "name" };
+        (req as any).query = project;
         const obj = { success: true };
         (utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
         mockCurried(projectController.getProjectByName as jest.Mock, project);
