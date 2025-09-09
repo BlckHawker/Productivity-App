@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import * as utils from "../utils";
-import { StatusCode } from "status-code-enum";
 import * as projectController from "../controllers/project";
+import * as utils from "../utils";
+import { Request, Response } from "express";
+import { StatusCode } from "status-code-enum";
 
 
 /**
@@ -241,7 +241,7 @@ const createProject = async (req: Request, res: Response) => {
 	const response = await projectController.createProject(req.prisma)(name,color);
 
 	if(response instanceof Error) {
-		if(response.message.includes("Unique constraint failed on the fields: (\`name\`)")) {
+		if(response.message.includes("Unique constraint failed on the fields: (`name`)")) {
 			return res.status(StatusCode.ClientErrorConflict).json({ 
 				message: `A project named "${name}" already exists.` 
 			});

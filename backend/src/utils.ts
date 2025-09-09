@@ -1,10 +1,20 @@
 import { Request, Response } from "express";
 import { StatusCode } from "status-code-enum";
 
-//todo put header comment
+/**
+ * Validates a set of named arguments against a predicate function.
+ * Collects error messages for all invalid arguments.
+ *
+ * @param args - Object of key-value argument pairs to validate.
+ * @param predicate - Function applied to each value; should return true if valid.
+ * @param message - Error message suffix to describe invalid values.
+ * @returns Validation result:
+ *          - `{ success: true }` if all arguments are valid.
+ *          - `{ success: false, message }` with error details otherwise.
+ */
 const assertArguments = (
-	args: { [key: string]: any },
-	predicate: (value: any) => boolean,
+	args: { [key: string]: unknown },
+	predicate: (value: unknown) => boolean,
 	message: string
 ): { success: boolean, message?: string } => {
 
@@ -20,7 +30,12 @@ const assertArguments = (
 	return { success: true };
 };
 
-//todo put header comment
+/**
+ * Ensures that all arguments are defined (not `undefined`).
+ *
+ * @param args - Object of key-value argument pairs.
+ * @returns Validation result.
+ */
 const assertArgumentsDefined = (args : object) =>{
 	const validArgs = assertArguments(
 		args,
@@ -30,7 +45,12 @@ const assertArgumentsDefined = (args : object) =>{
 	return validArgs;
 };
 
-//todo put header comment
+/**
+ * Ensures that all arguments are valid numbers (not NaN).
+ *
+ * @param args - Object of key-value argument pairs.
+ * @returns Validation result.
+ */
 const assertArgumentsNumber = (args: object) => {
 	const validArgs = assertArguments(
 		args,
@@ -40,7 +60,12 @@ const assertArgumentsNumber = (args: object) => {
 	return validArgs;
 };
 
-//todo put header comment
+/**
+ * Ensures that all arguments are non-empty strings.
+ *
+ * @param args - Object of key-value argument pairs.
+ * @returns Validation result.
+ */
 const assertArgumentsString = (args: object) => {
 	const validArgs = assertArguments(
 		args,
@@ -50,7 +75,13 @@ const assertArgumentsString = (args: object) => {
 	return validArgs;
 };
 
-//todo put header comment
+/**
+ * Ensures that all arguments are valid hex color codes.
+ * Accepts shorthand (#RGB) or full (#RRGGBB) formats.
+ *
+ * @param args - Object of key-value argument pairs.
+ * @returns Validation result.
+ */
 const assertArgumentsHexCode = (args: object) => {
 	const validArgs = assertArguments(
 		args,
@@ -83,7 +114,7 @@ function mergeResults(...results: { success: boolean; message?: string }[]) {
  * - Error => 500 (or 404 if message suggests "not found")
  * - Any other value => 200
  */
-const sanitizeResponse = (response : any, expressResponse: Response, message404 : string = "404 not found")=>{
+const sanitizeResponse = (response : unknown, expressResponse: Response, message404 : string = "404 not found")=>{
 	if (response == null || response instanceof Array && response.length === 0) return expressResponse.status(StatusCode.ClientErrorNotFound).json({ message: `${message404}` });
 	if (response instanceof Error) {
 
@@ -97,7 +128,16 @@ const sanitizeResponse = (response : any, expressResponse: Response, message404 
 	return expressResponse.status(StatusCode.SuccessOK).json(response);
 };
 
-//todo put header comment
+/**
+ * Express middleware for handling unknown routes.
+ *
+ * - Always responds with HTTP 404 (Not Found).
+ * - Includes the HTTP method and original URL in the error message.
+ *
+ * @param req - The incoming Express request.
+ * @param res - The Express response object.
+ * @returns The response with status 404 and a JSON error message.
+ */
 const notFound = (req: Request, res: Response): Response => {
 	return res.status(StatusCode.ClientErrorNotFound).json({ message: `'${req.method} ${req.originalUrl}' is not a valid request` });
 };

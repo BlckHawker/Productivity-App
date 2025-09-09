@@ -1,6 +1,13 @@
-// todo add file header comment
-import { PrismaClient, Project } from "../../generated/prisma";
+/**
+ * Project controller layer.
+ *
+ * Provides higher-level operations for managing projects,
+ * wrapping service-layer calls with error handling and
+ * additional business logic such as validation and limits.
+ */
+
 import * as projectServices from "../services/project";
+import { PrismaClient, Project } from "../../generated/prisma";
 
 const MAX_PROJECTS = 100;
 

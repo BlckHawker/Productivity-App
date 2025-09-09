@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
 import * as utils from "../../src/utils.ts";
+import { Request, Response } from "express";
 
 type MockResponse = {
   status: jest.MockedFunction<(code: number) => MockResponse>;
@@ -12,14 +12,14 @@ type MockRequest = {
 } & Partial<Request>;
 
 const createMockResponse = (): MockResponse => {
-  const res: MockResponse = {
-    status: jest.fn(),
-    json: jest.fn(),
-  };
+	const res: MockResponse = {
+		status: jest.fn(),
+		json: jest.fn(),
+	};
 
-  res.status.mockImplementation(() => res);
-  res.json.mockImplementation(() => res);
-  return res;
+	res.status.mockImplementation(() => res);
+	res.json.mockImplementation(() => res);
+	return res;
 };
 
 
@@ -161,8 +161,6 @@ describe("notFound", () => {
 });
 
 describe("mergeResults", () => {
-	const {  } = require("../../src/utils.ts");
-
 	test("should return success if all validations succeed", () => {
 		const result = utils.mergeResults({ success: true }, { success: true });
 		expect(result).toEqual({ success: true, message: "" });

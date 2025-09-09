@@ -1,6 +1,6 @@
-import { PrismaClient } from "../../../generated/prisma/index";
 import * as projectController from "../../../src/controllers/project.ts";
 import * as projectService from "../../../src/services/project.ts";
+import { PrismaClient } from "../../../generated/prisma/index";
 
 jest.mock("../../../src/services/project");
 

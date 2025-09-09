@@ -1,13 +1,15 @@
-import { Request, Response } from "express";
 import * as projectController from "../../../src/controllers/project.ts";
 import * as utils from "../../../src/utils.ts";
+import { Request, Response } from "express";
 import { createProject, getAllProjects, getProjectById, getProjectByName } from "../../../src/requestHandlers/project.ts";
+import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";
 
 jest.mock("../../../src/controllers/project.ts");
 jest.mock("../../../src/utils.ts");
 
-let req: Partial<Request> & { prisma?: any };
+type MockPrisma = Partial<PrismaClient>;
+let req: Partial<Request> & { prisma?: MockPrisma };
 let res: jest.Mocked<Response>;
 
 const resetTests = () => {
@@ -26,17 +28,12 @@ const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
 	fn.mockReturnValueOnce(jest.fn().mockResolvedValueOnce(returnValue));
 };
 
-const mockCurriedError = (fn: jest.Mock, error: Error) => {
-	fn.mockReturnValueOnce(jest.fn().mockRejectedValueOnce(error));
-};
-
 describe("Get all projects", () => {
 	beforeEach(() => {
 		resetTests();
 	});
 
 	test("404s if no projects found", async () => {
-		const id = 1;
 		mockCurried(projectController.getAllProjects as jest.Mock, []);
 		const message = "No projects were found";
 		jest.spyOn(utils, "sanitizeResponse").mockImplementation(
@@ -71,7 +68,7 @@ describe("Get project by id", () => {
 	});
 
 	test("400s if id is not a number", async () => {
-		(req as any).params = { id: "abc" };
+		(req as Request).params = { id: "abc" };
 		const obj = { success: false, message: "invalid" };
 		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
 		await getProjectById(req as Request, res);
@@ -82,7 +79,7 @@ describe("Get project by id", () => {
 
 	test("404s if a project with the given id is not found", async () => {
 		const id = 1;
-		(req as any).params = { id };
+		(req as Request).params = { id: String(id) };
 		const obj = { success: true };
 		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
 		mockCurried(projectController.getProjectById as jest.Mock, null);
@@ -101,7 +98,7 @@ describe("Get project by id", () => {
 	test("200s and returns the found project", async () => {
 		const id = 1;
 		const project = { id };
-		(req as any).params = { id };
+		(req as Request).params = { id: String(id) };
 		const obj = { success: true };
 		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
 		mockCurried(projectController.getProjectById as jest.Mock, project);
@@ -123,7 +120,7 @@ describe("Get project by name", () => {
 	});
 
 	test("400s if name is not a string", async () => {
-		(req as any).query = { name: 1 };
+		(req as Request).query = { name: "1" };
 		const obj = { success: false, message: "invalid" };
 		(utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
 		await getProjectByName(req as Request, res);
@@ -134,7 +131,7 @@ describe("Get project by name", () => {
 
 	test("404s if a project with the given name is not found", async () => {
 		const name = "name";
-		(req as any).query = { name };
+		(req as Request).query = { name };
 		const obj = { success: true };
 		(utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
 		mockCurried(projectController.getProjectByName as jest.Mock, null);
@@ -152,7 +149,7 @@ describe("Get project by name", () => {
 
 	test("200s and returns the found project", async () => {
 		const project = { name: "name" };
-		(req as any).query = project;
+		(req as Request).query = project;
 		const obj = { success: true };
 		(utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
 		mockCurried(projectController.getProjectByName as jest.Mock, project);
@@ -176,7 +173,7 @@ describe("create project", () => {
 	test("200s and returns the project on success", async () => {
 		const id = 1;
 		const project = { id };
-		(req as any).params = { id };
+		(req as Request).params = { id: String(id) };
 		(utils.mergeResults as jest.Mock).mockReturnValue({success: true});
 		mockCurried(projectController.createProject as jest.Mock, project);
 		jest.spyOn(utils, "sanitizeResponse").mockImplementation(
@@ -204,7 +201,7 @@ describe("create project", () => {
 			const name = "name";
 			req.body.name = name;
 			(utils.mergeResults as jest.Mock).mockReturnValue({success: true});
-			mockCurried(projectController.createProject as jest.Mock, new Error("Unique constraint failed on the fields: (\`name\`)"));
+			mockCurried(projectController.createProject as jest.Mock, new Error("Unique constraint failed on the fields: (`name`)"));
 			await createProject(req as Request, res as Response);
 			expect(projectController.createProject).toHaveBeenCalled();
 			expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
