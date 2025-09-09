@@ -15,6 +15,25 @@ const mockCurriedError = (fn: jest.Mock, error: Error) => {
     fn.mockReturnValueOnce(jest.fn().mockRejectedValueOnce(error));
 };
 
+describe("Get all projects", () => {
+    beforeEach(() => {
+        jest.resetAllMocks();
+    });
+
+    test("If the service returns an error, it should return the error", async () => {
+        (projectService.getAllProjects as jest.Mock).mockRejectedValue(new Error("Error message"));
+        const response = await projectController.getAllProjects(prismaMock());
+        expect(response).toBeInstanceOf(Error);
+    })
+
+    test("If service returns, then controller should return service value", async () => {
+        const projectData = ["a", "b"];
+        (projectService.getAllProjects as jest.Mock).mockResolvedValueOnce(projectData);
+        const response = await projectController.getAllProjects(prismaMock());
+        expect(response).toEqual(projectData);
+    })
+})
+
 describe("Create Project Controller", () => {
     const projectData = {name: "name", color: "#f00"};
     const createProject = (name = projectData.name, color = projectData.color) =>

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as projectController from "../../../src/controllers/project.ts";
 import * as utils from '../../../src/utils.ts';
-import { getProjectById, createProject, getProjectByName } from '../../../src/requestHandlers/project.ts';
+import { getProjectById, createProject, getProjectByName, getAllProjects } from '../../../src/requestHandlers/project.ts';
 import { StatusCode } from 'status-code-enum'
 
 jest.mock("../../../src/controllers/project.ts");
@@ -29,6 +29,41 @@ const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
 const mockCurriedError = (fn: jest.Mock, error: Error) => {
     fn.mockReturnValueOnce(jest.fn().mockRejectedValueOnce(error));
 };
+
+describe("Get all projects", () => {
+    beforeEach(() => {
+        resetTests();
+    });
+
+    test("404s if no projects found", async () => {
+        const id = 1;
+        mockCurried(projectController.getAllProjects as jest.Mock, []);
+        const message = "No projects were found";
+        jest.spyOn(utils, "sanitizeResponse").mockImplementation(
+            (_response, res, message) => {
+                res.status(StatusCode.ClientErrorNotFound).json({ message });
+                return res;
+        });
+        await getAllProjects(req as Request, res)
+        expect(projectController.getAllProjects).toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorNotFound);
+        expect(res.json).toHaveBeenCalledWith({ message });
+    })
+
+    test("200s and returns the found projects", async () => {
+        const projects = [{a: 1}, {a: 2}]
+        mockCurried(projectController.getAllProjects as jest.Mock, projects);
+        jest.spyOn(utils, "sanitizeResponse").mockImplementation(
+            (_response, res) => {
+                res.status(StatusCode.SuccessOK).json(projects);
+                return res;
+        });
+        await getAllProjects(req as Request, res)
+        expect(projectController.getAllProjects).toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
+        expect(res.json).toHaveBeenCalledWith(projects);
+    })
+})
 
 describe("Get project by id", () => {
     beforeEach(() => {

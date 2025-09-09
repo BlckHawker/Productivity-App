@@ -13,8 +13,8 @@ const MAX_PROJECTS = 100;
  */
 const getAllProjects = async (prisma: PrismaClient): Promise<Project[] | Error> => {
     try {
-        const project = await projectServices.getAllProjects(prisma);
-        return project;
+        const projects = await projectServices.getAllProjects(prisma);
+        return projects;
     }
 
     catch (err) {
