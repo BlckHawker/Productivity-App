@@ -6,7 +6,13 @@ import * as taskApi from './api/task'
 import type { Task } from "./interfaces.js";
 import React from "react";
 import { useState, useEffect } from 'react';
-import Project from "../components/Project.ts";
+
+// creates a new project
+function createProject() {
+	return (
+		console.log("clicked!")
+	);
+}
 
 /**
  * Renders the main application UI.
@@ -28,6 +34,7 @@ export function App(): React.ReactElement {
 						</ul>
 					</div>
 				</div>
+				<button id="create-proj" onClick={() => createProject()}>Create Project</button>
 			</div>
 		</div>
 	)
