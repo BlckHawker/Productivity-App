@@ -4,6 +4,12 @@ import { PrismaClient, Project } from "../../generated/prisma";
 import prisma from "../prisma";
 
 //todo put header comment
+const getAllProjects = async (prisma: PrismaClient): Promise<Project[]> => {
+    const projects = await prisma.project.findMany({});
+  return projects
+}
+
+//todo put header comment
 const createProject = (prisma: PrismaClient) => async (name: string, color: string): Promise<Project> => {
     const project = await prisma.project.create({
     data: {
@@ -49,5 +55,6 @@ export {
     createProject,
     getProjectByName,
     getProjectCount,
-    getProjectById
+    getProjectById,
+    getAllProjects
 }

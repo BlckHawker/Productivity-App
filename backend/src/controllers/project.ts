@@ -1,8 +1,26 @@
 // todo add file header comment
 import { PrismaClient, Project } from "../../generated/prisma";
+import prisma from "../prisma";
 import * as projectServices from "../services/project"
 
 const MAX_PROJECTS = 100;
+
+/**
+ * Get all projects
+ *
+ * @param prisma - The PrismaClient instance used to access the database.
+ * @returns All projects within the database or an error if there was a problem getting them
+ */
+const getAllProjects = async (prisma: PrismaClient): Promise<Project[] | Error> => {
+    try {
+        const project = await projectServices.getAllProjects(prisma);
+        return project;
+    }
+
+    catch (err) {
+        return err as Error;
+    }
+}
 
 
 /**
@@ -13,7 +31,7 @@ const MAX_PROJECTS = 100;
  *    - @param id - The id of the project.
  *    - @returns A Promise resolving to the found `Project` on success, an `Error` if retrieving fails, or null if the project of that id doesn't exist.
  */
-const getProjectById = (prisma: PrismaClient)  => async (id: number): Promise<Project | Error | null> => {
+const getProjectById = (prisma: PrismaClient) => async (id: number): Promise<Project | Error | null> => {
     try {
         const project = await projectServices.getProjectById(prisma)(id);
         return project;
@@ -81,5 +99,6 @@ export {
     createProject,
     getProjectById,
     getProjectByName,
+    getAllProjects,
     MAX_PROJECTS
 }

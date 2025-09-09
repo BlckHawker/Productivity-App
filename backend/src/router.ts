@@ -12,8 +12,7 @@ import { port } from "./server";
 export default (app: Express) => {
     app.use(cors());
     app.post('/project/create', project.createProject)
-    //todo todo implement this
-    //app.get('/projects/', project.getAllProject)
+    app.get('/projects', project.getAllProjects)
     app.get('/project/:id', project.getProjectById),
     app.get('/project', project.getProjectByName)
 

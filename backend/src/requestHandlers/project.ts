@@ -3,6 +3,71 @@ import * as utils from "../utils"
 import { StatusCode } from 'status-code-enum'
 import * as projectController from "../controllers/project"
 
+
+/**
+ * Get all projects request
+ * @param {Request} req 
+ * @param {Response} res 
+ * @returns 
+ */
+const getAllProjects = async (req: Request, res: Response) => {
+    const response = await projectController.getAllProjects(req.prisma);
+    return utils.sanitizeResponse(response, res, "No projects were found");
+}
+
+/**
+ * @swagger
+ * /projects:
+ *   get:
+ *     summary: Get all projects
+ *     description: Fetches all projects from the database.
+ *     tags:
+ *       - Project
+ *     responses:
+ *       200:
+ *         description: A list of projects
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *                   color:
+ *                     type: string
+ *                   created_at:
+ *                     type: string
+ *                     format: date-time
+ *                   updated_at:
+ *                     type: string
+ *                     format: date-time
+ *             example:
+ *               - id: 1
+ *                 name: "Movies"
+ *                 color: "#FF5733"
+ *                 created_at: "2025-09-07T17:34:03.434Z"
+ *                 updated_at: "2025-09-07T17:34:03.434Z" 
+ *               - id: 2
+ *                 name: "Movies"
+ *                 color: "#ff33e7ff"
+ *                 created_at: "2025-09-07T17:34:03.434Z"
+ *                 updated_at: "2025-09-07T17:34:03.434Z" 
+ *       404:
+ *         description: No projects
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "No projects were found"
+ */
+
 /**
  * Get project by name request
  * @param {Request} req 
@@ -133,7 +198,7 @@ const getProjectById = async (req: Request, res: Response) => {
  *                   type: string
  *                   example: "2025-09-07T17:34:03.434Z"
  *       404:
- *         description: Project not found
+ *         description: Not Found
  *         content:
  *           application/json:
  *             schema:
@@ -273,6 +338,7 @@ const createProject = async (req: Request, res: Response) => {
  */
 
 export {
+    getAllProjects,
     createProject,
     getProjectById,
     getProjectByName
