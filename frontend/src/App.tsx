@@ -6,6 +6,7 @@ import * as taskApi from './api/task'
 import type { Task } from "./interfaces.js";
 import React from "react";
 import { useState, useEffect } from 'react';
+import Project from "../components/Project.ts";
 
 /**
  * Renders the main application UI.
