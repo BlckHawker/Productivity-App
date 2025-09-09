@@ -39,8 +39,8 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.1.5",
     "prisma": "^6.13.0",
-    "status-code-enum": "^1.0.0",
     "productivity-app": "file:..",
+    "status-code-enum": "^1.0.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
