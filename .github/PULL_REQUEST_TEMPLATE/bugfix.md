@@ -66,3 +66,4 @@ npm run test -- taskController.test.js
 - [ ] Changelog updated
 - [ ] Files changed/added have a header comment
 - [ ] All changed/added function have header comments
+- [ ] Any backend status use the `status-code-enum` dependency

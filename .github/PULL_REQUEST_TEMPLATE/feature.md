@@ -72,3 +72,4 @@ This PR introduces a new feature that allows users to filter and sort data entri
 - [ ] Changelog updated
 - [ ] Files changed/added have a header comment
 - [ ] All changed/added function have header comments
+- [ ] Any backend status use the `status-code-enum` dependency

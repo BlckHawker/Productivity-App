@@ -4,6 +4,7 @@ import dotenvExpand from "dotenv-expand";
 import express from "express";
 import router from "./router.js";
 
+const port = 3000;
 async function startServer() {
 	try {
 		const port = 3000;
@@ -35,3 +36,5 @@ async function startServer() {
 }
 
 startServer();
+
+export { port }

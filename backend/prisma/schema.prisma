@@ -8,9 +8,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Task {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  name      String @unique
-  complete  Boolean @default(false)
+model Project {
+  id Int @id @default(autoincrement())
+  color String @db.VarChar(7)
+  name String @unique
+  sections Section[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Section {
+  id Int @id @default(autoincrement())
+  project_id Int
+  project Project @relation(fields: [project_id], references: [id])
+  name String
+  is_other Boolean @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }

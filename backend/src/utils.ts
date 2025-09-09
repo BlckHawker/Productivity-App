@@ -1,79 +1,114 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
+import { StatusCode } from 'status-code-enum'
 
-type AssertResult = { success: boolean; message?: string };
+//todo put header comment
+const assertArguments = (
+    args: { [key: string]: any },
+    predicate: (value: any) => boolean,
+    message: string
+): { success: boolean, message?: string } => {
+
+    // collect a list of error messages for invalid arguments
+    const messages: string[] = [];
+    Object.entries(args).forEach((entry) => {
+        if (!predicate(entry[1])) messages.push(`Invalid ${entry[0]}${message ? ': ' + message : ''}`);
+    });
+    if (messages.length > 0) return {
+        success: false,
+        message: messages.join('. ')
+    };
+    return { success: true };
+};
+
+//todo put header comment
+const assertArgumentsDefined = (args : object) =>{
+    const validArgs = assertArguments(
+        args,
+        a => a != undefined,
+        'cannot be undefined'
+    );
+    return validArgs;
+};
+
+//todo put header comment
+const assertArgumentsNumber = (args: object) => {
+    const validArgs = assertArguments(
+        args,
+        a => !isNaN(a),
+        'must be a valid number'
+    );
+    return validArgs;
+};
+
+//todo put header comment
+const assertArgumentsString = (args: object) => {
+    const validArgs = assertArguments(
+        args,
+        arg => arg !== '',
+        'must be typeof string'
+    );
+    return validArgs;
+};
+
+//todo put header comment
+const assertArgumentsHexCode = (args: object) => {
+    const validArgs = assertArguments(
+        args,
+        arg => /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(arg),
+        'must be a valid hex color (e.g. #000 or #000000)'
+    );
+    return validArgs;
+};
 
 /**
- * Runs a predicate check against a collection of arguments.
+ * Combines the results of multiple validation checks into a single result object.
+ * - If all results are successful, returns `{ success: true }`.
+ * - If any validations fail, returns `{ success: false, message: string }` where
+ *   `message` is a newline-separated list of error messages.
  *
- * @param args - A dictionary of key/value pairs to validate
- * @param predicate - A function that validates each value
- * @param message - Error message to append if validation fails
+ * @param results At least one validation result objects with `{ success, message? }`.
+ * @returns A single merged validation result.
  */
-const assertArguments = <T>(
-	args: Record<string, T>,
-	predicate: (value: T) => boolean,
-	message: string
-): AssertResult => {
-	const messages: string[] = [];
-
-	for (const [key, value] of Object.entries(args)) {
-		if (!predicate(value as T)) {
-			messages.push(`Invalid ${key}${message ? ": " + message : ""}`);
-		}
-	}
-
-	if (messages.length > 0) {
-		return { success: false, message: messages.join(". ") };
-	}
-	return { success: true };
-};
-
-const assertArgumentsDefined = (args: Record<string, unknown>): AssertResult => {
-	return assertArguments(args, (a): a is NonNullable<unknown> => a !== undefined, "cannot be undefined");
-};
-
-const assertArgumentsNumber = (args: Record<string, unknown>): AssertResult => {
-	return assertArguments(args, (a): a is number => typeof a === "number" && !isNaN(a), "must be a valid number");
-};
-
-const assertArgumentsString = (args: Record<string, unknown>): AssertResult => {
-	return assertArguments(args, (arg): arg is string => typeof arg === "string" && arg.trim() !== "", "must be a non-empty string");
-};
+function mergeResults(...results: { success: boolean; message?: string }[]) {
+    const failed = results.filter(r => !r.success);
+    return {
+        success: failed.length === 0,
+        message: failed.map(r => r.message).join(" \n")
+    };
+}
 
 /**
- * Parses a database response into an Express response with appropriate status codes:
+ * Parses a database response as an express response, creating the correct HTTP status codes.<br>
  * - [] | undefined | null => 404
  * - Error => 500 (or 404 if message suggests "not found")
  * - Any other value => 200
  */
-const sanitizeResponse = (
-	response: unknown,
-	expressResponse: Response,
-	message404: string = "404 not found"
-): Response => {
-	if (response == null || (Array.isArray(response) && response.length === 0)) {
-		return expressResponse.status(404).json({ message: message404 });
-	}
+const sanitizeResponse = (response : any, expressResponse: Response, message404 : string = '404 not found')=>{
+    if (response == null || response instanceof Array && response.length === 0) return expressResponse.status(StatusCode.ClientErrorNotFound).json({ message: `${message404}` });
+    if (response instanceof Error) {
 
-	if (response instanceof Error) {
-		if (/does not exist|not found/i.test(response.message)) {
-			return expressResponse.status(404).json({ message: response.message ?? "Not found" });
-		}
-		return expressResponse.status(500).json({ message: response.message ?? "Internal server error." });
-	}
+        // if error message includes 'not found', it's probably a 404 error
+        if ('does not exist|not found'.split('|').some(msg => response.message.includes(msg)))
+            return expressResponse.status(StatusCode.ClientErrorNotFound).json({ message: response.message ?? 'Not found' });
 
-	return expressResponse.status(200).json(response);
+        // otherwise, assume it's an internal error
+        return expressResponse.status(StatusCode.ServerErrorInternal).json({ message: response.message ?? 'Internal server error.' });
+    }
+    return expressResponse.status(StatusCode.SuccessOK).json(response);
 };
 
+//todo put header comment
 const notFound = (req: Request, res: Response): Response => {
-	return res.status(404).json({ message: `'${req.method} ${req.originalUrl}' is not a valid request` });
+    return res.status(StatusCode.ClientErrorNotFound).json({ message: `'${req.method} ${req.originalUrl}' is not a valid request` });
 };
 
 export {
-	sanitizeResponse,
-	assertArguments,
-	assertArgumentsDefined,
-	assertArgumentsNumber,
-	assertArgumentsString,
-	notFound
-};
+    sanitizeResponse,
+    assertArguments,
+    assertArgumentsDefined,
+    assertArgumentsNumber,
+    assertArgumentsString,
+    assertArgumentsHexCode,
+    mergeResults,
+    notFound
+}

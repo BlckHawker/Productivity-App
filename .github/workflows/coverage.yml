@@ -18,8 +18,18 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install dependencies (root)
-        run: npm install
+      # Root
+      - name: Clean install (root)
+        run: |
+          rm -rf node_modules package-lock.json
+          npm i
 
+      # Backend
+      - name: Clean install (backend)
+        run: |
+          rm -rf backend/node_modules backend/package-lock.json
+          npm install --prefix backend
+
+      # Run test
       - name: Check coverage
         run: npm run test:coverage
