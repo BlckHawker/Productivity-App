@@ -58,6 +58,18 @@ npm run prisma:generate
 ```bash
 npm run migrate:dev
 ```
+### 3.1 API Documentation (Swagger)
+
+The backend automatically generates Swagger API documentation.
+
+- Once the backend server is running (`npm run dev` in the `backend` folder), open your browser at:
+
+http://localhost:3000/api
+
+- This page shows all available API endpoints, request/response schemas, and examples.
+
+
+
 
 ## 4. Frontend Setup
 
