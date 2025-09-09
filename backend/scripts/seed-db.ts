@@ -4,14 +4,12 @@ const prisma = new PrismaClient();
 
 async function seedDatabase() {
   try {
-    const data = [
-      { name: "Buy groceries", complete: false },
-      { name: "Finish project report", complete: false },
-      { name: "Read 30 pages of a book", complete: false },
-      { name: "Exercise for 30 minutes", complete: false },
+    const projectData = [
+      { color: "#444", name: "Other" }
     ];
 
-    await prisma.task.createMany({ data });
+    await prisma.project.createMany({ data: projectData });
+    console.log("✅ Projects seeded successfully!");
 
     console.log("✅ Database seeded successfully!");
   } catch (error) {
@@ -20,7 +18,6 @@ async function seedDatabase() {
     await prisma.$disconnect();
   }
 }
-
 
 seedDatabase();
 
