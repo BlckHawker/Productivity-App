@@ -2,16 +2,26 @@
  * Root component for the frontend React application.
  * Displays testing creation task code to verify backend support. Does not reflect final file structure
  */
-import * as taskApi from './api/task'
-import type { Task } from "./interfaces.js";
-import React from "react";
-import { useState, useEffect } from 'react';
+// import * as taskApi from './api/task'
+// import type { Task } from "./interfaces.js";
+// import { useState, useEffect } from 'react';
 
-// creates a new project
-function createProject() {
-	return (
-		console.log("clicked!")
-	);
+import ProjectForm from "../components/ProjectForm.tsx"
+import React, { useState } from "react";
+
+// shows the form that creates a new project
+function showForm() {
+	let form = document.querySelector<HTMLElement>("#project-form");
+
+	if (form) {
+		if (form.style.display == "none") {
+			form.style.display = "block";
+		}
+		else {
+			form.style.display = "none";
+		}
+	}
+
 }
 
 /**
@@ -21,12 +31,11 @@ function createProject() {
  */
 
 export function App(): React.ReactElement {
-
+	const [show, setShow] = useState(false);
 	// menu should be collapsible
 	return (
 		<div className="App">
 			<div id="menu"> 
-				<h1>Menu</h1>
 				<div id="projects">
 					<h2>Projects</h2>
 					<div id="proj-list">
@@ -34,7 +43,9 @@ export function App(): React.ReactElement {
 						</ul>
 					</div>
 				</div>
-				<button id="create-proj" onClick={() => createProject()}>Create Project</button>
+				<ProjectForm />
+				{/* {show ? <ProjectForm /> : null} // could pass showForm in as prop? can maybe change to false on submit */}
+				<button id="create-proj" onClick={() => showForm()}>New Project</button>
 			</div>
 		</div>
 	)
