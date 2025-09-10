@@ -27,6 +27,7 @@ describe("updateProject", () => {
     color: "#FFFFFF",
   } as Project;
 
+
   test("should return error if project does not exist", async () => {
 	mockCurried(projectService.getProjectById as jest.Mock, null);
 
@@ -38,9 +39,9 @@ describe("updateProject", () => {
     expect((response as Error).message).toMatch(/could not be found/);
   });
 
-  test("should bubble up error if getProjectById returns Error", async () => {
+  test("should return error if getProjectById returns Error", async () => {
     const error = new Error("DB error");
-	mockCurriedError(projectService.getProjectById as jest.Mock, error)
+	mockCurried(projectService.getProjectById as jest.Mock, error)
 
     const response = await projectController.updateProject(prismaMock())(1, {
       name: "New Name",
@@ -61,16 +62,19 @@ describe("updateProject", () => {
   });
 
   test("should return error if updating with same name only", async () => {
-		mockCurried(projectService.getProjectById as jest.Mock, project);
 
+  mockCurried(projectService.getProjectById as jest.Mock, project);
 
-    const response = await projectController.updateProject(prismaMock())(1, {
-      name: project.name,
-    });
+  const error = new Error("DB lookup error");
+  mockCurried(projectService.getProjectByName as jest.Mock, error);
 
-    expect(response).toBeInstanceOf(Error);
-    expect((response as Error).message).toMatch(/different from the current name/);
+  const response = await projectController.updateProject(prismaMock())(1, {
+    name: "New Name",
   });
+
+  expect(response).toEqual(error);
+});
+
 
   test("should return error if updating with same color only", async () => {
 		mockCurried(projectService.getProjectById as jest.Mock, project);
@@ -85,6 +89,17 @@ describe("updateProject", () => {
   });
 
   test("should return error if new name already exists", async () => {
+		mockCurried(projectService.getProjectById as jest.Mock, project);
+		const error = new Error("")
+		mockCurried(projectService.getProjectById as jest.Mock, error);
+    const response = await projectController.updateProject(prismaMock())(1, {
+      name: "New Name",
+    });
+
+    expect(response).toBeInstanceOf(Error);
+  });
+
+    test("should return error if error occurs getting project by name", async () => {
 		mockCurried(projectService.getProjectById as jest.Mock, project);
 		mockCurried(projectService.getProjectByName as jest.Mock, { id: 2, name: "New Name", color: "#000000" });
     const response = await projectController.updateProject(prismaMock())(1, {

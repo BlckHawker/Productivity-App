@@ -17,7 +17,7 @@ const updateProject = (prisma: PrismaClient) => async (id: number, data: { name?
 	try {
 			const projectToUpdate = await projectServices.getProjectById(prisma)(id);
 			//todo: in controller, if the project with the specified id cannot be found, throw an error
-			if(projectToUpdate == null) {
+			if(projectToUpdate === null) {
 				return new Error(`A project with the id "${id}" could not be found.`)
 			}
 
@@ -46,7 +46,7 @@ const updateProject = (prisma: PrismaClient) => async (id: number, data: { name?
 			const existingProject = await projectServices.getProjectByName(prisma)(data.name);
 
 			if(existingProject instanceof Error)  {
-				return projectToUpdate;
+				return existingProject;
 			}
 
 			if(existingProject != null) {
