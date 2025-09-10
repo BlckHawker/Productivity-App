@@ -1,0 +1,5 @@
+# Ignore folders:
+backend/prisma/*
+backend/generated/*
+backend/dist/*
+frontend/dist/*
