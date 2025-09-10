@@ -14,12 +14,8 @@ function showForm() {
 	let form = document.querySelector<HTMLElement>("#project-form");
 
 	if (form) {
-		if (form.style.display == "none") {
-			form.style.display = "block";
-		}
-		else {
-			form.style.display = "none";
-		}
+		form.style.display = "block";
+
 	}
 
 }
@@ -31,8 +27,7 @@ function showForm() {
  */
 
 export function App(): React.ReactElement {
-	const [show, setShow] = useState(false);
-	// menu should be collapsible
+	// TODO: menu should be collapsible
 	return (
 		<div className="App">
 			<div id="menu"> 
@@ -44,7 +39,6 @@ export function App(): React.ReactElement {
 					</div>
 				</div>
 				<ProjectForm />
-				{/* {show ? <ProjectForm /> : null} // could pass showForm in as prop? can maybe change to false on submit */}
 				<button id="create-proj" onClick={() => showForm()}>New Project</button>
 			</div>
 		</div>

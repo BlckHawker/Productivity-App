@@ -3,6 +3,7 @@ import { Form } from "../hooks/Form";
 
 function ProjectForm() {
     let form = document.querySelector<HTMLElement>("#project-form");
+    let formSubmissions: Object[] = [];
 
     // initial state of form
     const initialState = {
@@ -16,16 +17,38 @@ function ProjectForm() {
     );
 
     async function projectMadeCallback() {
-        console.log("project made! this will send the information to the database");
+        // TODO: these lines work, but figure out how to get the error to go away
+        let finalName: String = values.name;
+        let finalColor: String = values.color;
+        let finalProject: Object = {name: finalName, color: finalColor};
+
+        // only allows project creation if the name is unique
+        // if (formSubmissions.includes(finalName)){
+        if(!formSubmissions.find((obj) => (obj.name == finalName ))){ // TODO: check for unique name w/ trimmed string
+            formSubmissions.push(finalProject);
+            // FIXME: using 'find()' works but the array only holds one value at a time, using 'include()' doesn't work but the array holds multiple values
+
+            // TODO: send data to database (after all functionality is implemented)
+        }
+        else {
+            alert("Project called " + finalName + " already exists. Please enter another name.")
+            // TODO: highlight text box and disable submit button
+        }
+
+        // TODO: check array length; if length == 100, disable create project button
+
+        console.log(formSubmissions); // TODO: make sure array populates correctly; currently only holding one item at a time?
     }
 
-    function hideForm() {
-
+    function formSubmit() {
+        // hides the form on submit
         if (form) {
             if (form.style.display != "none") {
                 form.style.display = "none";
             }
         }
+
+        // TODO: reset form data
     }
 
     return (
@@ -38,7 +61,8 @@ function ProjectForm() {
                         type='name'
                         placeholder='Project Name'
                         onChange={onChange}
-                        required />
+                        required 
+                    />
 
                     <input
                         name='color'
@@ -46,8 +70,9 @@ function ProjectForm() {
                         type='color'
                         placeholder='Color'
                         onChange={onChange}
-                        required />
-                    <button type='submit' onClick={() => hideForm()}>Create Project</button>
+                        required 
+                    />
+                    <button type='submit' onClick={() => formSubmit()}>Create Project</button>
                 </div>
             </form>
         </>
@@ -57,20 +82,5 @@ function ProjectForm() {
 export default ProjectForm;
 
 /*
-source: https://dev.to/karan316/build-forms-using-react-the-easy-way-with-typescript-46bh
- */
-
-// // shows the form that creates a new project
-// function showForm() {
-// 	let form = document.querySelector<HTMLElement>("#project-form");
-
-// 	if (form) {
-// 		if (form.style.display == "none") {
-// 			form.style.display = "block";
-// 		}
-// 		else {
-// 			form.style.display = "none";
-// 		}
-// 	}
-
-// }
+form source: https://dev.to/karan316/build-forms-using-react-the-easy-way-with-typescript-46bh
+*/
