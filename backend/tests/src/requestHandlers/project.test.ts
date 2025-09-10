@@ -93,7 +93,6 @@ describe("updateProject", () => {
 
 	})
 
-	//todo 200s when name is invalid but color is valid
 	test("200s when name is invalid but color is valid", async () => {
 		const id = 1;
 		const name = "name";
@@ -103,18 +102,10 @@ describe("updateProject", () => {
 		req.body.color = color;
 
 		const project = { id, name, color  };
-		//todo mock validId to be successful
 		(utils.assertArgumentsNumber as jest.Mock).mockReturnValueOnce({success: true});
-
-		//todo mock validName to be unsuccessful
 		(utils.assertArgumentsString as jest.Mock).mockReturnValueOnce({success: false});
-
-		//todo mock validColor to be successful
 		(utils.assertArgumentsString as jest.Mock).mockReturnValueOnce({success: true});
-
-		//todo mock projectController.updateProject to return a project
 		mockCurried(projectController.updateProject as jest.Mock, project);
-
 		mockCurried(projectController.updateProject as jest.Mock, project);
 		jest
 			.spyOn(utils, "sanitizeResponse")
@@ -131,7 +122,6 @@ describe("updateProject", () => {
 
 	})
 
-	//todo 200s when color is invalid but name is valid
 	test("200s when color is invalid but name is valid", async () => {
 		const id = 1;
 		const name = "name";

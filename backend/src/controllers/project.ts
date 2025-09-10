@@ -16,7 +16,7 @@ const MAX_PROJECTS = 100;
 const updateProject = (prisma: PrismaClient) => async (id: number, data: { name?: string; color?: string }): Promise<Project | Error> => {
 	try {
 			const projectToUpdate = await projectServices.getProjectById(prisma)(id);
-			//todo: in controller, if the project with the specified id cannot be found, throw an error
+			
 			if(projectToUpdate === null) {
 				return new Error(`A project with the id "${id}" could not be found.`)
 			}
@@ -25,7 +25,6 @@ const updateProject = (prisma: PrismaClient) => async (id: number, data: { name?
 				return projectToUpdate;
 			}
 	
-		//todo: in controller, if the new name and color are the same as the current, throw an error
 		if (
         (data.name && projectToUpdate.name.toUpperCase() === data.name.toUpperCase()) &&
         (data.color && projectToUpdate.color.toUpperCase() === data.color.toUpperCase())
@@ -41,7 +40,6 @@ const updateProject = (prisma: PrismaClient) => async (id: number, data: { name?
         return new Error("Updated project color must be different from the current color.");
       }
 		
-		//todo: in controller, if the new name matches an already existing project, throw an error
 		if(data.name) {
 			const existingProject = await projectServices.getProjectByName(prisma)(data.name);
 
@@ -54,7 +52,6 @@ const updateProject = (prisma: PrismaClient) => async (id: number, data: { name?
 			}
 		}
 
-		//todo return the updated project 
 		const updatedProject = projectServices.updateProject(prisma)(id, data);
 		return updatedProject;
 

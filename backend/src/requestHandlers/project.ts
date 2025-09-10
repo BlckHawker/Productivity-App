@@ -20,13 +20,10 @@ const updateProject = async (req: Request, res: Response) => {
 	const invalidName = !validName.success;
 	const invalidColor = !validColor.success;
 
-
-	//todo if id is not valid, throw an error
 	if (!validId.success) {
 		return res.status(StatusCode.ClientErrorBadRequest).json(validId);
 	}
 
-	//todo if both the name and the color is not valid, throw an error
 	if(invalidName && invalidColor) {
 		return res.status(StatusCode.ClientErrorBadRequest).json({"message": `${validName.message}\n${validColor.message}`});
 	}
@@ -35,10 +32,109 @@ const updateProject = async (req: Request, res: Response) => {
 		id,
 		{name: invalidName ? null : newName, color: invalidColor ? null : newColor }
 	);
+		console.log("1");
+
+
+	if(response instanceof Error) {
+
+		const badRequestStr = ["A project with the id", 
+			"Cannot update a project with the same values it currently has.",
+			"Updated project name must be different from the current name.",
+			"Updated project color must be different from the current color.",
+			"Updated project color must be different from the current color.",
+			"A project with the name"
+		]
+		if(badRequestStr.some(str => response.message.includes(str))) {
+			return res.status(StatusCode.ClientErrorBadRequest).json({
+				message: response.message
+			});
+		}
+	}
 
 	return utils.sanitizeResponse(response, res, "Contact developers if this line appears. updateProject request handler");
 };
-//todo add swagger docs
+/**
+ * @swagger
+ * /project/update:
+ *   put:
+ *     summary: Update a project given its id
+ *     tags:
+ *       - Project
+  *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *             properties:
+ *               id:
+ *                 type: number
+ *                 description: The id of the project that wants to be updated
+ *                 example: 1
+ *               name:
+ *                 type: string
+ *                 description: The new name of the project
+ *                 example: "Gym"
+ *               color:
+ *                 type: string
+ *                 description: The new color of the project
+ *                 example: "#FF5733"
+ *     responses:
+ *       200:
+ *         description: The project with its updated values
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   example: Gym
+ *                 color:
+ *                   type: string
+ *                   example: "#FF5733"
+ *                 created_at:
+ *                   type: string
+ *                   example: "2025-09-07T17:34:03.434Z"
+ *                 updated_at:
+ *                   type: string
+ *                   example: "2025-09-07T17:34:03.434Z"
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             examples:
+ *               invalid id:
+ *                 value:
+ *                   message: "Invalid id: must be a valid number"
+ *               same color and name:
+ *                 value:
+ *                   message: "Cannot update a project with the same values it currently has."
+ *               project with id doesn't exist:
+ *                 value:
+ *                   message: "A project with the id \"1\" could not be found."
+ *               same name:
+ *                 value:
+ *                   message: "Updated project name must be different from the current name."
+ *               same color:
+ *                 value:
+ *                   message: "Updated project color must be different from the current color."
+  *               change name to a project that already has that name:
+ *                 value:
+ *                   message: "A project with the name \"Gym\" already exists"
+
+ */
+
 
 /**
  * Get all projects request
