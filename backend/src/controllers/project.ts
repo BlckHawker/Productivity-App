@@ -50,7 +50,7 @@ const updateProject = (prisma: PrismaClient) => async (id: number, data: { name?
 			}
 
 			if(existingProject != null) {
-				return new Error(`A project with the name "${name}" already exists`);
+				return new Error(`A project with the name "${data.name}" already exists`);
 			}
 		}
 
