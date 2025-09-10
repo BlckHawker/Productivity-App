@@ -11,7 +11,7 @@ import { StatusCode } from "status-code-enum";
  * @returns
  */
 const updateProject = async (req: Request, res: Response) => {
-	const id = Number(req.params.id);
+	const id = typeof req.body.id === "number" ? req.body.id : NaN;
 	const newName = typeof req.body.name === "string" ? req.body.name.trim() : "";
 	const newColor = typeof req.body.color === "string" ? req.body.color.trim() : "";
 	const validId = utils.assertArgumentsNumber({ id });
@@ -28,7 +28,7 @@ const updateProject = async (req: Request, res: Response) => {
 
 	//todo if both the name and the color is not valid, throw an error
 	if(invalidName && invalidColor) {
-		return res.status(StatusCode.ClientErrorBadRequest).json({"message": `${validName.message} \n${validColor.message}`});
+		return res.status(StatusCode.ClientErrorBadRequest).json({"message": `${validName.message}\n${validColor.message}`});
 	}
 
 	const response = await projectController.updateProject(req.prisma)(

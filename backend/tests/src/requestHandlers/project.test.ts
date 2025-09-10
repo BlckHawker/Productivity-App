@@ -2,6 +2,7 @@ import * as projectController from "../../../src/controllers/project.ts";
 import * as utils from "../../../src/utils.ts";
 import { Request, Response } from "express";
 import {
+	updateProject,
 	createProject,
 	getAllProjects,
 	getProjectById,
@@ -32,6 +33,66 @@ const resetTests = () => {
 const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
 	fn.mockReturnValueOnce(jest.fn().mockResolvedValueOnce(returnValue));
 };
+
+describe("updateProject", () => {
+	beforeEach(() => {
+		resetTests();
+	});
+
+	test("400s if id is not valid", async () => {
+		const obj = { success: false, message: "invalid" };
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValueOnce(obj);
+		(utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
+
+		await updateProject(req as Request, res);
+
+		expect(projectController.updateProject).not.toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
+		expect(res.json).toHaveBeenCalledWith(obj);
+
+	})
+
+	test("400s if both the name and the color is not valid", async () => {
+		const message = "invalid";
+		const obj = { success: false, message };
+
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValueOnce({success: true});
+		(utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
+		await updateProject(req as Request, res);
+		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
+		expect(res.json).toHaveBeenCalledWith({message: `${message}\n${message}`});
+
+	})
+
+	//todo returns updated project
+	test("200s if an updated project is returned", async () => {
+		const id = 1;
+		const name = "name";
+		const color = "color"
+		req.body.id = id;
+		req.body.name = name;
+		req.body.color = color;
+
+		const project = { id, name, color  };
+
+		(req as Request).body = project
+		const obj = { success: true };
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
+		(utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
+		mockCurried(projectController.updateProject as jest.Mock, project);
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res) => {
+				res.status(StatusCode.SuccessOK).json(project);
+				return res;
+			});
+		await updateProject(req as Request, res);
+		expect(projectController.updateProject).toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
+		expect(res.json).toHaveBeenCalledWith(project);
+
+	})
+})
 
 describe("Get all projects", () => {
 	beforeEach(() => {
