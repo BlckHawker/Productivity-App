@@ -22,15 +22,17 @@ const getAllProjects = async (prisma: PrismaClient): Promise<Project[]> => {
  * @param prisma - The Prisma client instance.
  * @returns A function that accepts project `name` and `color` and returns the created Project.
  */
-const createProject = (prisma: PrismaClient) => async (name: string, color: string): Promise<Project> => {
-	const project = await prisma.project.create({
-		data: {
-			name,
-			color
-		},
-	});
-	return project;
-};
+const createProject =
+	(prisma: PrismaClient) =>
+	async (name: string, color: string): Promise<Project> => {
+		const project = await prisma.project.create({
+			data: {
+				name,
+				color
+			}
+		});
+		return project;
+	};
 
 /**
  * Counts the total number of projects in the database.
@@ -38,7 +40,7 @@ const createProject = (prisma: PrismaClient) => async (name: string, color: stri
  * @param prisma - The Prisma client instance.
  * @returns A promise resolving to the number of projects.
  */
-const getProjectCount = async (prisma: PrismaClient): Promise<number> =>  {
+const getProjectCount = async (prisma: PrismaClient): Promise<number> => {
 	return await prisma.project.count();
 };
 
@@ -48,17 +50,19 @@ const getProjectCount = async (prisma: PrismaClient): Promise<number> =>  {
  * @param prisma - The Prisma client instance.
  * @returns A function that accepts a `name` string and resolves to a Project or null.
  */
-const getProjectByName = (prisma: PrismaClient) => async(name: string): Promise<Project | null> => {
-	const project = await prisma.project.findFirst({
-		where: {
-			name: {
-				equals: name,
-				mode: "insensitive"
+const getProjectByName =
+	(prisma: PrismaClient) =>
+	async (name: string): Promise<Project | null> => {
+		const project = await prisma.project.findFirst({
+			where: {
+				name: {
+					equals: name,
+					mode: "insensitive"
+				}
 			}
-		}
-	});
-	return project;
-};
+		});
+		return project;
+	};
 
 /**
  * Finds the first project by its unique ID.
@@ -66,17 +70,19 @@ const getProjectByName = (prisma: PrismaClient) => async(name: string): Promise<
  * @param prisma - The Prisma client instance.
  * @returns A function that accepts a numeric project `id` and resolves to a Project, null, or Error.
  */
-const getProjectById = (prisma: PrismaClient)  => async (id: number): Promise<Project | Error | null> => {
-	const project = await prisma.project.findFirst({
-		where: {
-			id: {
-				equals: id,
+const getProjectById =
+	(prisma: PrismaClient) =>
+	async (id: number): Promise<Project | Error | null> => {
+		const project = await prisma.project.findFirst({
+			where: {
+				id: {
+					equals: id
+				}
 			}
-		}
-	});
+		});
 
-	return project;
-};
+		return project;
+	};
 
 export {
 	createProject,

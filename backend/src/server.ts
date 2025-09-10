@@ -27,7 +27,6 @@ async function startServer() {
 		//add routes
 		router(app);
 
-
 		app.listen(port, () => console.log(`Listening to port ${port}`));
 	} catch (e) {
 		console.error("Startup error:", e);

@@ -2,8 +2,8 @@ import * as utils from "../../src/utils.ts";
 import { Request, Response } from "express";
 
 type MockResponse = {
-  status: jest.MockedFunction<(code: number) => MockResponse>;
-  json: jest.MockedFunction<(body: unknown) => MockResponse>;
+	status: jest.MockedFunction<(code: number) => MockResponse>;
+	json: jest.MockedFunction<(body: unknown) => MockResponse>;
 } & Partial<Response>;
 
 type MockRequest = {
@@ -14,7 +14,7 @@ type MockRequest = {
 const createMockResponse = (): MockResponse => {
 	const res: MockResponse = {
 		status: jest.fn(),
-		json: jest.fn(),
+		json: jest.fn()
 	};
 
 	res.status.mockImplementation(() => res);
@@ -22,25 +22,38 @@ const createMockResponse = (): MockResponse => {
 	return res;
 };
 
-
 let res: MockResponse;
 
 describe("assertArguments", () => {
 	test("should return success when all arguments pass predicate", () => {
-		const result = utils.assertArguments({ a: 1, b: 2 }, v => v as number > 0, "must be positive");
+		const result = utils.assertArguments(
+			{ a: 1, b: 2 },
+			(v) => (v as number) > 0,
+			"must be positive"
+		);
 		expect(result).toEqual({ success: true });
 	});
 
 	test("should return failure when some arguments fail predicate", () => {
-		const result = utils.assertArguments({ a: 1, b: -1 }, v => v as number > 0, "must be positive");
+		const result = utils.assertArguments(
+			{ a: 1, b: -1 },
+			(v) => (v as number) > 0,
+			"must be positive"
+		);
 		expect(result.success).toBe(false);
 		expect(result.message).toBe("Invalid b: must be positive");
 	});
 
 	test("should combine multiple error messages", () => {
-		const result = utils.assertArguments({ a: -1, b: -2 }, v => v as number > 0, "must be positive");
+		const result = utils.assertArguments(
+			{ a: -1, b: -2 },
+			(v) => (v as number) > 0,
+			"must be positive"
+		);
 		expect(result.success).toBe(false);
-		expect(result.message).toBe("Invalid a: must be positive. Invalid b: must be positive");
+		expect(result.message).toBe(
+			"Invalid a: must be positive. Invalid b: must be positive"
+		);
 	});
 
 	test("should work without a custom message", () => {
@@ -75,7 +88,9 @@ describe("assertArgumentsHexCode", () => {
 
 describe("assertArgumentsDefined", () => {
 	test("should return success if all defined", () => {
-		expect(utils.assertArgumentsDefined({ a: 1, b: "test" })).toEqual({ success: true });
+		expect(utils.assertArgumentsDefined({ a: 1, b: "test" })).toEqual({
+			success: true
+		});
 	});
 
 	test("should return failure if any undefined", () => {
@@ -87,7 +102,9 @@ describe("assertArgumentsDefined", () => {
 
 describe("assertArgumentsNumber", () => {
 	test("should return success if all are numbers", () => {
-		expect(utils.assertArgumentsNumber({ a: 1, b: 2.5 })).toEqual({ success: true });
+		expect(utils.assertArgumentsNumber({ a: 1, b: 2.5 })).toEqual({
+			success: true
+		});
 	});
 
 	test("should fail if any value is NaN", () => {
@@ -99,7 +116,9 @@ describe("assertArgumentsNumber", () => {
 
 describe("assertArgumentsString", () => {
 	test("should return success if all are non-empty strings", () => {
-		expect(utils.assertArgumentsString({ a: "hello", b: "world" })).toEqual({ success: true });
+		expect(utils.assertArgumentsString({ a: "hello", b: "world" })).toEqual({
+			success: true
+		});
 	});
 
 	test("should fail if any string is empty", () => {
@@ -126,7 +145,7 @@ describe("sanitizeResponse", () => {
 		expect(res.json).toHaveBeenCalledWith({ message: "No data" });
 	});
 
-	test("should return 404 for Error containing \"not found\"", () => {
+	test('should return 404 for Error containing "not found"', () => {
 		utils.sanitizeResponse(new Error("User not found"), res as Response);
 		expect(res.status).toHaveBeenCalledWith(404);
 		expect(res.json).toHaveBeenCalledWith({ message: "User not found" });
@@ -148,7 +167,7 @@ describe("sanitizeResponse", () => {
 describe("notFound", () => {
 	test("should return 404 with correct message", () => {
 		const req: MockRequest = { method: "GET", originalUrl: "/test" } as Request;
-		const res: MockResponse  = {
+		const res: MockResponse = {
 			status: jest.fn().mockReturnThis(),
 			json: jest.fn().mockReturnThis()
 		};
@@ -156,7 +175,9 @@ describe("notFound", () => {
 		utils.notFound(req as Request, res as Response);
 
 		expect(res.status).toHaveBeenCalledWith(404);
-		expect(res.json).toHaveBeenCalledWith({ message: "'GET /test' is not a valid request" });
+		expect(res.json).toHaveBeenCalledWith({
+			message: "'GET /test' is not a valid request"
+		});
 	});
 });
 
@@ -167,7 +188,10 @@ describe("mergeResults", () => {
 	});
 
 	test("should return failure if one validation fails", () => {
-		const result = utils.mergeResults({ success: true }, { success: false, message: "error" });
+		const result = utils.mergeResults(
+			{ success: true },
+			{ success: false, message: "error" }
+		);
 		expect(result.success).toBe(false);
 		expect(result.message).toBe("error");
 	});

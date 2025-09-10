@@ -1,4 +1,4 @@
-/* 
+/*
  * Script to generate a `.env.prisma` file with only the required database-related
  * environment variables.
  */

@@ -1,7 +1,12 @@
 import * as projectController from "../../../src/controllers/project.ts";
 import * as utils from "../../../src/utils.ts";
 import { Request, Response } from "express";
-import { createProject, getAllProjects, getProjectById, getProjectByName } from "../../../src/requestHandlers/project.ts";
+import {
+	createProject,
+	getAllProjects,
+	getProjectById,
+	getProjectByName
+} from "../../../src/requestHandlers/project.ts";
 import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";
 
@@ -16,7 +21,7 @@ const resetTests = () => {
 	req = { prisma: {}, body: {}, query: {} };
 	const resPartial: Partial<jest.Mocked<Response>> = {
 		status: jest.fn().mockReturnThis(),
-		json: jest.fn().mockReturnThis(),
+		json: jest.fn().mockReturnThis()
 	};
 
 	res = resPartial as jest.Mocked<Response>;
@@ -36,8 +41,9 @@ describe("Get all projects", () => {
 	test("404s if no projects found", async () => {
 		mockCurried(projectController.getAllProjects as jest.Mock, []);
 		const message = "No projects were found";
-		jest.spyOn(utils, "sanitizeResponse").mockImplementation(
-			(_response, res, message) => {
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res, message) => {
 				res.status(StatusCode.ClientErrorNotFound).json({ message });
 				return res;
 			});
@@ -48,10 +54,11 @@ describe("Get all projects", () => {
 	});
 
 	test("200s and returns the found projects", async () => {
-		const projects = [{a: 1}, {a: 2}];
+		const projects = [{ a: 1 }, { a: 2 }];
 		mockCurried(projectController.getAllProjects as jest.Mock, projects);
-		jest.spyOn(utils, "sanitizeResponse").mockImplementation(
-			(_response, res) => {
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res) => {
 				res.status(StatusCode.SuccessOK).json(projects);
 				return res;
 			});
@@ -84,8 +91,9 @@ describe("Get project by id", () => {
 		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
 		mockCurried(projectController.getProjectById as jest.Mock, null);
 		const notFoundMessage = `A project with the id "${id}" could not be found.`;
-		jest.spyOn(utils, "sanitizeResponse").mockImplementation(
-			(_response, res, message) => {
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res, message) => {
 				res.status(StatusCode.ClientErrorNotFound).json({ message });
 				return res;
 			});
@@ -102,8 +110,9 @@ describe("Get project by id", () => {
 		const obj = { success: true };
 		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
 		mockCurried(projectController.getProjectById as jest.Mock, project);
-		jest.spyOn(utils, "sanitizeResponse").mockImplementation(
-			(_response, res) => {
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res) => {
 				res.status(StatusCode.SuccessOK).json(project);
 				return res;
 			});
@@ -136,8 +145,9 @@ describe("Get project by name", () => {
 		(utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
 		mockCurried(projectController.getProjectByName as jest.Mock, null);
 		const notFoundMessage = `A project with the name "${name}" could not be found.`;
-		jest.spyOn(utils, "sanitizeResponse").mockImplementation(
-			(_response, res, message) => {
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res, message) => {
 				res.status(StatusCode.ClientErrorNotFound).json({ message });
 				return res;
 			});
@@ -153,8 +163,9 @@ describe("Get project by name", () => {
 		const obj = { success: true };
 		(utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
 		mockCurried(projectController.getProjectByName as jest.Mock, project);
-		jest.spyOn(utils, "sanitizeResponse").mockImplementation(
-			(_response, res) => {
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res) => {
 				res.status(StatusCode.SuccessOK).json(project);
 				return res;
 			});
@@ -174,10 +185,11 @@ describe("create project", () => {
 		const id = 1;
 		const project = { id };
 		(req as Request).params = { id: String(id) };
-		(utils.mergeResults as jest.Mock).mockReturnValue({success: true});
+		(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
 		mockCurried(projectController.createProject as jest.Mock, project);
-		jest.spyOn(utils, "sanitizeResponse").mockImplementation(
-			(_response, res) => {
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res) => {
 				res.status(StatusCode.SuccessOK).json(project);
 				return res;
 			});
@@ -185,39 +197,43 @@ describe("create project", () => {
 		expect(projectController.createProject).toHaveBeenCalled();
 		expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
 		expect(res.json).toHaveBeenCalledWith(project);
-
 	});
 
 	test("400s when given an invalid data", async () => {
-		(utils.mergeResults as jest.Mock).mockReturnValue({success: false});
+		(utils.mergeResults as jest.Mock).mockReturnValue({ success: false });
 		await createProject(req as Request, res as Response);
 		expect(projectController.createProject).not.toHaveBeenCalled();
 		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
-
 	});
 
 	describe("409s", () => {
 		test(" when a project with an existing name is created", async () => {
 			const name = "name";
 			req.body.name = name;
-			(utils.mergeResults as jest.Mock).mockReturnValue({success: true});
-			mockCurried(projectController.createProject as jest.Mock, new Error("Unique constraint failed on the fields: (`name`)"));
+			(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
+			mockCurried(
+				projectController.createProject as jest.Mock,
+				new Error("Unique constraint failed on the fields: (`name`)")
+			);
 			await createProject(req as Request, res as Response);
 			expect(projectController.createProject).toHaveBeenCalled();
 			expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
-			expect(res.json).toHaveBeenCalledWith({message: `A project named "${name}" already exists.`});
+			expect(res.json).toHaveBeenCalledWith({
+				message: `A project named "${name}" already exists.`
+			});
 		});
 
 		test(" when a project is created when max amount is created", async () => {
 			const message = "Reached maximum amount of projects";
-			(utils.mergeResults as jest.Mock).mockReturnValue({success: true});
-			mockCurried(projectController.createProject as jest.Mock, new Error(message));
+			(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
+			mockCurried(
+				projectController.createProject as jest.Mock,
+				new Error(message)
+			);
 			await createProject(req as Request, res as Response);
 			expect(projectController.createProject).toHaveBeenCalled();
 			expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
-			expect(res.json).toHaveBeenCalledWith({message});
+			expect(res.json).toHaveBeenCalledWith({ message });
 		});
-
 	});
-
 });

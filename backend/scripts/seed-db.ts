@@ -4,9 +4,7 @@ const prisma = new PrismaClient();
 
 async function seedDatabase() {
 	try {
-		const projectData = [
-			{ color: "#444", name: "Other" }
-		];
+		const projectData = [{ color: "#444", name: "Other" }];
 
 		await prisma.project.createMany({ data: projectData });
 		console.log("✅ Projects seeded successfully!");

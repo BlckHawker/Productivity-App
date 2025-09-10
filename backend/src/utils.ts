@@ -16,17 +16,18 @@ const assertArguments = (
 	args: object,
 	predicate: (value: unknown) => boolean,
 	message: string
-): { success: boolean, message?: string } => {
-
+): { success: boolean; message?: string } => {
 	// collect a list of error messages for invalid arguments
 	const messages: string[] = [];
 	Object.entries(args).forEach((entry) => {
-		if (!predicate(entry[1])) messages.push(`Invalid ${entry[0]}${message ? ": " + message : ""}`);
+		if (!predicate(entry[1]))
+			messages.push(`Invalid ${entry[0]}${message ? ": " + message : ""}`);
 	});
-	if (messages.length > 0) return {
-		success: false,
-		message: messages.join(". ")
-	};
+	if (messages.length > 0)
+		return {
+			success: false,
+			message: messages.join(". ")
+		};
 	return { success: true };
 };
 
@@ -36,10 +37,10 @@ const assertArguments = (
  * @param args - Object of key-value argument pairs.
  * @returns Validation result.F
  */
-const assertArgumentsDefined = (args : object) =>{
+const assertArgumentsDefined = (args: object) => {
 	const validArgs = assertArguments(
 		args,
-		a => a != undefined,
+		(a) => a != undefined,
 		"cannot be undefined"
 	);
 	return validArgs;
@@ -54,7 +55,7 @@ const assertArgumentsDefined = (args : object) =>{
 const assertArgumentsNumber = (args: object) => {
 	const validArgs = assertArguments(
 		args,
-		a => !isNaN(a as number),
+		(a) => !isNaN(a as number),
 		"must be a valid number"
 	);
 	return validArgs;
@@ -69,7 +70,7 @@ const assertArgumentsNumber = (args: object) => {
 const assertArgumentsString = (args: object) => {
 	const validArgs = assertArguments(
 		args,
-		arg => arg !== "",
+		(arg) => arg !== "",
 		"must be typeof string"
 	);
 	return validArgs;
@@ -85,7 +86,7 @@ const assertArgumentsString = (args: object) => {
 const assertArgumentsHexCode = (args: object) => {
 	const validArgs = assertArguments(
 		args,
-		arg => /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(arg as string),
+		(arg) => /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(arg as string),
 		"must be a valid hex color (e.g. #000 or #000000)"
 	);
 	return validArgs;
@@ -101,10 +102,10 @@ const assertArgumentsHexCode = (args: object) => {
  * @returns A single merged validation result.
  */
 function mergeResults(...results: { success: boolean; message?: string }[]) {
-	const failed = results.filter(r => !r.success);
+	const failed = results.filter((r) => !r.success);
 	return {
 		success: failed.length === 0,
-		message: failed.map(r => r.message).join(" \n")
+		message: failed.map((r) => r.message).join(" \n")
 	};
 }
 
@@ -114,16 +115,30 @@ function mergeResults(...results: { success: boolean; message?: string }[]) {
  * - Error => 500 (or 404 if message suggests "not found")
  * - Any other value => 200
  */
-const sanitizeResponse = (response : unknown, expressResponse: Response, message404 : string = "404 not found")=>{
-	if (response == null || response instanceof Array && response.length === 0) return expressResponse.status(StatusCode.ClientErrorNotFound).json({ message: `${message404}` });
+const sanitizeResponse = (
+	response: unknown,
+	expressResponse: Response,
+	message404: string = "404 not found"
+) => {
+	if (response == null || (response instanceof Array && response.length === 0))
+		return expressResponse
+			.status(StatusCode.ClientErrorNotFound)
+			.json({ message: `${message404}` });
 	if (response instanceof Error) {
-
 		// if error message includes 'not found', it's probably a 404 error
-		if ("does not exist|not found".split("|").some(msg => response.message.includes(msg)))
-			return expressResponse.status(StatusCode.ClientErrorNotFound).json({ message: response.message ?? "Not found" });
+		if (
+			"does not exist|not found"
+				.split("|")
+				.some((msg) => response.message.includes(msg))
+		)
+			return expressResponse
+				.status(StatusCode.ClientErrorNotFound)
+				.json({ message: response.message ?? "Not found" });
 
 		// otherwise, assume it's an internal error
-		return expressResponse.status(StatusCode.ServerErrorInternal).json({ message: response.message ?? "Internal server error." });
+		return expressResponse
+			.status(StatusCode.ServerErrorInternal)
+			.json({ message: response.message ?? "Internal server error." });
 	}
 	return expressResponse.status(StatusCode.SuccessOK).json(response);
 };
@@ -139,7 +154,9 @@ const sanitizeResponse = (response : unknown, expressResponse: Response, message
  * @returns The response with status 404 and a JSON error message.
  */
 const notFound = (req: Request, res: Response): Response => {
-	return res.status(StatusCode.ClientErrorNotFound).json({ message: `'${req.method} ${req.originalUrl}' is not a valid request` });
+	return res.status(StatusCode.ClientErrorNotFound).json({
+		message: `'${req.method} ${req.originalUrl}' is not a valid request`
+	});
 };
 
 export {

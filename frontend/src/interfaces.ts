@@ -3,12 +3,10 @@
  */
 
 interface Task {
-    id: number,
-    createdAt: string,
-    name: string,
-    complete: boolean
+	id: number;
+	createdAt: string;
+	name: string;
+	complete: boolean;
 }
 
-export type {
-	Task
-};
+export type { Task };
