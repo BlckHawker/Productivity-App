@@ -27,18 +27,18 @@ let res: MockResponse;
 
 describe("assertArguments", () => {
 	test("should return success when all arguments pass predicate", () => {
-		const result = utils.assertArguments({ a: 1, b: 2 }, v => v > 0, "must be positive");
+		const result = utils.assertArguments({ a: 1, b: 2 }, v => v as number > 0, "must be positive");
 		expect(result).toEqual({ success: true });
 	});
 
 	test("should return failure when some arguments fail predicate", () => {
-		const result = utils.assertArguments({ a: 1, b: -1 }, v => v > 0, "must be positive");
+		const result = utils.assertArguments({ a: 1, b: -1 }, v => v as number > 0, "must be positive");
 		expect(result.success).toBe(false);
 		expect(result.message).toBe("Invalid b: must be positive");
 	});
 
 	test("should combine multiple error messages", () => {
-		const result = utils.assertArguments({ a: -1, b: -2 }, v => v > 0, "must be positive");
+		const result = utils.assertArguments({ a: -1, b: -2 }, v => v as number > 0, "must be positive");
 		expect(result.success).toBe(false);
 		expect(result.message).toBe("Invalid a: must be positive. Invalid b: must be positive");
 	});
