@@ -5,6 +5,16 @@
 
 import { PrismaClient, Project } from "../../generated/prisma";
 
+//todo add header comment
+const updateProject = (prisma: PrismaClient) =>
+  async (id: number, data: { name?: string; color?: string }): Promise<Project> => {
+    return prisma.project.update({
+      where: { id },
+      data
+    });
+  };
+
+
 /**
  * Retrieves all projects from the database.
  *
@@ -89,5 +99,6 @@ export {
 	getProjectByName,
 	getProjectCount,
 	getProjectById,
-	getAllProjects
+	getAllProjects,
+	updateProject
 };

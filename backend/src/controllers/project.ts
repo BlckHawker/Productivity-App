@@ -11,6 +11,59 @@ import { PrismaClient, Project } from "../../generated/prisma";
 
 const MAX_PROJECTS = 100;
 
+
+//todo create header comment
+const updateProject = (prisma: PrismaClient) => async (id: number, data: { name?: string; color?: string }): Promise<Project | Error> => {
+	try {
+			const projectToUpdate = await projectServices.getProjectById(prisma)(id);
+			//todo: in controller, if the project with the specified id cannot be found, throw an error
+			if(projectToUpdate == null) {
+				return new Error(`A project with the id "${id}" could not be found.`)
+			}
+
+			if(projectToUpdate instanceof Error)  {
+				return projectToUpdate;
+			}
+	
+		//todo: in controller, if the new name and color are the same as the current, throw an error
+		if (
+        (data.name && projectToUpdate.name.toUpperCase() === data.name.toUpperCase()) &&
+        (data.color && projectToUpdate.color.toUpperCase() === data.color.toUpperCase())
+      ) {
+        return new Error("Cannot update a project with the same values it currently has.");
+      }
+
+		if (data.name && projectToUpdate.name.toUpperCase() === data.name.toUpperCase()) {
+        return new Error("Updated project name must be different from the current name.");
+      }
+
+		if (data.color && projectToUpdate.color.toUpperCase() === data.color.toUpperCase()) {
+        return new Error("Updated project color must be different from the current color.");
+      }
+		
+		//todo: in controller, if the new name matches an already existing project, throw an error
+		if(data.name) {
+			const existingProject = await projectServices.getProjectByName(prisma)(data.name);
+
+			if(existingProject instanceof Error)  {
+				return projectToUpdate;
+			}
+
+			if(existingProject != null) {
+				return new Error(`A project with the name "${name}" already exists`);
+			}
+		}
+
+		//todo return the updated project 
+		const updatedProject = projectServices.updateProject(prisma)(id, data);
+		return updatedProject;
+
+	} catch (err) {
+		return err as Error;
+	}
+
+}
+
 /**
  * Get all projects
  *
@@ -103,6 +156,7 @@ const createProject =
 	};
 
 export {
+	updateProject,
 	createProject,
 	getProjectById,
 	getProjectByName,

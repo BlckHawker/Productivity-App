@@ -3,6 +3,43 @@ import * as utils from "../utils";
 import { Request, Response } from "express";
 import { StatusCode } from "status-code-enum";
 
+
+/**
+ * Update project request
+ * @param {Request} req
+ * @param {Response} res
+ * @returns
+ */
+const updateProject = async (req: Request, res: Response) => {
+	const id = Number(req.params.id);
+	const newName = typeof req.body.name === "string" ? req.body.name.trim() : "";
+	const newColor = typeof req.body.color === "string" ? req.body.color.trim() : "";
+	const validId = utils.assertArgumentsNumber({ id });
+	const validName = utils.assertArgumentsString({ newName });
+	const validColor = utils.assertArgumentsString({ newColor });
+	const invalidName = !validName.success;
+	const invalidColor = !validColor.success;
+
+
+	//todo if id is not valid, throw an error
+	if (!validId.success) {
+		return res.status(StatusCode.ClientErrorBadRequest).json(validId);
+	}
+
+	//todo if both the name and the color is not valid, throw an error
+	if(invalidName && invalidColor) {
+		return res.status(StatusCode.ClientErrorBadRequest).json({"message": `${validName.message} \n${validColor.message}`});
+	}
+
+	const response = await projectController.updateProject(req.prisma)(
+		id,
+		{name: invalidName ? null : newName, color: invalidColor ? null : newColor }
+	);
+
+	return utils.sanitizeResponse(response, res, "Contact developers if this line appears. updateProject request handler");
+};
+//todo add swagger docs
+
 /**
  * Get all projects request
  * @param {Request} req
@@ -357,4 +394,4 @@ const createProject = async (req: Request, res: Response) => {
  *                   message: Reached maximum amount of projects
  */
 
-export { getAllProjects, createProject, getProjectById, getProjectByName };
+export { getAllProjects, createProject, getProjectById, getProjectByName, updateProject };
