@@ -3,11 +3,11 @@ name: Feature request
 about: Suggest an idea for this project
 title: "[FEATURE]"
 labels: enhancement
-assignees: ''
-
+assignees: ""
 ---
 
 ### Summary
+
 <!-- A short, clear description of the feature or improvement -->
 
 **Example:**  
@@ -16,6 +16,7 @@ Allow users to create tasks with multiple reminder times instead of just one.
 ---
 
 ### Problem
+
 <!-- Describe the current limitation or problem this feature would solve -->
 
 **Example:**  
@@ -24,6 +25,7 @@ Right now, users can only set one reminder per task. For important tasks, I want
 ---
 
 ### Proposed Solution
+
 <!-- Describe your idea for how the feature should work -->
 
 **Example:**  
@@ -32,6 +34,7 @@ Add a new “+ Add Reminder” button to the reminder section of the task editor
 ---
 
 ### Alternatives Considered
+
 <!-- List any alternative ideas or workarounds you've thought about -->
 
 **Example:**  
@@ -40,11 +43,13 @@ I tried creating duplicate tasks with different reminders, but that’s cluttere
 ---
 
 ### Screenshots or Media (Optional)
+
 <!-- Add mockups, diagrams, or references if helpful -->
 
 ---
 
 ### Additional Context
+
 <!-- Any other relevant info about the feature request -->
 
 **Example:**  

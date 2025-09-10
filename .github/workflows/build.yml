@@ -9,7 +9,7 @@ on:
 jobs:
   coverage:
     runs-on: ubuntu-latest
-    env: 
+    env:
       DATABASE_LOCALHOST: ${{ secrets.DATABASE_LOCALHOST }}
       DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}

@@ -8,6 +8,7 @@ This project is a full-stack application with a React frontend and a Node.js / E
 - The project uses Vite for frontend development and build tooling.
 
 The project is organized so that the **root `package.json`** mainly coordinates scripts across both frontend and backend, while most dependencies live in the respective folder (`frontend/package.json` or `backend/package.json`).
+
 # First-Time Setup
 
 Follow these steps to get the project running locally:
@@ -20,44 +21,53 @@ Follow these steps to get the project running locally:
 
 - Ensure PostgreSQL version 17 is installed on your machine.
 - Create a database for development:
-   - While the official database is called `productivity_app_db`, what you name it is up to you as it should not have any affects on building/deploying the project
+  - While the official database is called `productivity_app_db`, what you name it is up to you as it should not have any affects on building/deploying the project
 
-`CREATE DATABASE <DATABASE_NAME>;` 
+`CREATE DATABASE <DATABASE_NAME>;`
 
 ## 3. Backend Setup
 
 1. Navigate to the backend folder:
+
 ```bash
 cd backend
 ```
+
 2. Install dependencies:
+
 ```bash
 npm install
 ```
+
 3. Set up environment variables:
+
 - Copy `example.env` and rename it to `.env`
 - Configure the following variables:
-    - `DATABASE_USERNAME` – PostgreSQL username
-    - `DATABASE_PASSWORD` – PostgreSQL password
-    - `DATABASE_LOCALHOST` – Hostname of the database (`localhost` for local development)
-    - `DATABASE_PORT` – Database port (default: `5432`)
-    - `DATABASE_NAME` – Name of your development database
-    - `DATABASE_URL` – Complete database URL. This should **not** be changed from `example.env`
+  - `DATABASE_USERNAME` – PostgreSQL username
+  - `DATABASE_PASSWORD` – PostgreSQL password
+  - `DATABASE_LOCALHOST` – Hostname of the database (`localhost` for local development)
+  - `DATABASE_PORT` – Database port (default: `5432`)
+  - `DATABASE_NAME` – Name of your development database
+  - `DATABASE_URL` – Complete database URL. This should **not** be changed from `example.env`
 
 4. expand the dependencies
+
 ```bash
 npm run expand-env
 ```
 
 5. Generate the Prisma client
+
 ```bash
 npm run prisma:generate
 ```
 
 6. Apply initial database migrations:
+
 ```bash
 npm run migrate:dev
 ```
+
 ### 3.1 API Documentation (Swagger)
 
 The backend automatically generates Swagger API documentation.
@@ -68,84 +78,95 @@ http://localhost:3000/api
 
 - This page shows all available API endpoints, request/response schemas, and examples.
 
-
-
-
 ## 4. Frontend Setup
 
 1. If using VSCode:
-	1. install the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) exstention 
-	2. Enable ESLint debug mode in the exstention settings
-	<img width="1155" height="167" alt="image" src="https://github.com/user-attachments/assets/4f573d11-4225-493e-8b3f-928675092720" />
+   1. install the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) exstention
+   2. Enable ESLint debug mode in the exstention settings
+      <img width="1155" height="167" alt="image" src="https://github.com/user-attachments/assets/4f573d11-4225-493e-8b3f-928675092720" />
 
 1. Navigate to the frontend folder:
+
 ```bash
 cd ../frontend
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
+
 - Copy `example.env` and rename it to `.env`
 - Configure the following variable:
-    - `VITE_BACKEND_URL` – URL of the backend API (e.g., `http://localhost:3000`)
+  - `VITE_BACKEND_URL` – URL of the backend API (e.g., `http://localhost:3000`)
+
 ## 5. Run the Application
 
 - Start the backend server:
+
 ```bash
 cd backend
 npm run dev
 ```
 
 - Start the frontend server:
+
 ```
 cd frontend
 npm run dev
 ```
 
 - Open your browser at the localhost port to see the app.
+
 # `package.json` scripts
+
 These scripts are shortcuts defined in `package.json` for common development tasks like building, running, testing, and database migrations. You run them with `npm run <script>` from the correct folder (`frontend`, `backend`, or `root`), depending on which part of the project they affect.
 
 ## Root
-| Script                   | Description                                             |
-| ------------------------ | ------------------------------------------------------- |
-| `build`                  | Build both frontend and backend.                        |
-| `build:frontend`         | Build the frontend only.                                |
-| `build:backend`          | Build the backend only.                                 |
-| `test`                   | Run backend tests                                       |
-| `test:coverage`          | Run coverage tests for backend.                         |
+
+| Script           | Description                      |
+| ---------------- | -------------------------------- |
+| `build`          | Build both frontend and backend. |
+| `build:frontend` | Build the frontend only.         |
+| `build:backend`  | Build the backend only.          |
+| `test`           | Run backend tests                |
+| `test:coverage`  | Run coverage tests for backend.  |
 
 ## Frontend
-| Script          | Description                                                                                                                                               |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dev`           | Starts the local development server with Vite.                                                                                                            |
-| `build`         | Creates a build of the project.                                                                                                                           |
-| `preview`       | Creates a build of the project and serves it locally                                                                                                      |
+
+| Script    | Description                                          |
+| --------- | ---------------------------------------------------- |
+| `dev`     | Starts the local development server with Vite.       |
+| `build`   | Creates a build of the project.                      |
+| `preview` | Creates a build of the project and serves it locally |
 
 ## Backend
-| Script            | Description                                                                                                                                               |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dev`             | Generate Prisma client, then start the server in development mode.                                                                                        |
-| `clear`           | Removes all data from db's tables                                                                                            |
-| `seed`           | Runs `clear` and populates the tables with seeded data.                                                                                            |
-| `build`           | Generate Prisma client, then compile TypeScript to JavaScript.                                                                                            |
-| `start`           | Run the compiled production server.                                                                                                                       |
-| `expand-env`      | Run a script to process environment variables.                                                                                                            |
-| `migrate:dev`     | Apply development database changes                                                                                                                        |
-| `migrate:prod`    | Apply all pending database migrations to production.                                                                                                      |
-| `prisma:generate` | Generate Prisma client from the schema.                                                                                                                   |
-| `prepare:test` | Change imports to be compatible for testing                                                                                                              
-| `prepare:build` | Change imports to be compatible for building                                                                                                                     
-| `test`            | Runs all Jest tests. If no tests exist, the command still succeeds without error.                                                                         |
-| `test:coverage`   | Runs tests and shows how much of your code is covered by tests. Fails if less than 90% of your branches, functions, lines, or statements are covered.     |
+
+| Script            | Description                                                                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dev`             | Generate Prisma client, then start the server in development mode.                                                                                    |
+| `clear`           | Removes all data from db's tables                                                                                                                     |
+| `seed`            | Runs `clear` and populates the tables with seeded data.                                                                                               |
+| `build`           | Generate Prisma client, then compile TypeScript to JavaScript.                                                                                        |
+| `start`           | Run the compiled production server.                                                                                                                   |
+| `expand-env`      | Run a script to process environment variables.                                                                                                        |
+| `migrate:dev`     | Apply development database changes                                                                                                                    |
+| `migrate:prod`    | Apply all pending database migrations to production.                                                                                                  |
+| `prisma:generate` | Generate Prisma client from the schema.                                                                                                               |
+| `prepare:test`    | Change imports to be compatible for testing                                                                                                           |
+| `prepare:build`   | Change imports to be compatible for building                                                                                                          |
+| `test`            | Runs all Jest tests. If no tests exist, the command still succeeds without error.                                                                     |
+| `test:coverage`   | Runs tests and shows how much of your code is covered by tests. Fails if less than 90% of your branches, functions, lines, or statements are covered. |
 
 # File Structure
+
 When installing new packages, make sure they go into the correct `package.json`. Backend-only packages belong in `backend/package.json`, frontend-only packages in `frontend/package.json`. The root `package.json` is mainly for scripts that coordinate both. If you think a package belongs at the root, check with the maintainers first.
+
 ## Frontend
+
 ```
 frontend
 |   .env                 # Local environment variables
@@ -160,11 +181,11 @@ frontend
 |   tsconfig.node.json   # TypeScript settings for Node-related files
 |   vite.config.ts       # Vite build and dev server configuration
 |
-+---.vite                
++---.vite
 |   \---deps             # Cached dependency builds for faster startup
 |
-+---public               
-|       vite.svg         
++---public
+|       vite.svg
 |
 +---src                  # All application source code
 |   |   App.css          # Styles for the main App component
@@ -189,6 +210,7 @@ frontend
 ```
 
 ## Backend
+
 ```
 backend
 |   .env                  # Local environment variables
@@ -212,16 +234,16 @@ backend
 |   |   router.ts         # Central API route definitions
 |   |   server.ts         # Main server entry point
 |   |   utils.ts          # Helper functions used in backend code
-|   | 
+|   |
 |   +---controllers       # Middle layer: calls services
 |   |       task.ts       # Task-related controller functions
-|   | 
+|   |
 |   +---requestHandlers   # Handles HTTP requests/responses
 |   |       task.ts       # Express request handlers for task routes
-|   | 
+|   |
 |   +---services          # DB queries via Prisma
 |   |       task.ts       # Task-related service functions
-|   | 
+|   |
 |   \---types             # TypeScript type definitions
 |           express.d.ts  # Custom Express type definitions
 ```
@@ -230,23 +252,21 @@ backend
 
 ## Project
 
-| Name        | Type     | Description                  | Notes                                                                                                           |
-| ----------- | -------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| id          | INTEGER  | Primary Key                  | auto increment, unique, max of 100 projects within the database                                                  |
-| color       | VARCHAR  | File path of panel image     | Max length of 7. Can be stored as `#000` or `#000000`. May need a validator to verify the string is a hex code. |
-| name        | VARCHAR  | The name of the project.     | Must be unique. Case insensitive. Trim trailing spaces. Can't be an empty string.                               |
-| created\_at | DATETIME | When project was created.    | default `CURRENT_TIMESTAMP`                                                                                     |
-| updated\_at | DATETIME | When the project was updated | auto-update trigger                                                                                             |
+| Name       | Type     | Description                  | Notes                                                                                                           |
+| ---------- | -------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| id         | INTEGER  | Primary Key                  | auto increment, unique, max of 100 projects within the database                                                 |
+| color      | VARCHAR  | File path of panel image     | Max length of 7. Can be stored as `#000` or `#000000`. May need a validator to verify the string is a hex code. |
+| name       | VARCHAR  | The name of the project.     | Must be unique. Case insensitive. Trim trailing spaces. Can't be an empty string.                               |
+| created_at | DATETIME | When project was created.    | default `CURRENT_TIMESTAMP`                                                                                     |
+| updated_at | DATETIME | When the project was updated | auto-update trigger                                                                                             |
 
-
-  
 ## Section
 
-| Name        | Type     | Description                                  | Notes                                                                                                     |
-| ----------- | -------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| id          | INTEGER  | Primary Key                                  | auto increment, unique, max of 100 sections within the project                                             |
-| project\_id | INTEGER  | The id of the project the section is part of | foreign key of `project`                                                                                  |
-| name        | VARCHAR  | The name of the section.                     | Must be unique within the same project. Case insensitive. Trim trailing spaces. Can't be an empty string. |
-| is\_other   | BOOLEAN  | If this is the `Other` section               | Default `false`, only one `true` per project                                                              |
-| created\_at | DATETIME | When the section was created.                | default `CURRENT_TIMESTAMP`                                                                               |
-| updated\_at | DATETIME | When the section was last updated.           | auto-update trigger                                                                                       |
+| Name       | Type     | Description                                  | Notes                                                                                                     |
+| ---------- | -------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| id         | INTEGER  | Primary Key                                  | auto increment, unique, max of 100 sections within the project                                            |
+| project_id | INTEGER  | The id of the project the section is part of | foreign key of `project`                                                                                  |
+| name       | VARCHAR  | The name of the section.                     | Must be unique within the same project. Case insensitive. Trim trailing spaces. Can't be an empty string. |
+| is_other   | BOOLEAN  | If this is the `Other` section               | Default `false`, only one `true` per project                                                              |
+| created_at | DATETIME | When the section was created.                | default `CURRENT_TIMESTAMP`                                                                               |
+| updated_at | DATETIME | When the section was last updated.           | auto-update trigger                                                                                       |

@@ -1,7 +1,13 @@
-// todo add file header comment
+/**
+ * Project controller layer.
+ *
+ * Provides higher-level operations for managing projects,
+ * wrapping service-layer calls with error handling and
+ * additional business logic such as validation and limits.
+ */
+
+import * as projectServices from "../services/project";
 import { PrismaClient, Project } from "../../generated/prisma";
-import prisma from "../prisma";
-import * as projectServices from "../services/project"
 
 const MAX_PROJECTS = 100;
 
@@ -11,36 +17,16 @@ const MAX_PROJECTS = 100;
  * @param prisma - The PrismaClient instance used to access the database.
  * @returns All projects within the database or an error if there was a problem getting them
  */
-const getAllProjects = async (prisma: PrismaClient): Promise<Project[] | Error> => {
-    try {
-        const projects = await projectServices.getAllProjects(prisma);
-        return projects;
-    }
-
-    catch (err) {
-        return err as Error;
-    }
-}
-
-
-/**
- * Get a project in the database by its id
- *
- * @param prisma - The PrismaClient instance used to access the database.
- * @returns An asynchronous function:
- *    - @param id - The id of the project.
- *    - @returns A Promise resolving to the found `Project` on success, an `Error` if retrieving fails, or null if the project of that id doesn't exist.
- */
-const getProjectById = (prisma: PrismaClient) => async (id: number): Promise<Project | Error | null> => {
-    try {
-        const project = await projectServices.getProjectById(prisma)(id);
-        return project;
-    }
-
-    catch (err) {
-        return err as Error;
-    }
-}
+const getAllProjects = async (
+	prisma: PrismaClient
+): Promise<Project[] | Error> => {
+	try {
+		const projects = await projectServices.getAllProjects(prisma);
+		return projects;
+	} catch (err) {
+		return err as Error;
+	}
+};
 
 /**
  * Get a project in the database by its id
@@ -50,17 +36,35 @@ const getProjectById = (prisma: PrismaClient) => async (id: number): Promise<Pro
  *    - @param id - The id of the project.
  *    - @returns A Promise resolving to the found `Project` on success, an `Error` if retrieving fails, or null if the project of that id doesn't exist.
  */
-const getProjectByName = (prisma: PrismaClient)  => async (name: string): Promise<Project | Error | null> => {
-    try {
-        const project = await projectServices.getProjectByName(prisma)(name);
-        return project;
-    }
+const getProjectById =
+	(prisma: PrismaClient) =>
+	async (id: number): Promise<Project | Error | null> => {
+		try {
+			const project = await projectServices.getProjectById(prisma)(id);
+			return project;
+		} catch (err) {
+			return err as Error;
+		}
+	};
 
-    catch (err) {
-        return err as Error;
-    }
-}
-
+/**
+ * Get a project in the database by its id
+ *
+ * @param prisma - The PrismaClient instance used to access the database.
+ * @returns An asynchronous function:
+ *    - @param id - The id of the project.
+ *    - @returns A Promise resolving to the found `Project` on success, an `Error` if retrieving fails, or null if the project of that id doesn't exist.
+ */
+const getProjectByName =
+	(prisma: PrismaClient) =>
+	async (name: string): Promise<Project | Error | null> => {
+		try {
+			const project = await projectServices.getProjectByName(prisma)(name);
+			return project;
+		} catch (err) {
+			return err as Error;
+		}
+	};
 
 /**
  * Creates a new project in the database
@@ -71,34 +75,37 @@ const getProjectByName = (prisma: PrismaClient)  => async (name: string): Promis
  *    - @param color - The hex code of the color assigned to this project
  *    - @returns A Promise resolving to the created `Project` on success, or an `Error` if creation fails.
  */
-const createProject = (prisma: PrismaClient)  => async (name: string, color: string): Promise<Project | Error> => {
-    try {
+const createProject =
+	(prisma: PrismaClient) =>
+	async (name: string, color: string): Promise<Project | Error> => {
+		try {
+			//verify the is room for more projects
+			const size = await projectServices.getProjectCount(prisma);
 
-        //verify the is room for more projects
-        const size = await projectServices.getProjectCount(prisma);
+			if (size >= MAX_PROJECTS) {
+				return new Error(
+					`Reached maximum amount of projects (${MAX_PROJECTS}). Please delete some before creating more.`
+				);
+			}
 
-        if(size >= MAX_PROJECTS) {
-            return new Error(`Reached maximum amount of projects (${MAX_PROJECTS}). Please delete some before creating more.`)
-        }
+			//check all the project within the db, throw an error if any of the names match this one (case-insensitive)
+			const existingProject =
+				await projectServices.getProjectByName(prisma)(name);
 
-        //check all the project within the db, throw an error if any of the names match this one (case-insensitive)
-        const existingProject = await projectServices.getProjectByName(prisma)(name);
+			if (existingProject !== null) {
+				return new Error("Unique constraint failed on the fields: (`name`)");
+			}
 
-        if(existingProject !== null) {
-            return new Error(`Unique constraint failed on the fields: (\`name\`)`)
-        }
-
-        return await projectServices.createProject(prisma)(name, color)
-    }
-    catch (err) {
-        return err as Error;
-    }
-}
+			return await projectServices.createProject(prisma)(name, color);
+		} catch (err) {
+			return err as Error;
+		}
+	};
 
 export {
-    createProject,
-    getProjectById,
-    getProjectByName,
-    getAllProjects,
-    MAX_PROJECTS
-}
+	createProject,
+	getProjectById,
+	getProjectByName,
+	getAllProjects,
+	MAX_PROJECTS
+};
