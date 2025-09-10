@@ -22,18 +22,19 @@ function ProjectForm() {
         let finalColor: String = values.color;
         let finalProject: Object = {name: finalName, color: finalColor};
 
-        // only allows project creation if the name is unique
-        // if (formSubmissions.includes(finalName)){
-        if(!formSubmissions.find((obj) => (obj.name == finalName ))){ // TODO: check for unique name w/ trimmed string
+
+        // TODO: send data to database (after all functionality is implemented)
+
+        /* // if(!formSubmissions.find((obj) => (obj.name == finalName ))){ // TODO: check for unique name w/ trimmed string
             formSubmissions.push(finalProject);
             // FIXME: using 'find()' works but the array only holds one value at a time, using 'include()' doesn't work but the array holds multiple values
 
-            // TODO: send data to database (after all functionality is implemented)
+            
         }
         else {
             alert("Project called " + finalName + " already exists. Please enter another name.")
             // TODO: highlight text box and disable submit button
-        }
+        } */
 
         // TODO: check array length; if length == 100, disable create project button
 
