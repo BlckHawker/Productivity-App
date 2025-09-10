@@ -3,7 +3,6 @@ import * as utils from "../utils";
 import { Request, Response } from "express";
 import { StatusCode } from "status-code-enum";
 
-
 /**
  * Update project request
  * @param {Request} req
@@ -13,7 +12,8 @@ import { StatusCode } from "status-code-enum";
 const updateProject = async (req: Request, res: Response) => {
 	const id = typeof req.body.id === "number" ? req.body.id : NaN;
 	const newName = typeof req.body.name === "string" ? req.body.name.trim() : "";
-	const newColor = typeof req.body.color === "string" ? req.body.color.trim() : "";
+	const newColor =
+		typeof req.body.color === "string" ? req.body.color.trim() : "";
 	const validId = utils.assertArgumentsNumber({ id });
 	const validName = utils.assertArgumentsString({ newName });
 	const validColor = utils.assertArgumentsString({ newColor });
@@ -24,34 +24,38 @@ const updateProject = async (req: Request, res: Response) => {
 		return res.status(StatusCode.ClientErrorBadRequest).json(validId);
 	}
 
-	if(invalidName && invalidColor) {
-		return res.status(StatusCode.ClientErrorBadRequest).json({"message": `${validName.message}\n${validColor.message}`});
+	if (invalidName && invalidColor) {
+		return res
+			.status(StatusCode.ClientErrorBadRequest)
+			.json({ message: `${validName.message}\n${validColor.message}` });
 	}
 
-	const response = await projectController.updateProject(req.prisma)(
-		id,
-		{name: invalidName ? null : newName, color: invalidColor ? null : newColor }
-	);
-		console.log("1");
+	const response = await projectController.updateProject(req.prisma)(id, {
+		name: invalidName ? null : newName,
+		color: invalidColor ? null : newColor
+	});
 
-
-	if(response instanceof Error) {
-
-		const badRequestStr = ["A project with the id", 
+	if (response instanceof Error) {
+		const badRequestStr = [
+			"A project with the id",
 			"Cannot update a project with the same values it currently has.",
 			"Updated project name must be different from the current name.",
 			"Updated project color must be different from the current color.",
 			"Updated project color must be different from the current color.",
 			"A project with the name"
-		]
-		if(badRequestStr.some(str => response.message.includes(str))) {
+		];
+		if (badRequestStr.some((str) => response.message.includes(str))) {
 			return res.status(StatusCode.ClientErrorBadRequest).json({
 				message: response.message
 			});
 		}
 	}
 
-	return utils.sanitizeResponse(response, res, "Contact developers if this line appears. updateProject request handler");
+	return utils.sanitizeResponse(
+		response,
+		res,
+		"Contact developers if this line appears. updateProject request handler"
+	);
 };
 /**
  * @swagger
@@ -134,7 +138,6 @@ const updateProject = async (req: Request, res: Response) => {
  *                   message: "A project with the name \"Gym\" already exists"
 
  */
-
 
 /**
  * Get all projects request
@@ -490,4 +493,10 @@ const createProject = async (req: Request, res: Response) => {
  *                   message: Reached maximum amount of projects
  */
 
-export { getAllProjects, createProject, getProjectById, getProjectByName, updateProject };
+export {
+	getAllProjects,
+	createProject,
+	getProjectById,
+	getProjectByName,
+	updateProject
+};
