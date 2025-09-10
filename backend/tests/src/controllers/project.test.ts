@@ -61,13 +61,19 @@ describe("updateProject", () => {
     expect((response as Error).message).toMatch(/same values/);
   });
 
-  test("should return error if updating with same name only", async () => {
+    test("should return error if updating with same name only", async () => {
+		mockCurried(projectService.getProjectById as jest.Mock, project);
+  const response = await projectController.updateProject(prismaMock())(1, {
+    name: project.name,
+  });
 
+  expect(response).toBeInstanceOf(Error);
+});
+
+  test("should return error if getProjectByName returns an error", async () => {
   mockCurried(projectService.getProjectById as jest.Mock, project);
-
   const error = new Error("DB lookup error");
   mockCurried(projectService.getProjectByName as jest.Mock, error);
-
   const response = await projectController.updateProject(prismaMock())(1, {
     name: "New Name",
   });
@@ -75,11 +81,8 @@ describe("updateProject", () => {
   expect(response).toEqual(error);
 });
 
-
   test("should return error if updating with same color only", async () => {
 		mockCurried(projectService.getProjectById as jest.Mock, project);
-
-
     const response = await projectController.updateProject(prismaMock())(1, {
       color: project.color,
     });
