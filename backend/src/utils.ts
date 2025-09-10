@@ -13,7 +13,7 @@ import { StatusCode } from "status-code-enum";
  *          - `{ success: false, message }` with error details otherwise.
  */
 const assertArguments = (
-	args: { [key: string]: unknown },
+	args: object,
 	predicate: (value: unknown) => boolean,
 	message: string
 ): { success: boolean, message?: string } => {
@@ -34,7 +34,7 @@ const assertArguments = (
  * Ensures that all arguments are defined (not `undefined`).
  *
  * @param args - Object of key-value argument pairs.
- * @returns Validation result.
+ * @returns Validation result.F
  */
 const assertArgumentsDefined = (args : object) =>{
 	const validArgs = assertArguments(
@@ -54,7 +54,7 @@ const assertArgumentsDefined = (args : object) =>{
 const assertArgumentsNumber = (args: object) => {
 	const validArgs = assertArguments(
 		args,
-		a => !isNaN(a),
+		a => !isNaN(a as number),
 		"must be a valid number"
 	);
 	return validArgs;
@@ -85,7 +85,7 @@ const assertArgumentsString = (args: object) => {
 const assertArgumentsHexCode = (args: object) => {
 	const validArgs = assertArguments(
 		args,
-		arg => /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(arg),
+		arg => /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(arg as string),
 		"must be a valid hex color (e.g. #000 or #000000)"
 	);
 	return validArgs;
