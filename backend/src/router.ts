@@ -1,13 +1,7 @@
-/**
- * Route all incoming requests
- */
-// Must-come-first imports
-import * as utils from "./utils";
-import cors from "cors";
-
-// Normal imports
-import { Express } from "express";
 import * as project from "./requestHandlers/project";
+import * as utils from "./utils";
+import { Express } from "express";
+import cors from "cors";
 import { port } from "./server";
 import swaggerDocs from "./swagger.js";
 
