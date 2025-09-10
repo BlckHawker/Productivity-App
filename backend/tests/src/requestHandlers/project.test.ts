@@ -65,7 +65,7 @@ describe("updateProject", () => {
 	})
 
 	//todo returns updated project
-	test("200s if an updated project is returned", async () => {
+	test("200s if both a valid name a color are given", async () => {
 		const id = 1;
 		const name = "name";
 		const color = "color"
@@ -92,6 +92,73 @@ describe("updateProject", () => {
 		expect(res.json).toHaveBeenCalledWith(project);
 
 	})
+
+	//todo 200s when name is invalid but color is valid
+	test("200s when name is invalid but color is valid", async () => {
+		const id = 1;
+		const name = "name";
+		const color = "color"
+		req.body.id = id;
+		req.body.name = name;
+		req.body.color = color;
+
+		const project = { id, name, color  };
+		//todo mock validId to be successful
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValueOnce({success: true});
+
+		//todo mock validName to be unsuccessful
+		(utils.assertArgumentsString as jest.Mock).mockReturnValueOnce({success: false});
+
+		//todo mock validColor to be successful
+		(utils.assertArgumentsString as jest.Mock).mockReturnValueOnce({success: true});
+
+		//todo mock projectController.updateProject to return a project
+		mockCurried(projectController.updateProject as jest.Mock, project);
+
+		mockCurried(projectController.updateProject as jest.Mock, project);
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res) => {
+				res.status(StatusCode.SuccessOK).json(project);
+				return res;
+			});
+		await updateProject(req as Request, res);
+		expect(projectController.updateProject).toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
+		expect(res.json).toHaveBeenCalledWith(project);
+		
+
+
+	})
+
+	//todo 200s when color is invalid but name is valid
+	test("200s when color is invalid but name is valid", async () => {
+		const id = 1;
+		const name = "name";
+		const color = "color"
+		req.body.id = id;
+		req.body.name = name;
+		req.body.color = color;
+
+		const project = { id, name, color  };
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValueOnce({success: true});
+		(utils.assertArgumentsString as jest.Mock).mockReturnValueOnce({success: true});
+		(utils.assertArgumentsString as jest.Mock).mockReturnValueOnce({success: false});
+		mockCurried(projectController.updateProject as jest.Mock, project);
+
+		mockCurried(projectController.updateProject as jest.Mock, project);
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res) => {
+				res.status(StatusCode.SuccessOK).json(project);
+				return res;
+			});
+		await updateProject(req as Request, res);
+		expect(projectController.updateProject).toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
+		expect(res.json).toHaveBeenCalledWith(project);
+	})
+
 })
 
 describe("Get all projects", () => {
@@ -244,8 +311,10 @@ describe("create project", () => {
 
 	test("200s and returns the project on success", async () => {
 		const id = 1;
+		const color = "#ffffff "; // padded to test trim
 		const project = { id };
 		(req as Request).params = { id: String(id) };
+		(req as Request).body = { name: "My Project", color };
 		(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
 		mockCurried(projectController.createProject as jest.Mock, project);
 		jest
