@@ -4,6 +4,7 @@ import React from "react"; // must be in scope for JSX
 
 function ProjectForm() {
 
+    // globals
     const errormsg = document.querySelector<HTMLElement>("#name-error");
     const submitbtn = document.querySelector<HTMLButtonElement>("#submitbtn");
     const createbtn = document.querySelector<HTMLButtonElement>("#create-proj");
@@ -115,6 +116,9 @@ function ProjectForm() {
         }
     }
 
+    // reset form on submit
+
+
     return (
         <>
             <form name="project-form" id="project-form" onSubmit={onSubmit}>
@@ -137,13 +141,14 @@ function ProjectForm() {
                         onChange={onChange}
                         required 
                     />
-                    <button id="submitbtn" type='submit'>Create Project</button>
+                    <button id="submitbtn" type='submit' onClick={}>Create Project</button>
                 </div>
             </form>
         </>
     );
 }
 
+// () => {if (nameInput) nameInput.value = ""}
 export default ProjectForm;
 
 /*

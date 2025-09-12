@@ -3,6 +3,7 @@
  * Displays testing creation task code to verify backend support. Does not reflect final file structure
  */
 
+import ProjectDisplay from "../components/ProjectDisplay-Menu";
 import ProjectForm from "../components/ProjectForm";
 import React from "react";
 
@@ -24,17 +25,12 @@ function showForm() {
 
 export function App(): React.ReactElement {
 	// TODO: menu should be collapsible
+	// TODO: put 100 projects test function back + function call
 
 	return (
 		<div className="App">
 			<div id="menu"> 
-				<div id="projects">
-					<h2>Projects</h2>
-					<div id="proj-list">
-						<ul>
-						</ul>
-					</div>
-				</div>
+				<ProjectDisplay />
 				<ProjectForm />
 				<button id="create-proj" onClick={() => showForm()}>New Project</button>
 			</div>
