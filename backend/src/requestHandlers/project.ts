@@ -25,6 +25,69 @@ const deleteProjectById = async (req: Request, res: Response) => {
 		`A project with the id "${id}" could not be found.`
 	);
 }
+/**
+ * @swagger
+ * /project/{id}:
+ *   delete:
+ *     summary: Delete a project by id
+ *     description: delete a project by its id
+ *     tags:
+ *       - Project
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         required: true
+ *         description: Numeric id of the project to delete
+ *     responses:
+ *       200:
+ *         description: the project data deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   example: Work
+ *                 color:
+ *                   type: string
+ *                   example: "#FF5733"
+ *                 created_at:
+ *                   type: string
+ *                   example: "2025-09-07T17:34:03.434Z"
+ *                 updated_at:
+ *                   type: string
+ *                   example: "2025-09-07T17:34:03.434Z"
+ *       404:
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "A project with the id \"1\" could not be found."
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid id: must be a valid number"
+ */
 //todo swag docs
 
 /**

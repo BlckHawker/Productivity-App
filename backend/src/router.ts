@@ -11,7 +11,7 @@ export default (app: Express) => {
 	app.post("/project/create", project.createProject);
 	app.put("/project/update", project.updateProject);
 	app.get("/projects", project.getAllProjects);
-	app.delete("/project:id", project.deleteProjectById)
+	app.delete("/project/:id", project.deleteProjectById)
 	app.get("/project/:id", project.getProjectById);
 	app.get("/project", project.getProjectByName);
 
