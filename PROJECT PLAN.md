@@ -984,6 +984,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
   - [ ] labels
   - [ ] reminders
 - [ ]  Tasks must automatically record creation date.
+- [ ] Deleting a project deletes all of its sections and tasks.
 
 #### 3.2 - Update Task Acceptance Criteria
 
