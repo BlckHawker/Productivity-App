@@ -3,7 +3,6 @@ import * as utils from "../utils";
 import { Request, Response } from "express";
 import { StatusCode } from "status-code-enum";
 
-
 /**
  * delete project by id request
  * @param {Request} req
@@ -16,7 +15,7 @@ const deleteProjectById = async (req: Request, res: Response) => {
 	if (!validId.success) {
 		return res.status(StatusCode.ClientErrorBadRequest).json(validId);
 	}
-	
+
 	const response = await projectController.deleteProjectById(req.prisma)(id);
 
 	return utils.sanitizeResponse(
@@ -24,7 +23,7 @@ const deleteProjectById = async (req: Request, res: Response) => {
 		res,
 		`A project with the id "${id}" could not be found.`
 	);
-}
+};
 /**
  * @swagger
  * /project/{id}:
@@ -88,7 +87,6 @@ const deleteProjectById = async (req: Request, res: Response) => {
  *                   type: string
  *                   example: "Invalid id: must be a valid number"
  */
-//todo swag docs
 
 /**
  * Update project request

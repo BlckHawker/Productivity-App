@@ -5,14 +5,15 @@
 
 import { PrismaClient, Project } from "../../generated/prisma";
 
-
-const deleteProjectById = (prisma: PrismaClient) => async(id: number): Promise<Project> => {
-	return prisma.project.delete({
-  where: {
-    id
-  },
-});
-}
+const deleteProjectById =
+	(prisma: PrismaClient) =>
+	async (id: number): Promise<Project> => {
+		return prisma.project.delete({
+			where: {
+				id
+			}
+		});
+	};
 
 /**
  * Updates a project in the database by its ID.

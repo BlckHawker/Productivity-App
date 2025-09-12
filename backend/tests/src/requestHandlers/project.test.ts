@@ -3,11 +3,11 @@ import * as utils from "../../../src/utils.ts";
 import { Request, Response } from "express";
 import {
 	createProject,
+	deleteProjectById,
 	getAllProjects,
 	getProjectById,
 	getProjectByName,
-	updateProject,
-	deleteProjectById
+	updateProject
 } from "../../../src/requestHandlers/project.ts";
 import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";
@@ -50,7 +50,7 @@ describe("deleteProjectById", () => {
 		expect(projectController.deleteProjectById).not.toHaveBeenCalled();
 	});
 
-		test("404s if a project with the given id is not found", async () => {
+	test("404s if a project with the given id is not found", async () => {
 		const id = 1;
 		(req as Request).params = { id: String(id) };
 		const obj = { success: true };
@@ -87,9 +87,7 @@ describe("deleteProjectById", () => {
 		expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
 		expect(res.json).toHaveBeenCalledWith(project);
 	});
-
-
-})
+});
 
 describe("updateProject", () => {
 	beforeEach(() => {
