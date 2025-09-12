@@ -11,6 +11,26 @@ import { PrismaClient, Project } from "../../generated/prisma";
 
 const MAX_PROJECTS = 100;
 
+//todo add header comment
+const deleteProjectById = (prisma: PrismaClient) => async (id: number): Promise<Project | Error> => {
+	try {
+		//todo check if the project of that id even exists
+		const projectToDelete = projectServices.getProjectById(prisma)(id);
+
+		//todo if project doesn't exist, return error
+		if(!projectToDelete) {
+			return new Error(`A project with the id ${id} could not be found`);
+		}
+
+		const project = await projectServices.deleteProjectById(prisma)(id);
+		return project;
+	} catch (err) {
+		return err as Error;
+	}
+
+	
+}
+
 /**
  * Updates an existing project by ID with a new name and/or color.
  * @param {PrismaClient} prisma - Prisma client instance used to access the database.
@@ -185,5 +205,6 @@ export {
 	getProjectById,
 	getProjectByName,
 	getAllProjects,
+	deleteProjectById,
 	MAX_PROJECTS
 };

@@ -3,6 +3,30 @@ import * as utils from "../utils";
 import { Request, Response } from "express";
 import { StatusCode } from "status-code-enum";
 
+
+/**
+ * delete project by id request
+ * @param {Request} req
+ * @param {Response} res
+ * @returns
+ */
+const deleteProjectById = async (req: Request, res: Response) => {
+	const id = Number(req.params.id);
+	const validId = utils.assertArgumentsNumber({ id });
+	if (!validId.success) {
+		return res.status(StatusCode.ClientErrorBadRequest).json(validId);
+	}
+	
+	const response = await projectController.deleteProjectById(req.prisma)(id);
+
+	return utils.sanitizeResponse(
+		response,
+		res,
+		"Contact developers if this line appears. deleteProjectById request handler"
+	);
+}
+//todo swag docs
+
 /**
  * Update project request
  * @param {Request} req
@@ -498,5 +522,6 @@ export {
 	createProject,
 	getProjectById,
 	getProjectByName,
-	updateProject
+	updateProject,
+	deleteProjectById
 };
