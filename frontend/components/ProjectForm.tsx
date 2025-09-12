@@ -1,12 +1,14 @@
 import * as utils from "../src/api/utils";
 import { Form } from "../hooks/Form";
-import React from "react";
-
+import React from "react"; // must be in scope for JSX
 
 function ProjectForm() {
 
-    const form = document.querySelector<HTMLElement>("#project-form");
-    let successfulSubmit = true;
+    const errormsg = document.querySelector<HTMLElement>("#name-error");
+    const submitbtn = document.querySelector<HTMLButtonElement>("#submitbtn");
+    const createbtn = document.querySelector<HTMLButtonElement>("#create-proj");
+    const input = document.querySelector<HTMLInputElement>("#inputname");
+    let maxHit = false;
 
     // initial state of form
     const initialState = {
@@ -30,69 +32,92 @@ function ProjectForm() {
         const postResponse = await utils.postAPICall("/project/create", finalProject);
         const message = await postResponse.json;
 
-        // check responses for errors
+        // project limit hit
         if (postResponse.status == "400") {
 
             // limit is 100 projects
             if (message.message === "Reached maximum amount of projects (100). Please delete some before creating more.") {
-                const createbtn = document.querySelector<HTMLButtonElement>("#create-proj");
+                maxHit = true;
 
                 // TODO: once deletion is in place, the button will be enabled after there are less than 100 projects
-                if (createbtn) {
-                    createbtn.disabled = true;
-                    // TODO: create an 'error div' that will hold message.message and appears on hover. populate the div here
+                 if (errormsg) {
+                    // populate innerHTML
+                    errormsg.innerHTML = message.message;
+                    // display on submit btn hover
+                    if (createbtn) {
+                        createbtn.addEventListener("mouseover", () => {
+                            errormsg.style.visibility = "visible";
+                        });
+
+                        // hide when not hovering
+                        createbtn.addEventListener("mouseout", () => {
+                            errormsg.style.visibility = "hidden";
+                        })
+                    }
                 }
             }
-            else {
-                // TODO: make error div for invalid input and populate here
-            }
-            alert(message.message); // alert user
         }
 
+        // project name already exists
         if (postResponse.status == "409") {
-            const btn = document.querySelector<HTMLButtonElement>("#submitbtn");
-            // TODO: create an 'error div' that will hold message.message and appears on hover. populate the div here
 
-            // red outline
-            const input = document.querySelector<HTMLInputElement>("#inputname");
-            if (input){
-                input.style.outline = "thick solid #FF0000"; // TODO: highlight wasn't working properly, outline done for now; check with Kovu for preference later
+            // if element isn't null
+            if (submitbtn) {
+                // disable submit button
+                submitbtn.disabled = true;
             }
 
-            if (btn) {
-                btn.disabled = true;
+            // if element isn't null
+            if (errormsg) {
+                // populate innerHTML
+                errormsg.innerHTML = message.message;
+                // display on submit btn hover
+                if (submitbtn) {
+                    if (submitbtn.disabled === true) {
+                        submitbtn.addEventListener("mouseover", () => {
+                        errormsg.style.visibility = "visible";
+                    });
+
+                    // hide when not hovering
+                    submitbtn.addEventListener("mouseout", () => {
+                        errormsg.style.visibility = "hidden";
+                    })
+                    }
+                }
+            }
+
+            // red outline
+            if (input){
+                input.style.outline = "thick solid #FF0000"; // TODO: highlight wasn't working properly, outline done for now; check with Kovu for preference later
             }
         }
     }
 
-    // TODO: enable all buttons if name input is empty and maxHit == false
+    // enabling buttons after fixing an error
+    const nameInput = document.querySelector<HTMLInputElement>("#inputname");
+    if (nameInput) {
+        if (nameInput.value === "") {
+            // enable submit button
+            if (submitbtn) {
+                submitbtn.disabled = false;
+            }
+            // undo outline
+            if (input){
+                input.style.outline = "none";
+            }
 
-
-    // form onSubmit; check data submitted
-    function formSubmit() {
-
-        // check that form is good to hide
-        /* Criteria:
-            * maxHit == false
-            * uniqueName == true
-            * validName == true
-            * validColor == true
-            * if all is well, then hide the form
-        */
-
-        // hides the form on submit
-        if (form) {
-            if (form.style.display != "none" && successfulSubmit == true) {
-                form.style.display = "none";
+            // enable new button project
+            if (createbtn) {
+                if (maxHit === false) {
+                    createbtn.disabled = false;
+                }
             }
         }
-
-        // TODO: reset form data on submit
     }
 
     return (
         <>
-            <form id="project-form" onSubmit={onSubmit}>
+            <form name="project-form" id="project-form" onSubmit={onSubmit}>
                 <div id="input-container">
                     <input
                         name='name'
@@ -102,6 +127,7 @@ function ProjectForm() {
                         onChange={onChange}
                         required 
                     />
+                    <p id="name-error"></p>
 
                     <input
                         name='color'
