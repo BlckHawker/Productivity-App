@@ -1,9 +1,12 @@
+import * as utils from "../src/api/utils";
 import { Form } from "../hooks/Form";
+import React from "react";
 
 
 function ProjectForm() {
-    let form = document.querySelector<HTMLElement>("#project-form");
-    let formSubmissions: Object[] = [];
+
+    const form = document.querySelector<HTMLElement>("#project-form");
+    let successfulSubmit = true;
 
     // initial state of form
     const initialState = {
@@ -16,49 +19,84 @@ function ProjectForm() {
         initialState
     );
 
+    // requests to api and results are held here
     async function projectMadeCallback() {
         // TODO: these lines work, but figure out how to get the error to go away
-        let finalName: String = values.name;
-        let finalColor: String = values.color;
-        let finalProject: Object = {name: finalName, color: finalColor};
+        const finalName: string = values.name.trim();
+        const finalColor: string = values.color;
+        const finalProject: object = {name: finalName, color: finalColor};
 
+        // make API call
+        const postResponse = await utils.postAPICall("/project/create", finalProject);
+        const message = await postResponse.json;
 
-        // TODO: send data to database (after all functionality is implemented)
+        // check responses for errors
+        if (postResponse.status == "400") {
 
-        /* // if(!formSubmissions.find((obj) => (obj.name == finalName ))){ // TODO: check for unique name w/ trimmed string
-            formSubmissions.push(finalProject);
-            // FIXME: using 'find()' works but the array only holds one value at a time, using 'include()' doesn't work but the array holds multiple values
+            // limit is 100 projects
+            if (message.message === "Reached maximum amount of projects (100). Please delete some before creating more.") {
+                const createbtn = document.querySelector<HTMLButtonElement>("#create-proj");
 
-            
+                // TODO: once deletion is in place, the button will be enabled after there are less than 100 projects
+                if (createbtn) {
+                    createbtn.disabled = true;
+                    // TODO: create an 'error div' that will hold message.message and appears on hover. populate the div here
+                }
+            }
+            else {
+                // TODO: make error div for invalid input and populate here
+            }
+            alert(message.message); // alert user
         }
-        else {
-            alert("Project called " + finalName + " already exists. Please enter another name.")
-            // TODO: highlight text box and disable submit button
-        } */
 
-        // TODO: check array length; if length == 100, disable create project button
+        if (postResponse.status == "409") {
+            const btn = document.querySelector<HTMLButtonElement>("#submitbtn");
+            // TODO: create an 'error div' that will hold message.message and appears on hover. populate the div here
 
-        console.log(formSubmissions); // TODO: make sure array populates correctly; currently only holding one item at a time?
+            // red outline
+            const input = document.querySelector<HTMLInputElement>("#inputname");
+            if (input){
+                input.style.outline = "thick solid #FF0000"; // TODO: highlight wasn't working properly, outline done for now; check with Kovu for preference later
+            }
+
+            if (btn) {
+                btn.disabled = true;
+            }
+        }
     }
 
+    // TODO: enable all buttons if name input is empty and maxHit == false
+
+
+    // form onSubmit; check data submitted
     function formSubmit() {
+
+        // check that form is good to hide
+        /* Criteria:
+            * maxHit == false
+            * uniqueName == true
+            * validName == true
+            * validColor == true
+            * if all is well, then hide the form
+        */
+
         // hides the form on submit
         if (form) {
-            if (form.style.display != "none") {
+            if (form.style.display != "none" && successfulSubmit == true) {
                 form.style.display = "none";
             }
         }
 
-        // TODO: reset form data
+        // TODO: reset form data on submit
     }
 
     return (
         <>
             <form id="project-form" onSubmit={onSubmit}>
-                <div>
+                <div id="input-container">
                     <input
                         name='name'
-                        id='name'
+                        id='inputname'
                         type='name'
                         placeholder='Project Name'
                         onChange={onChange}
@@ -67,13 +105,13 @@ function ProjectForm() {
 
                     <input
                         name='color'
-                        id='color'
+                        id='inputcolor'
                         type='color'
                         placeholder='Color'
                         onChange={onChange}
                         required 
                     />
-                    <button type='submit' onClick={() => formSubmit()}>Create Project</button>
+                    <button id="submitbtn" type='submit'>Create Project</button>
                 </div>
             </form>
         </>

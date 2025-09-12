@@ -1,6 +1,6 @@
 import React from "react";
 
-function Project(props: any): React.ReactElement {
+export function Project(props: any): React.ReactElement {
     return (
         <>
             <div className="project">

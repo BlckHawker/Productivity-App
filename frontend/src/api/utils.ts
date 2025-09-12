@@ -46,6 +46,9 @@ const postAPICall = async (url: string, body: object) => {
 		}
 	})
 		.then((response) => {
+			if (!response.ok) {
+        		return {status: response.status, json: response.json()};
+    		}
 			return response.json();
 		})
 		.then((json) => {

@@ -6,8 +6,9 @@
 // import type { Task } from "./interfaces.js";
 // import { useState, useEffect } from 'react';
 
-import ProjectForm from "../components/ProjectForm.tsx"
-import React, { useState } from "react";
+import * as utils from "./api/utils";
+import ProjectForm from "../components/ProjectForm";
+import React from "react";
 
 // shows the form that creates a new project
 function showForm() {
@@ -15,7 +16,6 @@ function showForm() {
 
 	if (form) {
 		form.style.display = "block";
-
 	}
 
 }
@@ -28,6 +28,17 @@ function showForm() {
 
 export function App(): React.ReactElement {
 	// TODO: menu should be collapsible
+
+	function test_CreateProjects() {
+		for (let i = 0; i<=100; i++){
+			const finalProject = {name: "test"+i, color:"#ffffff"};
+			const postResponse = utils.postAPICall("/project/create", finalProject);
+			console.log(postResponse);
+		}
+	}
+
+	// test_CreateProjects();
+
 	return (
 		<div className="App">
 			<div id="menu"> 
