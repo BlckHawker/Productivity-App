@@ -12,6 +12,83 @@ import { PrismaClient, Project } from "../../generated/prisma";
 const MAX_PROJECTS = 100;
 
 /**
+ * Updates an existing project by ID with a new name and/or color.
+ * @param {PrismaClient} prisma - Prisma client instance used to access the database.
+ * @returns {Function} A function that takes:
+ *   @param {number} id - The unique ID of the project to update.
+ *   @param {{ name?: string; color?: string }} data - Fields to update. `name` and/or `color` may be provided.
+ * @returns {Promise<Project | Error>} The updated project on success, or an Error object if validation fails.
+ */
+const updateProject =
+	(prisma: PrismaClient) =>
+	async (
+		id: number,
+		data: { name?: string; color?: string }
+	): Promise<Project | Error> => {
+		try {
+			const projectToUpdate = await projectServices.getProjectById(prisma)(id);
+
+			if (projectToUpdate === null) {
+				return new Error(`A project with the id "${id}" could not be found.`);
+			}
+
+			if (projectToUpdate instanceof Error) {
+				return projectToUpdate;
+			}
+
+			if (
+				data.name &&
+				projectToUpdate.name.toUpperCase() === data.name.toUpperCase() &&
+				data.color &&
+				projectToUpdate.color.toUpperCase() === data.color.toUpperCase()
+			) {
+				return new Error(
+					"Cannot update a project with the same values it currently has."
+				);
+			}
+
+			if (
+				data.name &&
+				projectToUpdate.name.toUpperCase() === data.name.toUpperCase()
+			) {
+				return new Error(
+					"Updated project name must be different from the current name."
+				);
+			}
+
+			if (
+				data.color &&
+				projectToUpdate.color.toUpperCase() === data.color.toUpperCase()
+			) {
+				return new Error(
+					"Updated project color must be different from the current color."
+				);
+			}
+
+			if (data.name) {
+				const existingProject = await projectServices.getProjectByName(prisma)(
+					data.name
+				);
+
+				if (existingProject instanceof Error) {
+					return existingProject;
+				}
+
+				if (existingProject != null) {
+					return new Error(
+						`A project with the name "${data.name}" already exists`
+					);
+				}
+			}
+
+			const updatedProject = projectServices.updateProject(prisma)(id, data);
+			return updatedProject;
+		} catch (err) {
+			return err as Error;
+		}
+	};
+
+/**
  * Get all projects
  *
  * @param prisma - The PrismaClient instance used to access the database.
@@ -103,6 +180,7 @@ const createProject =
 	};
 
 export {
+	updateProject,
 	createProject,
 	getProjectById,
 	getProjectByName,

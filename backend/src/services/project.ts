@@ -6,6 +6,26 @@
 import { PrismaClient, Project } from "../../generated/prisma";
 
 /**
+ * Updates a project in the database by its ID.
+ *
+ * @param prisma - The Prisma client instance.
+ * @param id - The unique ID of the project to update.
+ * @param data - An object containing the fields to update
+ * @returns A promise resolving to the updated Project object.
+ */
+const updateProject =
+	(prisma: PrismaClient) =>
+	async (
+		id: number,
+		data: { name?: string; color?: string }
+	): Promise<Project> => {
+		return prisma.project.update({
+			where: { id },
+			data
+		});
+	};
+
+/**
  * Retrieves all projects from the database.
  *
  * @param prisma - The Prisma client instance.
@@ -89,5 +109,6 @@ export {
 	getProjectByName,
 	getProjectCount,
 	getProjectById,
-	getAllProjects
+	getAllProjects,
+	updateProject
 };
