@@ -6,7 +6,8 @@ import {
 	getAllProjects,
 	getProjectById,
 	getProjectByName,
-	updateProject
+	updateProject,
+	deleteProjectById
 } from "../../../src/requestHandlers/project.ts";
 import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";
@@ -33,6 +34,62 @@ const resetTests = () => {
 const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
 	fn.mockReturnValueOnce(jest.fn().mockResolvedValueOnce(returnValue));
 };
+
+describe("deleteProjectById", () => {
+	beforeEach(() => {
+		resetTests();
+	});
+
+	test("400s if id is not a number", async () => {
+		(req as Request).params = { id: "abc" };
+		const obj = { success: false, message: "invalid" };
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
+		await deleteProjectById(req as Request, res);
+		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
+		expect(res.json).toHaveBeenCalledWith(obj);
+		expect(projectController.deleteProjectById).not.toHaveBeenCalled();
+	});
+
+		test("404s if a project with the given id is not found", async () => {
+		const id = 1;
+		(req as Request).params = { id: String(id) };
+		const obj = { success: true };
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
+		mockCurried(projectController.deleteProjectById as jest.Mock, null);
+		const notFoundMessage = `A project with the id "${id}" could not be found.`;
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res, message) => {
+				res.status(StatusCode.ClientErrorNotFound).json({ message });
+				return res;
+			});
+		await deleteProjectById(req as Request, res);
+		expect(projectController.deleteProjectById).toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorNotFound);
+		expect(res.json).toHaveBeenCalledWith({ message: notFoundMessage });
+	});
+
+	test("200s and returns the deleted project", async () => {
+		const id = 1;
+		const project = { id };
+		(req as Request).params = { id: String(id) };
+		const obj = { success: true };
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
+		mockCurried(projectController.deleteProjectById as jest.Mock, project);
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res) => {
+				res.status(StatusCode.SuccessOK).json(project);
+				return res;
+			});
+		await deleteProjectById(req as Request, res);
+		expect(projectController.deleteProjectById).toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
+		expect(res.json).toHaveBeenCalledWith(project);
+	});
+
+
+})
 
 describe("updateProject", () => {
 	beforeEach(() => {

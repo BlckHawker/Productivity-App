@@ -22,7 +22,7 @@ const deleteProjectById = async (req: Request, res: Response) => {
 	return utils.sanitizeResponse(
 		response,
 		res,
-		"Contact developers if this line appears. deleteProjectById request handler"
+		`A project with the id "${id}" could not be found.`
 	);
 }
 //todo swag docs
