@@ -8,6 +8,7 @@ import swaggerDocs from "./swagger.js";
 export default (app: Express) => {
 	app.use(cors());
 	app.post("/project/create", project.createProject);
+	app.put("/project/update", project.updateProject);
 	app.get("/projects", project.getAllProjects);
 	app.get("/project/:id", project.getProjectById);
 	app.get("/project", project.getProjectByName);
