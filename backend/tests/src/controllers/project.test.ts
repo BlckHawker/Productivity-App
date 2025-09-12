@@ -4,9 +4,16 @@ import { PrismaClient, Project } from "../../../generated/prisma/index";
 
 jest.mock("../../../src/services/project");
 
+const project: Project = {
+		id: 1,
+		name: "Test Project",
+		color: "#FFFFFF"
+	} as Project;
+
 const prismaMock = (props: object = {}) =>
 	({ ...props }) as jest.Mocked<PrismaClient>;
 jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+
 
 const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
 	fn.mockReturnValueOnce(jest.fn().mockResolvedValueOnce(returnValue));
@@ -16,16 +23,39 @@ const mockCurriedError = (fn: jest.Mock, error: Error) => {
 	fn.mockReturnValueOnce(jest.fn().mockRejectedValueOnce(error));
 };
 
+describe("getProjectById", () => {
+	beforeEach(() => {
+		jest.resetAllMocks();
+	});
+
+	test("should return an error if the project doesn't exist", async () => {
+		mockCurried(projectService.getProjectById as jest.Mock, null);
+		const response = await projectController.deleteProjectById(prismaMock())(1);
+		expect(response).toBeInstanceOf(Error);
+	})
+
+	test("should return an error if the service returns an error", async () => {
+		mockCurried(projectService.getProjectById as jest.Mock, project);
+		(projectService.getProjectById as jest.Mock).mockRejectedValueOnce(new Error)
+		const response = await projectController.deleteProjectById(prismaMock())(1);
+		expect(response).toBeInstanceOf(Error);
+	})
+
+	test("should return whatever deleteProjectById services returns", async () => {
+		mockCurried(projectService.getProjectById as jest.Mock, project);
+		mockCurried(projectService.deleteProjectById as jest.Mock, project);
+		const response = await projectController.deleteProjectById(prismaMock())(1);
+		expect(response).toBe(project);
+
+	})
+})
+
 describe("updateProject", () => {
 	beforeEach(() => {
 		jest.resetAllMocks();
 	});
 
-	const project: Project = {
-		id: 1,
-		name: "Test Project",
-		color: "#FFFFFF"
-	} as Project;
+	
 
 	test("should return error if project does not exist", async () => {
 		mockCurried(projectService.getProjectById as jest.Mock, null);

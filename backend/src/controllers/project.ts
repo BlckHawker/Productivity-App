@@ -14,10 +14,10 @@ const MAX_PROJECTS = 100;
 //todo add header comment
 const deleteProjectById = (prisma: PrismaClient) => async (id: number): Promise<Project | Error> => {
 	try {
-		//todo check if the project of that id even exists
-		const projectToDelete = projectServices.getProjectById(prisma)(id);
+		//check if the project of that id even exists
+		const projectToDelete = await projectServices.getProjectById(prisma)(id);
 
-		//todo if project doesn't exist, return error
+		//if project doesn't exist, return error
 		if(!projectToDelete) {
 			return new Error(`A project with the id ${id} could not be found`);
 		}
@@ -27,8 +27,6 @@ const deleteProjectById = (prisma: PrismaClient) => async (id: number): Promise<
 	} catch (err) {
 		return err as Error;
 	}
-
-	
 }
 
 /**
