@@ -17,15 +17,17 @@ function showForm() {
 
 }
 
-/**
- * Renders the main application UI.
- *
- * @returns A React element containing mockup of getting and creating tasks to and from the backend
- */
+// USE FOR TESTING ONLY: creates 100 projects. recommended to run `npm run clear` in backend before running this function
+// function test_CreateProjects() {
+// 	for (let i = 0; i<=100; i++){
+// 		const finalProject = {name: "test"+i, color:"#ffffff"};
+// 		const postResponse = utils.postAPICall("/project/create", finalProject);
+// 	}
+// }
 
 export function App(): React.ReactElement {
 	// TODO: menu should be collapsible (later)
-	// TODO: put 100 projects test function back + function call
+	// test_CreateProjects(); <-- use to test project creation limit
 
 	return (
 		<div className="App">
