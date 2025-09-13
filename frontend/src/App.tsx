@@ -24,7 +24,7 @@ function showForm() {
  */
 
 export function App(): React.ReactElement {
-	// TODO: menu should be collapsible
+	// TODO: menu should be collapsible (later)
 	// TODO: put 100 projects test function back + function call
 
 	return (

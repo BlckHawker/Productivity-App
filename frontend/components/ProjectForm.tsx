@@ -59,6 +59,7 @@ function ProjectForm() {
             }
         }
 
+        // error handling
         // project name already exists
         if (postResponse.status == "409") {
 
@@ -76,13 +77,13 @@ function ProjectForm() {
                 if (submitbtn) {
                     if (submitbtn.disabled === true) {
                         submitbtn.addEventListener("mouseover", () => {
-                        errormsg.style.visibility = "visible";
-                    });
+                            errormsg.style.visibility = "visible";
+                        });
 
-                    // hide when not hovering
-                    submitbtn.addEventListener("mouseout", () => {
-                        errormsg.style.visibility = "hidden";
-                    })
+                        // hide when not hovering
+                        submitbtn.addEventListener("mouseout", () => {
+                            errormsg.style.visibility = "hidden";
+                        });
                     }
                 }
             }
@@ -92,15 +93,22 @@ function ProjectForm() {
                 input.style.outline = "thick solid #FF0000"; // TODO: highlight wasn't working properly, outline done for now; check with Kovu for preference later
             }
         }
+
+        // cleanup
+        
     }
 
     // enabling buttons after fixing an error
-    const nameInput = document.querySelector<HTMLInputElement>("#inputname");
-    if (nameInput) {
-        if (nameInput.value === "") {
+    if (input) {
+        if (input.value === "") {
+
             // enable submit button
             if (submitbtn) {
                 submitbtn.disabled = false;
+
+                if (errormsg) {
+                    errormsg.innerHTML = "";
+                }
             }
             // undo outline
             if (input){
@@ -115,9 +123,6 @@ function ProjectForm() {
             }
         }
     }
-
-    // reset form on submit
-
 
     return (
         <>
@@ -141,7 +146,7 @@ function ProjectForm() {
                         onChange={onChange}
                         required 
                     />
-                    <button id="submitbtn" type='submit' onClick={}>Create Project</button>
+                    <button id="submitbtn" type='submit'>Create Project</button>
                 </div>
             </form>
         </>
