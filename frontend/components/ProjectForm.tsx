@@ -94,6 +94,13 @@ function ProjectForm() {
             }
         }
 
+        if(!postResponse.status) {
+            if(input) {
+                input.value = "";
+                window.location.reload();
+            }
+        }
+
         // cleanup
         
     }
