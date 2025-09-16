@@ -24,7 +24,7 @@ function ProjectForm() {
 
     // requests to api and results are held here
     async function projectMadeCallback() {
-        // TODO: these lines work, but figure out how to get the error to go away
+        // these lines work!!
         const finalName: string = values.name.trim();
         const finalColor: string = values.color;
         const finalProject: object = {name: finalName, color: finalColor};
@@ -40,7 +40,7 @@ function ProjectForm() {
             if (message.message === "Reached maximum amount of projects (100). Please delete some before creating more.") {
                 maxHit = true;
 
-                // TODO: once deletion is in place, the button will be enabled after there are less than 100 projects
+                // once deletion is in place, the button will be enabled after there are less than 100 projects
                  if (errormsg) {
                     // populate innerHTML
                     errormsg.innerHTML = message.message;
@@ -90,7 +90,7 @@ function ProjectForm() {
 
             // red outline
             if (input){
-                input.style.outline = "thick solid #FF0000"; // TODO: highlight wasn't working properly, outline done for now; check with Kovu for preference later
+                input.style.outline = "thick solid #FF0000";
             }
         }
 
