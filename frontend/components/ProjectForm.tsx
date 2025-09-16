@@ -160,7 +160,6 @@ function ProjectForm() {
     );
 }
 
-// () => {if (nameInput) nameInput.value = ""}
 export default ProjectForm;
 
 /*

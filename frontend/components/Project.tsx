@@ -4,7 +4,6 @@ export default function Project(props: { name: string, color: string }): React.R
     return (
         <>
             <div className="project">
-                {/* <img>{props.icon}</img> */}
                 <p className="project-name" style={{color: props.color}}>{props.name}</p>
                 {/* <ul className="section-list"></ul> */}
             </div>

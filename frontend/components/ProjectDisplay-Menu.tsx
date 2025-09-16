@@ -26,16 +26,3 @@ function ProjectDisplay() {
 }
 
 export default ProjectDisplay;
-
-    // async function acquireProjectsCallback(): Promise<object[]> {   
-
-        // if (projList) {
-        //     getRequest.foreach((project) => {
-        //         const component = <Project key={project.id} name={project.name} color= {project.color} />
-        //         projList.appendChild(component);
-        //         // const projList = document.querySelector("#proj-list");
-
-        //     })
-        // }
-
-// acquireProjectsCallback();

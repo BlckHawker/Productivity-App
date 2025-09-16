@@ -17,18 +17,7 @@ function showForm() {
 
 }
 
-// USE FOR TESTING ONLY: creates 100 projects. recommended to run `npm run clear` in backend before running this function
-// function test_CreateProjects() {
-// 	for (let i = 0; i<=100; i++){
-// 		const finalProject = {name: "test"+i, color:"#ffffff"};
-// 		const postResponse = utils.postAPICall("/project/create", finalProject);
-// 	}
-// }
-
 export function App(): React.ReactElement {
-	// TODO: menu should be collapsible (later)
-	// test_CreateProjects(); <-- use to test project creation limit
-
 	return (
 		<div className="App">
 			<div id="menu"> 
