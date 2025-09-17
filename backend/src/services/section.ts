@@ -3,7 +3,7 @@
  * Provides database access methods for Section entities using Prisma.
  */
 
-import { PrismaClient, Project } from "../../generated/prisma";
+import { PrismaClient } from "../../generated/prisma";
 
 //todo add comment header
 const createSection = (prisma: PrismaClient) => async (projectId: number, sectionName: string) => {

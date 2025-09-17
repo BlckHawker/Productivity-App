@@ -32,10 +32,10 @@ const createSection =
             return new Error(`A section with the name "${name}" already exists within the project "${project.name}"`)
         }
 
-        //todo verify this project does not have the threshold amount of sections
+        //verify this project does not have the threshold amount of sections
         const sectionCount = await sectionServices.getNumberOfSectionInProject(prisma)(id);
         if(sectionCount >= MAX_SECTIONS) {
-            return new Error("Reached maximum amount of sections")
+            return new Error(`Reached maximum amount of sections (${MAX_SECTIONS}) for the project "${project.name}"`)
         }
 
         const section = await sectionServices.createSection(prisma)(id, name);
@@ -49,5 +49,6 @@ const createSection =
 }
 
 export {
+    MAX_SECTIONS,
     createSection
 }

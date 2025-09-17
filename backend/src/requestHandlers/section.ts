@@ -117,8 +117,11 @@ const createSection = async (req: Request, res: Response) => {
  *                 summary: Section already exists within project
  *                 value:
  *                   message: A section with the name "Math" already exists within the project "Work"
+ *               maxSections:
+ *                 summary: Attempt to go over max section threshold within a project
+ *                 value:
+ *                   message: Reached maximum amount of sections (100) for the project "Other"
  */
-//todo swagger docs
 export {
 	createSection
 };

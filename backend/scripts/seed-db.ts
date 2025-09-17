@@ -12,16 +12,15 @@ async function seedDatabase() {
 		});
 		console.log("✅ Projects seeded successfully!");
 
-		const sectionData = [{ project_id: project.id, name: "Other" }];
-
-		console.log("✅ Sections seeded successfully!");
-
 		const section = await prisma.section.create({
 			data: {
 				project_id: project.id,
 				name: "Other",
 			},
 		});
+
+		console.log("✅ Sections seeded successfully!");
+
 
 
 		console.log("✅ Database seeded successfully!");
