@@ -1,7 +1,4 @@
 ## [Unreleased]
-- Frontend functionality for creating projects
-  - Errors are thrown if a project has the same name as a preexisting one, or if the limit of 100 projects is met
-- Basic project display
 
 ### Added
 
@@ -27,6 +24,9 @@
   - Tab indentation
   - Explicit typing for useState
   - TODO and FIXME comments
+- Frontend functionality for creating projects
+  - Errors are thrown if a project has the same name as a preexisting one, or if the limit of 100 projects is met
+- Basic project display
 
 ### Changed
 
