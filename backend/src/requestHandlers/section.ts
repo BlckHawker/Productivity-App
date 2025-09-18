@@ -307,8 +307,6 @@ const getAllSectionsInProject = async (req: Request, res: Response) => {
  */
 const getAllSections = async (req: Request, res: Response) => {
     const response = await sectionController.getAllSections(req.prisma);
-    //todo swagger: 200
-    //todo swagger: 404
     return utils.sanitizeResponse(response, res, "No sections were found");
 };
 /**

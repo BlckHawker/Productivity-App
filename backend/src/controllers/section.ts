@@ -5,7 +5,17 @@ import { PrismaClient, Section } from "../../generated/prisma";
 const MAX_SECTIONS = 100;
 
 
-//todo add header comment
+/**
+ * Creates a new section in a project.
+ *
+ * @param prisma - The PrismaClient instance used to access the database.
+ * @returns An asynchronous function:
+ *   - @param id - The unique ID of the project to create the section in.
+ *   - @param name - The name of the section to create.
+ *   - @returns A Promise resolving to the created `Section` on success,
+ *     or an `Error` if the project does not exist, the name is duplicated,
+ *     or the project already has the maximum number of sections.
+ */
 const createSection =
     (prisma: PrismaClient) =>
     async (
@@ -48,7 +58,15 @@ const createSection =
         }
 }
 
-//todo add header comment
+/**
+ * Retrieves all sections within a given project.
+ *
+ * @param prisma - The PrismaClient instance used to access the database.
+ * @returns An asynchronous function:
+ *   - @param id - The unique ID of the project.
+ *   - @returns A Promise resolving to an array of `Section` objects on success,
+ *     or an `Error` if the project does not exist or retrieval fails.
+ */
 const getAllSectionsInProject = (
     prisma: PrismaClient
 ) => async (id: number): Promise<Section[] | Error> => {
@@ -68,7 +86,15 @@ const getAllSectionsInProject = (
     }
 };
 
-//todo add header comment
+/**
+ * Retrieves a section from the database by its unique ID.
+ *
+ * @param prisma - The PrismaClient instance used to access the database.
+ * @returns An asynchronous function:
+ *   - @param id - The unique ID of the section.
+ *   - @returns A Promise resolving to the found `Section` on success,
+ *     `null` if not found, or an `Error` if retrieval fails.
+ */
 const getSectionById = (prisma: PrismaClient) => async (
         id: number
     ): Promise<Section | Error | null> => {
@@ -80,7 +106,13 @@ const getSectionById = (prisma: PrismaClient) => async (
                 }
 }
 
-//todo add header comment
+/**
+ * Retrieves all sections from the database.
+ *
+ * @param prisma - The PrismaClient instance used to access the database.
+ * @returns A Promise resolving to an array of `Section` objects on success,
+ *   or an `Error` if retrieval fails.
+ */
 const getAllSections = async (prisma: PrismaClient): Promise<Section[] | Error> => {
     try {
         const sections = sectionServices.getAllSections(prisma);
