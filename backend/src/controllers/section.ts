@@ -48,6 +48,25 @@ const createSection =
         }
 }
 
+//todo add header comment
+const getAllSectionsInProject = (
+    prisma: PrismaClient
+) => async (id: number): Promise<Section[] | Error> => {
+    try {
+        //check to see if the project exists
+        const project = await projectServices.getProjectById(prisma)(id);
+
+        if(!project) {
+            return new Error(`A project with the id ${id} does not exist`)
+        }
+
+        //get the sections within the project
+        const sections = await sectionServices.getAllSectionsInProject(prisma)(id);
+        return sections;
+    } catch (err) {
+        return err as Error;
+    }
+};
 
 //todo add header comment
 const getSectionById = (prisma: PrismaClient) => async (
@@ -64,5 +83,6 @@ const getSectionById = (prisma: PrismaClient) => async (
 export {
     MAX_SECTIONS,
     createSection,
-    getSectionById
+    getSectionById,
+    getAllSectionsInProject
 }

@@ -14,7 +14,9 @@ export default (app: Express) => {
 	app.get("/project", project.getProjectByName);
 	app.post("/project/create", project.createProject);
 	app.put("/project/update", project.updateProject);
-	app.get("/section/:id", section.getSectionById)
+	app.get("/section/:id", section.getSectionById);
+	app.get("/project/sections/:id", section.getAllSectionsInProject);
+
 	app.post("/section/create", section.createSection);
 	swaggerDocs(app, port);
 	app.use(utils.notFound);

@@ -3,7 +3,7 @@
  * Provides database access methods for Section entities using Prisma.
  */
 
-import { PrismaClient } from "../../generated/prisma";
+import { PrismaClient, Section } from "../../generated/prisma";
 
 //todo add comment header
 const createSection = (prisma: PrismaClient) => async (projectId: number, sectionName: string) => {
@@ -48,8 +48,6 @@ const getSectionById = (prisma: PrismaClient) => async (sectionId: number) => {
 }
 
 //todo add comment header
-//todo create controller
-//todo create request handler
 const getSectionsByName = (prisma: PrismaClient) => async (sectionName: string) => {
     const sections = await prisma.section.findMany({
 			where: {
@@ -63,8 +61,30 @@ const getSectionsByName = (prisma: PrismaClient) => async (sectionName: string) 
 }
 
 //todo add comment header
-//todo create controller
-//todo create request handler
+//todo add controller
+//todo add request handler
+const getAllSections = async (prisma: PrismaClient): Promise<Section[]> => {
+	const sections = await prisma.section.findMany({});
+	return sections;
+};
+
+
+//todo add comment header
+//todo add controller
+//todo add request handler
+const getAllSectionsInProject = (prisma: PrismaClient) => async(projectId: number) => {
+	const sections = await prisma.section.findMany({
+		where: {
+			project_id: {
+				equals: projectId
+			}
+		}
+	})
+
+	return sections;
+}
+
+//todo add comment header
 const getNumberOfSectionInProject = (prisma: PrismaClient) => async(projectId: number) => {
 	const sections = await prisma.section.count({
 		where: {
@@ -82,5 +102,7 @@ export {
     getSectionByName,
     getSectionsByName,
     createSection,
-	getNumberOfSectionInProject
+	getNumberOfSectionInProject,
+	getAllSections,
+	getAllSectionsInProject
 };

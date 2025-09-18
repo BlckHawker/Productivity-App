@@ -206,7 +206,102 @@ const getSectionById = async (req: Request, res: Response) => {
  *                   example: "Invalid id: must be a valid number"
  */
 
+
+
+/**
+ * Get all sections in project request
+ * @param {Request} req
+ * @param {Response} res
+ * @returns
+ */
+const getAllSectionsInProject = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const validArgs = utils.assertArgumentsNumber({ id });
+    if (!validArgs.success)
+        return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+    const response = await sectionController.getAllSectionsInProject(req.prisma)(id);
+    return utils.sanitizeResponse(response, res, `No sections were found in the project with the id of ${id}`);
+};
+
+/**
+ * @swagger
+ * /project/sections/{id}:
+ *   get:
+ *     summary: Get all project sections
+ *     description: Fetches all sections from a certain project projects from the database.
+ *     tags:
+ *       - Section
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         required: true
+ *         description: Numeric id of the project to get all the sections of
+ *     responses:
+ *       200:
+ *         description: A list of sections within a certain project
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *                   color:
+ *                     type: string
+ *                   created_at:
+ *                     type: string
+ *                     format: date-time
+ *                   updated_at:
+ *                     type: string
+ *                     format: date-time
+ *             example:
+ *               - id: 104
+ *                 project_id: 6
+ *                 is_other: true
+ *                 name: "Other"
+ *                 created_at: "2025-09-07T17:34:03.434Z"
+ *                 updated_at: "2025-09-07T17:34:03.434Z"
+ *               - id: 105
+ *                 project_id: 6
+ *                 is_other: false
+ *                 name: "Movies"
+ *                 created_at: "2025-09-07T17:34:03.434Z"
+ *                 updated_at: "2025-09-07T17:34:03.434Z"
+ *       404:
+ *          description: Not found
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: "A project with the id 1 does not exist"
+  *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid id: must be a valid number"
+ */
+
+
 export {
 	createSection,
-    getSectionById
+    getSectionById,
+    getAllSectionsInProject
 };
