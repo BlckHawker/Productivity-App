@@ -13,16 +13,13 @@ function ProjectDisplay() {
         getRequest.then(projects => setProjects(projects));
     }, []);
 
-    
+    // checking type of 'projects': array means tasks have been returned, anything else means there are no tasks
     if (Array.isArray(projects)){
         isProj = true;
     }
     else {
         isProj = false;
     }
-    console.log(isProj);
-    console.log(Array.isArray(projects))
-    console.log(projects)
 
     return (
         <div id="projects">
