@@ -36,6 +36,20 @@ const getSectionByName = (prisma: PrismaClient) => async (projectId: number, sec
 }
 
 //todo add comment header
+const getSectionById = (prisma: PrismaClient) => async (sectionId: number) => {
+    const section = await prisma.section.findFirst({
+			where: {
+				id: {
+					equals: sectionId,
+				}
+			}
+		});
+		return section;
+}
+
+//todo add comment header
+//todo create controller
+//todo create request handler
 const getSectionsByName = (prisma: PrismaClient) => async (sectionName: string) => {
     const sections = await prisma.section.findMany({
 			where: {
@@ -49,6 +63,8 @@ const getSectionsByName = (prisma: PrismaClient) => async (sectionName: string) 
 }
 
 //todo add comment header
+//todo create controller
+//todo create request handler
 const getNumberOfSectionInProject = (prisma: PrismaClient) => async(projectId: number) => {
 	const sections = await prisma.section.count({
 		where: {
@@ -62,6 +78,7 @@ const getNumberOfSectionInProject = (prisma: PrismaClient) => async(projectId: n
 }
 
 export {
+	getSectionById,
     getSectionByName,
     getSectionsByName,
     createSection,

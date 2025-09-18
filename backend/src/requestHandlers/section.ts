@@ -122,6 +122,91 @@ const createSection = async (req: Request, res: Response) => {
  *                 value:
  *                   message: Reached maximum amount of sections (100) for the project "Other"
  */
+
+/**
+ * Get section by id request
+ * @param {Request} req
+ * @param {Response} res
+ * @returns
+ */
+const getSectionById = async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const validArgs = utils.assertArgumentsNumber({ id });
+    if (!validArgs.success)
+        return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+    const response = await sectionController.getSectionById(req.prisma)(id);
+    return utils.sanitizeResponse(
+        response,
+        res,
+        `A section with the id "${id}" could not be found.`
+    );
+};
+/**
+ * @swagger
+ * /section/{id}:
+ *   get:
+ *     summary: Get a section by id
+ *     description: Get a section by its id
+ *     tags:
+ *       - Section
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         required: true
+ *         description: Numeric id of the section to get
+ *     responses:
+ *       200:
+ *         description: Successful response with section data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: number
+ *                   example: 1
+ *                 project_id:
+ *                   type: number
+ *                   example: 2
+ *                 name:
+ *                   type: string
+ *                   example: "Math"
+ *                 created_at:
+ *                   type: string
+ *                   example: "2025-09-05T23:03:57.213Z"
+ *                 updated_at:
+ *                   type: string
+ *                   example: "2025-09-05T23:03:57.213Z"
+ *     
+ *       404:
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "A section with the id \"1\" could not be found."
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid id: must be a valid number"
+ */
+
 export {
-	createSection
+	createSection,
+    getSectionById
 };

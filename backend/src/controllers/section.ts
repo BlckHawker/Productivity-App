@@ -48,7 +48,21 @@ const createSection =
         }
 }
 
+
+//todo add header comment
+const getSectionById = (prisma: PrismaClient) => async (
+        id: number
+    ): Promise<Section | Error | null> => {
+        try {
+                    const section = await sectionServices.getSectionById(prisma)(id);
+                    return section;
+                } catch (err) {
+                    return err as Error;
+                }
+}
+
 export {
     MAX_SECTIONS,
-    createSection
+    createSection,
+    getSectionById
 }
