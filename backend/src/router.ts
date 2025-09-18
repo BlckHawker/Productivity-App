@@ -15,6 +15,7 @@ export default (app: Express) => {
 	app.post("/project/create", project.createProject);
 	app.put("/project/update", project.updateProject);
 	app.get("/section/:id", section.getSectionById);
+	app.get("/sections/", section.getAllSections);
 	app.get("/project/sections/:id", section.getAllSectionsInProject);
 
 	app.post("/section/create", section.createSection);

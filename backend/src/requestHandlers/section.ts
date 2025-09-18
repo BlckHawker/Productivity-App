@@ -299,9 +299,76 @@ const getAllSectionsInProject = async (req: Request, res: Response) => {
  *                   example: "Invalid id: must be a valid number"
  */
 
+/**
+ * Get all sections request
+ * @param {Request} req
+ * @param {Response} res
+ * @returns
+ */
+const getAllSections = async (req: Request, res: Response) => {
+    const response = await sectionController.getAllSections(req.prisma);
+    //todo swagger: 200
+    //todo swagger: 404
+    return utils.sanitizeResponse(response, res, "No sections were found");
+};
+/**
+ * @swagger
+ * /sections:
+ *   get:
+ *     summary: Get all sections
+ *     description: Fetches all sections from the database.
+ *     tags:
+ *       - Section
+ *     responses:
+ *       200:
+ *         description: A list of projects
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *                   color:
+ *                     type: string
+ *                   created_at:
+ *                     type: string
+ *                     format: date-time
+ *                   updated_at:
+ *                     type: string
+ *                     format: date-time
+ *             example:
+ *               - id: 104
+ *                 project_id: 6
+ *                 is_other: true
+ *                 name: "Other"
+ *                 created_at: "2025-09-07T17:34:03.434Z"
+ *                 updated_at: "2025-09-07T17:34:03.434Z"
+ *               - id: 105
+ *                 project_id: 7
+ *                 is_other: false
+ *                 name: "Movies"
+ *                 created_at: "2025-09-07T17:34:03.434Z"
+ *                 updated_at: "2025-09-07T17:34:03.434Z"
+ *       404:
+ *         description: No sections
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "No sections were found"
+ */
 
 export {
 	createSection,
     getSectionById,
-    getAllSectionsInProject
+    getAllSectionsInProject,
+    getAllSections
 };

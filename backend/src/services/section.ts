@@ -70,8 +70,6 @@ const getAllSections = async (prisma: PrismaClient): Promise<Section[]> => {
 
 
 //todo add comment header
-//todo add controller
-//todo add request handler
 const getAllSectionsInProject = (prisma: PrismaClient) => async(projectId: number) => {
 	const sections = await prisma.section.findMany({
 		where: {

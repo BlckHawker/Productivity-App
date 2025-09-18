@@ -80,9 +80,21 @@ const getSectionById = (prisma: PrismaClient) => async (
                 }
 }
 
+//todo add header comment
+const getAllSections = async (prisma: PrismaClient): Promise<Section[] | Error> => {
+    try {
+        const sections = sectionServices.getAllSections(prisma);
+        return sections;
+    }
+    catch (err) {
+        return err as Error;
+    }
+};
+
 export {
     MAX_SECTIONS,
     createSection,
     getSectionById,
-    getAllSectionsInProject
+    getAllSectionsInProject,
+    getAllSections
 }
