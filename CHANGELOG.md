@@ -8,6 +8,7 @@
   - Get projects by name (case insensitive)
   - Get all projects
   - Update project
+  - Delete project by ID
 - Schema documentation added to the Wiki
 - Scripts to easily modify the database for debugging
 - Swagger API documentation

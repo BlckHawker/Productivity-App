@@ -10,6 +10,7 @@ import swaggerDocs from "./swagger.js";
 export default (app: Express) => {
 	app.use(cors());
 	app.get("/projects", project.getAllProjects);
+	app.delete("/project/:id", project.deleteProjectById);
 	app.get("/project/:id", project.getProjectById);
 	app.get("/project", project.getProjectByName);
 	app.post("/project/create", project.createProject);
