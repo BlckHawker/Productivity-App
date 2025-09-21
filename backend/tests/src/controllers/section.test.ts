@@ -22,6 +22,10 @@ const mockFlat = <T>(fn: jest.Mock, returnValue: T) => {
   fn.mockResolvedValueOnce(returnValue);
 };
 
+const mockFlatError = <T>(fn: jest.Mock, error: Error) => {
+  fn.mockRejectedValueOnce(error);
+};
+
 const project: Project = {
         id: 1,
         name: "Test Project",
@@ -48,7 +52,7 @@ describe("createSection", () => {
     })
 
     test("Returns an error if the projectServices returns an error",  async () => {
-        mockCurriedError(projectService.getProjectById as jest.Mock, new Error());
+        mockCurried(projectService.getProjectById as jest.Mock, new Error());
         const response = await createSection()
         expect(response).toBeInstanceOf(Error);
     })
@@ -76,6 +80,12 @@ describe("createSection", () => {
         const response = await createSection()
         expect(response).toBe(section);
     })
+
+    test("Returns an error if one was thrown", async () => {
+        mockCurriedError(projectService.getProjectById as jest.Mock, new Error);
+        const response = await createSection()
+        expect(response).toBeInstanceOf(Error);
+    })
 });
 
 describe("getAllSectionsInProject", () => {
@@ -97,6 +107,12 @@ describe("getAllSectionsInProject", () => {
         const response = await getAllSectionsInProject();
         expect(response).toBe(section)
     })
+
+    test("Returns an error if one was thrown", async () => {
+        mockCurriedError(projectService.getProjectById as jest.Mock, new Error);
+        const response = await getAllSectionsInProject()
+        expect(response).toBeInstanceOf(Error);
+    })
 })
 
 describe("getSectionById", () => {
@@ -111,6 +127,12 @@ describe("getSectionById", () => {
         const response = await getSectionById();
         expect(response).toBe(section)
     })
+
+    test("Returns an error if one was thrown", async () => {
+        mockCurriedError(sectionService.getSectionById as jest.Mock, new Error);
+        const response = await getSectionById()
+        expect(response).toBeInstanceOf(Error);
+    })
 })
 
 describe("getAllSections", () => {
@@ -124,5 +146,11 @@ describe("getAllSections", () => {
         mockFlat(sectionService.getAllSections as jest.Mock, section)
         const response = await getAllSections();
         expect(response).toBe(section)
+    })
+
+    test("Returns an error if one was thrown", async () => {
+        mockFlatError(sectionService.getAllSections as jest.Mock, new Error)
+        const response = await getAllSections()
+        expect(response).toBeInstanceOf(Error);
     })
 })
