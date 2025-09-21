@@ -4,7 +4,6 @@ import { PrismaClient, Section } from "../../generated/prisma";
 
 const MAX_SECTIONS = 100;
 
-
 /**
  * Creates a new section in a project.
  *
@@ -17,46 +16,48 @@ const MAX_SECTIONS = 100;
  *     or the project already has the maximum number of sections.
  */
 const createSection =
-    (prisma: PrismaClient) =>
-    async (
-        id: number,
-        name: string
-    ): Promise<Section | Error> => {
+	(prisma: PrismaClient) =>
+	async (id: number, name: string): Promise<Section | Error> => {
+		try {
+			//check to see if the project exists
+			const project = await projectService.getProjectById(prisma)(id);
 
-        try {
-            //check to see if the project exists
-        const project = await projectService.getProjectById(prisma)(id);
+			if (!project) {
+				return new Error(`A project with the id ${id} does not exist`);
+			}
 
-        if(!project) {
-            return new Error(`A project with the id ${id} does not exist`)
-        }
+			if (project instanceof Error) {
+				return project;
+			}
 
-        if(project instanceof Error) {
-            return project;
-        }
+			//verify a section with the same name doesn't exists within that project
+			const exitingSection = await sectionService.getSectionByName(prisma)(
+				id,
+				name
+			);
 
-        //verify a section with the same name doesn't exists within that project
-        const exitingSection = await sectionService.getSectionByName(prisma)(id, name);
+			if (exitingSection) {
+				return new Error(
+					`A section with the name "${name}" already exists within the project "${project.name}"`
+				);
+			}
 
-        if(exitingSection) {
-            return new Error(`A section with the name "${name}" already exists within the project "${project.name}"`)
-        }
+			//verify this project does not have the threshold amount of sections
+			const sectionCount =
+				await sectionService.getNumberOfSectionInProject(prisma)(id);
+			if (sectionCount >= MAX_SECTIONS) {
+				return new Error(
+					`Reached maximum amount of sections (${MAX_SECTIONS}) for the project "${project.name}"`
+				);
+			}
 
-        //verify this project does not have the threshold amount of sections
-        const sectionCount = await sectionService.getNumberOfSectionInProject(prisma)(id);
-        if(sectionCount >= MAX_SECTIONS) {
-            return new Error(`Reached maximum amount of sections (${MAX_SECTIONS}) for the project "${project.name}"`)
-        }
+			const section = await sectionService.createSection(prisma)(id, name);
 
-        const section = await sectionService.createSection(prisma)(id, name);
-
-        return section;
-        }
-
-        catch (err) {
-            return err as Error;
-        }
-}
+			return section;
+		} catch (err) {
+			return err as Error;
+		}
+	};
 
 /**
  * Retrieves all sections within a given project.
@@ -67,24 +68,24 @@ const createSection =
  *   - @returns A Promise resolving to an array of `Section` objects on success,
  *     or an `Error` if the project does not exist or retrieval fails.
  */
-const getAllSectionsInProject = (
-    prisma: PrismaClient
-) => async (id: number): Promise<Section[] | Error> => {
-    try {
-        //check to see if the project exists
-        const project = await projectService.getProjectById(prisma)(id);
+const getAllSectionsInProject =
+	(prisma: PrismaClient) =>
+	async (id: number): Promise<Section[] | Error> => {
+		try {
+			//check to see if the project exists
+			const project = await projectService.getProjectById(prisma)(id);
 
-        if(!project) {
-            return new Error(`A project with the id ${id} does not exist`)
-        }
+			if (!project) {
+				return new Error(`A project with the id ${id} does not exist`);
+			}
 
-        //get the sections within the project
-        const sections = await sectionService.getAllSectionsInProject(prisma)(id);
-        return sections;
-    } catch (err) {
-        return err as Error;
-    }
-};
+			//get the sections within the project
+			const sections = await sectionService.getAllSectionsInProject(prisma)(id);
+			return sections;
+		} catch (err) {
+			return err as Error;
+		}
+	};
 
 /**
  * Retrieves a section from the database by its unique ID.
@@ -95,16 +96,16 @@ const getAllSectionsInProject = (
  *   - @returns A Promise resolving to the found `Section` on success,
  *     `null` if not found, or an `Error` if retrieval fails.
  */
-const getSectionById = (prisma: PrismaClient) => async (
-        id: number
-    ): Promise<Section | Error | null> => {
-        try {
-                    const section = await sectionService.getSectionById(prisma)(id);
-                    return section;
-                } catch (err) {
-                    return err as Error;
-                }
-}
+const getSectionById =
+	(prisma: PrismaClient) =>
+	async (id: number): Promise<Section | Error | null> => {
+		try {
+			const section = await sectionService.getSectionById(prisma)(id);
+			return section;
+		} catch (err) {
+			return err as Error;
+		}
+	};
 
 /**
  * Retrieves all sections from the database.
@@ -113,20 +114,21 @@ const getSectionById = (prisma: PrismaClient) => async (
  * @returns A Promise resolving to an array of `Section` objects on success,
  *   or an `Error` if retrieval fails.
  */
-const getAllSections = async (prisma: PrismaClient): Promise<Section[] | Error> => {
-    try {
-        const sections = await sectionService.getAllSections(prisma);
-        return sections;
-    }
-    catch (err) {
-        return err as Error;
-    }
+const getAllSections = async (
+	prisma: PrismaClient
+): Promise<Section[] | Error> => {
+	try {
+		const sections = await sectionService.getAllSections(prisma);
+		return sections;
+	} catch (err) {
+		return err as Error;
+	}
 };
 
 export {
-    MAX_SECTIONS,
-    createSection,
-    getSectionById,
-    getAllSectionsInProject,
-    getAllSections
-}
+	MAX_SECTIONS,
+	createSection,
+	getSectionById,
+	getAllSectionsInProject,
+	getAllSections
+};

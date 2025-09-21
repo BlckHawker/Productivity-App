@@ -3,9 +3,9 @@ import * as utils from "../../../src/utils";
 import { Request, Response } from "express";
 import {
 	createSection,
-	getSectionById,
+	getAllSections,
 	getAllSectionsInProject,
-	getAllSections
+	getSectionById
 } from "../../../src/requestHandlers/section";
 import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";
@@ -41,13 +41,16 @@ describe("createSection", () => {
 		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
 	});
 
-    describe("409s", () => {
+	describe("409s", () => {
 		test("when a section already exists within the project", async () => {
 			const message =
 				'A section with the name "Math" already exists within the project "Work"';
 			req.body = { project_id: 1, name: "Math" };
 			(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
-			mockCurried(sectionController.createSection as jest.Mock, new Error(message));
+			mockCurried(
+				sectionController.createSection as jest.Mock,
+				new Error(message)
+			);
 			await createSection(req as Request, res);
 			expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
 			expect(res.json).toHaveBeenCalledWith({ message });
@@ -58,7 +61,10 @@ describe("createSection", () => {
 				'Reached maximum amount of sections (100) for the project "Other"';
 			req.body = { project_id: 1, name: "Other" };
 			(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
-			mockCurried(sectionController.createSection as jest.Mock, new Error(message));
+			mockCurried(
+				sectionController.createSection as jest.Mock,
+				new Error(message)
+			);
 			await createSection(req as Request, res);
 			expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
 			expect(res.json).toHaveBeenCalledWith({ message });
@@ -97,7 +103,9 @@ describe("getSectionById", () => {
 	test("404s if section not found", async () => {
 		const id = 1;
 		(req as Request).params = { id: String(id) };
-		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue({ success: true });
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue({
+			success: true
+		});
 		mockCurried(sectionController.getSectionById as jest.Mock, null);
 		const notFound = `A section with the id "${id}" could not be found.`;
 		jest.spyOn(utils, "sanitizeResponse").mockImplementation((_r, res, msg) => {
@@ -113,7 +121,9 @@ describe("getSectionById", () => {
 		const id = 1;
 		const section = { id, name: "Math" };
 		(req as Request).params = { id: String(id) };
-		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue({ success: true });
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue({
+			success: true
+		});
 		mockCurried(sectionController.getSectionById as jest.Mock, section);
 		jest.spyOn(utils, "sanitizeResponse").mockImplementation((_r, res) => {
 			res.status(StatusCode.SuccessOK).json(section);
@@ -141,7 +151,9 @@ describe("getAllSectionsInProject", () => {
 	test("404s if no sections found", async () => {
 		const id = 1;
 		(req as Request).params = { id: String(id) };
-		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue({ success: true });
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue({
+			success: true
+		});
 		mockCurried(sectionController.getAllSectionsInProject as jest.Mock, []);
 		const msg = `No sections were found in the project with the id of ${id}`;
 		jest.spyOn(utils, "sanitizeResponse").mockImplementation((_r, res, m) => {
@@ -157,8 +169,13 @@ describe("getAllSectionsInProject", () => {
 		const id = 1;
 		const sections = [{ id: 1, name: "Other" }];
 		(req as Request).params = { id: String(id) };
-		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue({ success: true });
-		mockCurried(sectionController.getAllSectionsInProject as jest.Mock, sections);
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue({
+			success: true
+		});
+		mockCurried(
+			sectionController.getAllSectionsInProject as jest.Mock,
+			sections
+		);
 		jest.spyOn(utils, "sanitizeResponse").mockImplementation((_r, res) => {
 			res.status(StatusCode.SuccessOK).json(sections);
 			return res;

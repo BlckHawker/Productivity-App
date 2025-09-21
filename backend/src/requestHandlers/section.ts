@@ -9,41 +9,45 @@ import { StatusCode } from "status-code-enum";
  * @returns
  */
 const createSection = async (req: Request, res: Response) => {
-    const name = typeof req.body.name === "string" ? req.body.name.trim() : "";
-    const projectId = typeof req.body.project_id === "number" ? Number(req.body.project_id) : NaN;
+	const name = typeof req.body.name === "string" ? req.body.name.trim() : "";
+	const projectId =
+		typeof req.body.project_id === "number" ? Number(req.body.project_id) : NaN;
 
-    const validArgs = utils.mergeResults(
-        utils.assertArgumentsString({ name }),
-        utils.assertArgumentsNumber({ projectId })
-    );
-    if (!validArgs.success)
-        return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+	const validArgs = utils.mergeResults(
+		utils.assertArgumentsString({ name }),
+		utils.assertArgumentsNumber({ projectId })
+	);
+	if (!validArgs.success)
+		return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
 
-    const response = await sectionController.createSection(req.prisma)(
-        projectId,
-        name
-    );
+	const response = await sectionController.createSection(req.prisma)(
+		projectId,
+		name
+	);
 
-    if (response instanceof Error) {
+	if (response instanceof Error) {
+		if (
+			response.message.match(
+				/A section with the name ".+" already exists within the project ".+"/
+			)
+		) {
+			return res.status(StatusCode.ClientErrorConflict).json({
+				message: response.message
+			});
+		}
 
-        if(response.message.match(/A section with the name ".+" already exists within the project ".+"/)) {
-            return res.status(StatusCode.ClientErrorConflict).json({
-                message: response.message
-            });
-        }
+		if (response.message.includes("Reached maximum amount of sections")) {
+			return res.status(StatusCode.ClientErrorConflict).json({
+				message: response.message
+			});
+		}
+	}
 
-        if (response.message.includes("Reached maximum amount of sections")) {
-            return res.status(StatusCode.ClientErrorConflict).json({
-                message: response.message
-            });
-        }
-    }
-
-    return utils.sanitizeResponse(
-        response,
-        res,
-        "Contact developers if this line appears. createSection request handler"
-    );
+	return utils.sanitizeResponse(
+		response,
+		res,
+		"Contact developers if this line appears. createSection request handler"
+	);
 };
 /**
  * @swagger
@@ -69,7 +73,7 @@ const createSection = async (req: Request, res: Response) => {
  *                 type: number
  *                 description: The id of the project for this section to fall under
  *                 example: 1
- * 
+ *
  *     responses:
  *       200:
  *          description: Section successfully created
@@ -130,16 +134,16 @@ const createSection = async (req: Request, res: Response) => {
  * @returns
  */
 const getSectionById = async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    const validArgs = utils.assertArgumentsNumber({ id });
-    if (!validArgs.success)
-        return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
-    const response = await sectionController.getSectionById(req.prisma)(id);
-    return utils.sanitizeResponse(
-        response,
-        res,
-        `A section with the id "${id}" could not be found.`
-    );
+	const id = Number(req.params.id);
+	const validArgs = utils.assertArgumentsNumber({ id });
+	if (!validArgs.success)
+		return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+	const response = await sectionController.getSectionById(req.prisma)(id);
+	return utils.sanitizeResponse(
+		response,
+		res,
+		`A section with the id "${id}" could not be found.`
+	);
 };
 /**
  * @swagger
@@ -180,7 +184,7 @@ const getSectionById = async (req: Request, res: Response) => {
  *                 updated_at:
  *                   type: string
  *                   example: "2025-09-05T23:03:57.213Z"
- *     
+ *
  *       404:
  *         description: Not Found
  *         content:
@@ -206,8 +210,6 @@ const getSectionById = async (req: Request, res: Response) => {
  *                   example: "Invalid id: must be a valid number"
  */
 
-
-
 /**
  * Get all sections in project request
  * @param {Request} req
@@ -215,12 +217,18 @@ const getSectionById = async (req: Request, res: Response) => {
  * @returns
  */
 const getAllSectionsInProject = async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    const validArgs = utils.assertArgumentsNumber({ id });
-    if (!validArgs.success)
-        return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
-    const response = await sectionController.getAllSectionsInProject(req.prisma)(id);
-    return utils.sanitizeResponse(response, res, `No sections were found in the project with the id of ${id}`);
+	const id = Number(req.params.id);
+	const validArgs = utils.assertArgumentsNumber({ id });
+	if (!validArgs.success)
+		return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+	const response = await sectionController.getAllSectionsInProject(req.prisma)(
+		id
+	);
+	return utils.sanitizeResponse(
+		response,
+		res,
+		`No sections were found in the project with the id of ${id}`
+	);
 };
 
 /**
@@ -284,7 +292,7 @@ const getAllSectionsInProject = async (req: Request, res: Response) => {
  *                          message:
  *                              type: string
  *                              example: "A project with the id 1 does not exist"
-  *       400:
+ *       400:
  *         description: Bad Request
  *         content:
  *           application/json:
@@ -306,8 +314,8 @@ const getAllSectionsInProject = async (req: Request, res: Response) => {
  * @returns
  */
 const getAllSections = async (req: Request, res: Response) => {
-    const response = await sectionController.getAllSections(req.prisma);
-    return utils.sanitizeResponse(response, res, "No sections were found");
+	const response = await sectionController.getAllSections(req.prisma);
+	return utils.sanitizeResponse(response, res, "No sections were found");
 };
 /**
  * @swagger
@@ -366,7 +374,7 @@ const getAllSections = async (req: Request, res: Response) => {
 
 export {
 	createSection,
-    getSectionById,
-    getAllSectionsInProject,
-    getAllSections
+	getSectionById,
+	getAllSectionsInProject,
+	getAllSections
 };

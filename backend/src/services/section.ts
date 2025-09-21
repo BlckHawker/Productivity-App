@@ -11,16 +11,17 @@ import { PrismaClient, Section } from "../../generated/prisma";
  * @param prisma - The Prisma client instance.
  * @returns A function that accepts a `projectId` and `sectionName`, returning the created Section.
  */
-const createSection = (prisma: PrismaClient) => async (projectId: number, sectionName: string) => {
-    const section = await prisma.section.create({
-        data: {
-            project_id: projectId,
-            name: sectionName
-        }
-    })
+const createSection =
+	(prisma: PrismaClient) => async (projectId: number, sectionName: string) => {
+		const section = await prisma.section.create({
+			data: {
+				project_id: projectId,
+				name: sectionName
+			}
+		});
 
-    return section;
-}
+		return section;
+	};
 
 /**
  * Finds the first section in a project by its name (case-insensitive).
@@ -28,22 +29,22 @@ const createSection = (prisma: PrismaClient) => async (projectId: number, sectio
  * @param prisma - The Prisma client instance.
  * @returns A function that accepts a `projectId` and `sectionName`, resolving to a Section or null.
  */
-const getSectionByName = (prisma: PrismaClient) => async (projectId: number, sectionName: string) => {
-    const section = await prisma.section.findFirst({
+const getSectionByName =
+	(prisma: PrismaClient) => async (projectId: number, sectionName: string) => {
+		const section = await prisma.section.findFirst({
 			where: {
 				name: {
 					equals: sectionName,
 					mode: "insensitive"
 				},
 
-                project_id: {
-                    equals: projectId
-                }
-                
+				project_id: {
+					equals: projectId
+				}
 			}
 		});
 		return section;
-}
+	};
 
 /**
  * Finds a section by its unique ID.
@@ -52,15 +53,15 @@ const getSectionByName = (prisma: PrismaClient) => async (projectId: number, sec
  * @returns A function that accepts a `sectionId` and resolves to a Section or null.
  */
 const getSectionById = (prisma: PrismaClient) => async (sectionId: number) => {
-    const section = await prisma.section.findFirst({
-			where: {
-				id: {
-					equals: sectionId,
-				}
+	const section = await prisma.section.findFirst({
+		where: {
+			id: {
+				equals: sectionId
 			}
-		});
-		return section;
-}
+		}
+	});
+	return section;
+};
 
 /**
  * Retrieves all sections by name (case-insensitive).
@@ -68,17 +69,18 @@ const getSectionById = (prisma: PrismaClient) => async (sectionId: number) => {
  * @param prisma - The Prisma client instance.
  * @returns A function that accepts a `sectionName` string and resolves to an array of Sections.
  */
-const getSectionsByName = (prisma: PrismaClient) => async (sectionName: string) => {
-    const sections = await prisma.section.findMany({
+const getSectionsByName =
+	(prisma: PrismaClient) => async (sectionName: string) => {
+		const sections = await prisma.section.findMany({
 			where: {
 				name: {
 					equals: sectionName,
 					mode: "insensitive"
-				},
+				}
 			}
 		});
 		return sections;
-}
+	};
 
 /**
  * Retrieves all sections in the database.
@@ -91,24 +93,24 @@ const getAllSections = async (prisma: PrismaClient): Promise<Section[]> => {
 	return sections;
 };
 
-
 /**
  * Retrieves all sections belonging to a specific project.
  *
  * @param prisma - The Prisma client instance.
  * @returns A function that accepts a `projectId` and resolves to an array of Sections.
  */
-const getAllSectionsInProject = (prisma: PrismaClient) => async(projectId: number) => {
-	const sections = await prisma.section.findMany({
-		where: {
-			project_id: {
-				equals: projectId
+const getAllSectionsInProject =
+	(prisma: PrismaClient) => async (projectId: number) => {
+		const sections = await prisma.section.findMany({
+			where: {
+				project_id: {
+					equals: projectId
+				}
 			}
-		}
-	})
+		});
 
-	return sections;
-}
+		return sections;
+	};
 
 /**
  * Counts the total number of sections within a given project.
@@ -116,23 +118,24 @@ const getAllSectionsInProject = (prisma: PrismaClient) => async(projectId: numbe
  * @param prisma - The Prisma client instance.
  * @returns A function that accepts a `projectId` and resolves to the number of sections.
  */
-const getNumberOfSectionInProject = (prisma: PrismaClient) => async(projectId: number) => {
-	const sections = await prisma.section.count({
-		where: {
-			project_id: {
-				equals: projectId
+const getNumberOfSectionInProject =
+	(prisma: PrismaClient) => async (projectId: number) => {
+		const sections = await prisma.section.count({
+			where: {
+				project_id: {
+					equals: projectId
+				}
 			}
-		}
-	})
+		});
 
-	return sections;
-}
+		return sections;
+	};
 
 export {
 	getSectionById,
-    getSectionByName,
-    getSectionsByName,
-    createSection,
+	getSectionByName,
+	getSectionsByName,
+	createSection,
 	getNumberOfSectionInProject,
 	getAllSections,
 	getAllSectionsInProject

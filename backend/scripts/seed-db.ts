@@ -5,15 +5,15 @@ const prisma = new PrismaClient();
 async function seedDatabase() {
 	try {
 		const project = await prisma.project.create({
-			data: { color: "#444", name: "Other" },
+			data: { color: "#444", name: "Other" }
 		});
 		console.log("✅ Projects seeded successfully!");
 
-		const section = await prisma.section.create({
+		await prisma.section.create({
 			data: {
 				project_id: project.id,
-				name: "Other",
-			},
+				name: "Other"
+			}
 		});
 
 		console.log("✅ Sections seeded successfully!");
