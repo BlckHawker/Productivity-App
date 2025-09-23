@@ -14,20 +14,20 @@ function showForm() {
 	if (form) {
 		form.style.display = "block";
 	}
-
 }
 
 export function App(): React.ReactElement {
 	return (
 		<div className="App">
-			<div id="menu"> 
+			<div id="menu">
 				<ProjectDisplay />
 				<ProjectForm />
-				<button id="create-proj" onClick={() => showForm()}>New Project</button>
+				<button id="create-proj" onClick={() => showForm()}>
+					New Project
+				</button>
 			</div>
 		</div>
-	)
-
+	);
 }
 
 export default App;

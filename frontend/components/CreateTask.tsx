@@ -34,7 +34,6 @@
 // 		}
 // 	};
 
-	
 // 	//todo give comment header
 // 	function updateError(foo: object) {
 // 		const bool = foo instanceof Error;

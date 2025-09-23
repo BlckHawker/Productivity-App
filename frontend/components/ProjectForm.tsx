@@ -1,178 +1,177 @@
-import * as globals from "../src/globals"
+import * as globals from "../src/globals";
 import * as utils from "../src/api/utils";
 import { Form } from "../hooks/Form";
 import React from "react"; // must be in scope for JSX
 
 function ProjectForm() {
+	// globals
+	const errormsg = document.querySelector<HTMLElement>("#name-error");
+	const submitbtn = document.querySelector<HTMLButtonElement>("#submitbtn");
+	const createbtn = document.querySelector<HTMLButtonElement>("#create-proj");
+	const input = document.querySelector<HTMLInputElement>("#inputname");
+	const defaultColor = "#000000";
+	let maxHit = false;
 
-    // globals
-    const errormsg = document.querySelector<HTMLElement>("#name-error");
-    const submitbtn = document.querySelector<HTMLButtonElement>("#submitbtn");
-    const createbtn = document.querySelector<HTMLButtonElement>("#create-proj");
-    const input = document.querySelector<HTMLInputElement>("#inputname");
-    const defaultColor = "#000000";
-    let maxHit = false;
+	// initial state of form
+	const initialState = {
+		name: "",
+		color: ""
+	};
 
-    // initial state of form
-    const initialState = {
-        name: "",
-        color: ""
-    };
+	const { onChange, onSubmit, values } = Form(
+		projectMadeCallback,
+		initialState
+	);
 
-    const { onChange, onSubmit, values} = Form(
-        projectMadeCallback,
-        initialState
-    );
+	// requests to api and results are held here
+	async function projectMadeCallback() {
+		// these lines work!!
+		const finalName: string = values.name.trim();
+		let finalColor: string = values.color;
 
-    // requests to api and results are held here
-    async function projectMadeCallback() {
+		// checking if input for color has not changed
+		if (!finalColor) {
+			finalColor = defaultColor; // forces color to be black
+		}
 
-        // these lines work!!
-        const finalName: string = values.name.trim();
-        let finalColor: string = values.color;
+		const finalProject: object = { name: finalName, color: finalColor };
 
-        // checking if input for color has not changed
-        if (!finalColor) {
-            finalColor = defaultColor; // forces color to be black
-        }
+		// make API call
+		const postResponse = await utils.postAPICall(
+			"/project/create",
+			finalProject
+		);
+		const message = await postResponse.json;
 
-        const finalProject: object = {name: finalName, color: finalColor};
+		// project limit hit
+		if (postResponse.status == "400") {
+			// limit is 100 projects
+			if (message.message === globals.MAX_PROJ_MSG) {
+				maxHit = true;
 
-        // make API call
-        const postResponse = await utils.postAPICall("/project/create", finalProject);
-        const message = await postResponse.json;
+				// once deletion is in place, the button will be enabled after there are less than 100 projects
+				if (errormsg) {
+					// populate innerHTML
+					errormsg.innerHTML = message.message;
+					// display on submit btn hover
+					if (createbtn) {
+						createbtn.addEventListener("mouseover", () => {
+							errormsg.style.visibility = "visible";
+						});
 
-        // project limit hit
-        if (postResponse.status == "400") {
+						// hide when not hovering
+						createbtn.addEventListener("mouseout", () => {
+							errormsg.style.visibility = "hidden";
+						});
+					}
+				}
+			}
+		}
 
-            // limit is 100 projects
-            if (message.message === globals.MAX_PROJ_MSG) {
-                maxHit = true;
+		// error handling
+		// project name already exists
+		if (postResponse.status == "409") {
+			// if element isn't null
+			if (submitbtn) {
+				// disable submit button
+				submitbtn.disabled = true;
+			}
 
-                // once deletion is in place, the button will be enabled after there are less than 100 projects
-                 if (errormsg) {
-                    // populate innerHTML
-                    errormsg.innerHTML = message.message;
-                    // display on submit btn hover
-                    if (createbtn) {
-                        createbtn.addEventListener("mouseover", () => {
-                            errormsg.style.visibility = "visible";
-                        });
+			// if element isn't null
+			if (errormsg) {
+				// populate innerHTML
+				errormsg.innerHTML = message.message;
+				// display on submit btn hover
+				if (submitbtn) {
+					if (submitbtn.disabled === true) {
+						submitbtn.addEventListener("mouseover", () => {
+							errormsg.style.visibility = "visible";
+						});
 
-                        // hide when not hovering
-                        createbtn.addEventListener("mouseout", () => {
-                            errormsg.style.visibility = "hidden";
-                        })
-                    }
-                }
-            }
-        }
+						// hide when not hovering
+						submitbtn.addEventListener("mouseout", () => {
+							errormsg.style.visibility = "hidden";
+						});
+					}
+				}
+			}
 
-        // error handling
-        // project name already exists
-        if (postResponse.status == "409") {
+			// red outline
+			if (input) {
+				input.style.outline = "thick solid #FF0000";
+			}
+		}
 
-            // if element isn't null
-            if (submitbtn) {
-                // disable submit button
-                submitbtn.disabled = true;
-            }
+		if (!postResponse.status) {
+			if (input) {
+				input.value = "";
+				window.location.reload();
+			}
+		}
 
-            // if element isn't null
-            if (errormsg) {
-                // populate innerHTML
-                errormsg.innerHTML = message.message;
-                // display on submit btn hover
-                if (submitbtn) {
-                    if (submitbtn.disabled === true) {
-                        submitbtn.addEventListener("mouseover", () => {
-                            errormsg.style.visibility = "visible";
-                        });
+		// cleanup
+	}
 
-                        // hide when not hovering
-                        submitbtn.addEventListener("mouseout", () => {
-                            errormsg.style.visibility = "hidden";
-                        });
-                    }
-                }
-            }
+	// test
+	const input_test = document.querySelector<HTMLInputElement>("#inputcolor");
+	if (input_test) {
+		input_test.style.display = "hidden";
+	}
 
-            // red outline
-            if (input){
-                input.style.outline = "thick solid #FF0000";
-            }
-        }
+	// enabling buttons after fixing an error
+	if (input) {
+		if (input.value === "") {
+			// enable submit button
+			if (submitbtn) {
+				submitbtn.disabled = false;
 
-        if(!postResponse.status) {
-            if(input) {
-                input.value = "";
-                window.location.reload();
-            }
-        }
+				if (errormsg) {
+					errormsg.innerHTML = "";
+				}
+			}
+			// undo outline
+			if (input) {
+				input.style.outline = "none";
+			}
 
-        // cleanup
-        
-    }
+			// enable new button project
+			if (createbtn) {
+				if (maxHit === false) {
+					createbtn.disabled = false;
+				}
+			}
+		}
+	}
 
-    // test
-    const input_test = document.querySelector<HTMLInputElement>("#inputcolor");
-    if (input_test) {
-        input_test.style.display = "hidden";
-    }
+	return (
+		<>
+			<form name="project-form" id="project-form" onSubmit={onSubmit}>
+				<div id="input-container">
+					<input
+						name="name"
+						id="inputname"
+						type="name"
+						placeholder="Project Name"
+						onChange={onChange}
+						required
+					/>
+					<p id="name-error"></p>
 
-    // enabling buttons after fixing an error
-    if (input) {
-        if (input.value === "") {
-
-            // enable submit button
-            if (submitbtn) {
-                submitbtn.disabled = false;
-
-                if (errormsg) {
-                    errormsg.innerHTML = "";
-                }
-            }
-            // undo outline
-            if (input){
-                input.style.outline = "none";
-            }
-
-            // enable new button project
-            if (createbtn) {
-                if (maxHit === false) {
-                    createbtn.disabled = false;
-                }
-            }
-        }
-    }
-
-    return (
-        <>
-            <form name="project-form" id="project-form" onSubmit={onSubmit}>
-                <div id="input-container">
-                    <input
-                        name='name'
-                        id='inputname'
-                        type='name'
-                        placeholder='Project Name'
-                        onChange={onChange}
-                        required 
-                    />
-                    <p id="name-error"></p>
-
-                    <input
-                        name='color'
-                        id='inputcolor'
-                        type='color'
-                        placeholder='Color'
-                        onChange={onChange}
-                        required 
-                    />
-                    <button id="submitbtn" type='submit'>Create Project</button>
-                </div>
-            </form>
-        </>
-    );
+					<input
+						name="color"
+						id="inputcolor"
+						type="color"
+						placeholder="Color"
+						onChange={onChange}
+						required
+					/>
+					<button id="submitbtn" type="submit">
+						Create Project
+					</button>
+				</div>
+			</form>
+		</>
+	);
 }
 
 export default ProjectForm;
