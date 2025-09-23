@@ -1,3 +1,4 @@
+import * as globals from "../src/globals"
 import * as utils from "../src/api/utils";
 import { Form } from "../hooks/Form";
 import React from "react"; // must be in scope for JSX
@@ -9,6 +10,7 @@ function ProjectForm() {
     const submitbtn = document.querySelector<HTMLButtonElement>("#submitbtn");
     const createbtn = document.querySelector<HTMLButtonElement>("#create-proj");
     const input = document.querySelector<HTMLInputElement>("#inputname");
+    const defaultColor = "#000000";
     let maxHit = false;
 
     // initial state of form
@@ -24,9 +26,16 @@ function ProjectForm() {
 
     // requests to api and results are held here
     async function projectMadeCallback() {
+
         // these lines work!!
         const finalName: string = values.name.trim();
-        const finalColor: string = values.color;
+        let finalColor: string = values.color;
+
+        // checking if input for color has not changed
+        if (!finalColor) {
+            finalColor = defaultColor; // forces color to be black
+        }
+
         const finalProject: object = {name: finalName, color: finalColor};
 
         // make API call
@@ -37,7 +46,7 @@ function ProjectForm() {
         if (postResponse.status == "400") {
 
             // limit is 100 projects
-            if (message.message === "Reached maximum amount of projects (100). Please delete some before creating more.") {
+            if (message.message === globals.MAX_PROJ_MSG) {
                 maxHit = true;
 
                 // once deletion is in place, the button will be enabled after there are less than 100 projects
@@ -103,6 +112,12 @@ function ProjectForm() {
 
         // cleanup
         
+    }
+
+    // test
+    const input_test = document.querySelector<HTMLInputElement>("#inputcolor");
+    if (input_test) {
+        input_test.style.display = "hidden";
     }
 
     // enabling buttons after fixing an error
