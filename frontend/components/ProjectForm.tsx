@@ -1,7 +1,18 @@
 import * as globals from "../src/globals";
 import * as utils from "../src/api/utils";
 import { Form } from "../hooks/Form";
+import { useForm, useWatch, Control } from "react-hook-form";
 import React from "react"; // must be in scope for JSX
+
+function FirstNameWatched({ control }: { control: Control<FormInputs> }) {
+  const firstName = useWatch({
+    control,
+    name: "firstName", // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
+    defaultValue: "default" // default value before the render
+  });
+
+  return <p>Watch: {firstName}</p>; // only re-render at the component level, when firstName changes
+}
 
 function ProjectForm() {
 	// globals
@@ -108,19 +119,11 @@ function ProjectForm() {
 				window.location.reload();
 			}
 		}
-
-		// cleanup
-	}
-
-	// test
-	const input_test = document.querySelector<HTMLInputElement>("#inputcolor");
-	if (input_test) {
-		input_test.style.display = "hidden";
 	}
 
 	// enabling buttons after fixing an error
 	if (input) {
-		if (input.value === "") {
+		if (input.value === "" || ) {
 			// enable submit button
 			if (submitbtn) {
 				submitbtn.disabled = false;
