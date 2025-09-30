@@ -11,6 +11,18 @@ function ProjectDisplay() {
 	useEffect(() => {
 		const getRequest = utils.getAPICall("/projects");
 		getRequest.then((projects) => setProjects(projects));
+		const status = async () => {
+			const response = await getRequest;
+			const statusCode = await response.status;
+			const message = await response.json;
+
+			if (statusCode != "200"){
+				console.log(message.message);
+				alert(message.message);
+			}
+			
+		};
+		status();
 	}, []);
 
 	// checking type of 'projects': array means tasks have been returned, anything else means there are no tasks
