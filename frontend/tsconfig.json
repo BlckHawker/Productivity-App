@@ -3,6 +3,7 @@
 		"types": ["jest"],
 		"noImplicitAny": true
 	},
+	"files":["../backend/src/controllers/project.ts"],
 	"include": ["src", "tests", "components", "hooks"],
 	"references": [
 		{ "path": "./tsconfig.app.json" },
