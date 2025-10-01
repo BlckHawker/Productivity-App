@@ -11,7 +11,11 @@ function ProjectForm() {
 	const input = document.querySelector<HTMLInputElement>("#inputname");
 	const defaultColor = "#000000";
 	let maxHit = false;
+	let currentVal:string;
 
+	if (input){
+		currentVal = input.value;
+	}
 	// initial state of form
 	const initialState = {
 		name: "",
@@ -112,28 +116,32 @@ function ProjectForm() {
 		// cleanup
 	}
 
-	// test
-	const input_test = document.querySelector<HTMLInputElement>("#inputcolor");
-	if (input_test) {
-		input_test.style.display = "hidden";
+	// actively checking input to make sure the project name has changed (if the "project already exists" error has ocurred)
+	function checkInput() {
+		// get current input value
+		if (input) {
+			if (input.value != currentVal) {
+				console.log(currentVal);
+				// enable submit button
+				if (submitbtn) {
+					submitbtn.disabled = false;
+
+					if (errormsg) {
+						errormsg.innerHTML = "";
+					}
+				}
+				// undo outline
+				if (input) {
+					input.style.outline = "none";
+				}
+			}
+
+		}
 	}
 
 	// enabling buttons after fixing an error
 	if (input) {
 		if (input.value === "") {
-			// enable submit button
-			if (submitbtn) {
-				submitbtn.disabled = false;
-
-				if (errormsg) {
-					errormsg.innerHTML = "";
-				}
-			}
-			// undo outline
-			if (input) {
-				input.style.outline = "none";
-			}
-
 			// enable new button project
 			if (createbtn) {
 				if (maxHit === false) {
@@ -153,6 +161,7 @@ function ProjectForm() {
 						type="name"
 						placeholder="Project Name"
 						onChange={onChange}
+						onInput={checkInput}
 						required
 					/>
 					<p id="name-error"></p>
