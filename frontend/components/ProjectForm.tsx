@@ -114,8 +114,6 @@ function ProjectForm() {
 				window.location.reload();
 			}
 		}
-
-		// cleanup
 	}
 
 	// actively checking input to make sure the project name has changed (if the "project already exists" error has ocurred)
@@ -123,7 +121,6 @@ function ProjectForm() {
 		// get current input value
 		if (input) {
 			if (input.value != currentVal) {
-				console.log(currentVal);
 				// enable submit button
 				if (submitbtn) {
 					submitbtn.disabled = false;
