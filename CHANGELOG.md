@@ -9,6 +9,10 @@
   - Get all projects
   - Update project
   - Delete project by ID
+  - Greate section
+  - Get section by id
+  - Get all sections with a project by its id
+  - Get all sections within the database
 - Schema documentation added to the Wiki
 - Scripts to easily modify the database for debugging
 - Swagger API documentation

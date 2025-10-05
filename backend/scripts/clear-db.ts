@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 async function clearDatabase() {
 	try {
 		// Adjust order if foreign keys exist (delete children first)
+		await prisma.section.deleteMany({});
 		await prisma.project.deleteMany({});
 		console.log("✅ Database cleared!");
 	} catch (error) {
