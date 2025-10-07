@@ -3,7 +3,7 @@ import { Form } from "../hooks/Form";
 import {MAX_PROJECTS} from "../../backend/src/controllers/project.ts"
 import React from "react"; // must be in scope for JSX
 
-function ProjectForm() {
+function CreateProjectForm() {
 	// globals
 	const errormsg = document.querySelector<HTMLElement>("#name-error");
 	const submitbtn = document.querySelector<HTMLButtonElement>("#submitbtn");
@@ -180,7 +180,7 @@ function ProjectForm() {
 	);
 }
 
-export default ProjectForm;
+export default CreateProjectForm;
 
 /*
 form source: https://dev.to/karan316/build-forms-using-react-the-easy-way-with-typescript-46bh

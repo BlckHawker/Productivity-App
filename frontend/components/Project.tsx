@@ -10,7 +10,7 @@ export default function Project(props: {
 				<p className="project-name" style={{ color: props.color }}>
 					{props.name}
 				</p>
-				{/* <ul className="section-list"></ul> */}
+				<button>Edit Project</button>
 			</div>
 		</>
 	);
