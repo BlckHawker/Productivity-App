@@ -16,6 +16,7 @@ function CreateProjectForm() {
 	if (input){
 		currentVal = input.value;
 	}
+	
 	// initial state of form
 	const initialState = {
 		name: "",
