@@ -126,6 +126,7 @@ const getAllSections = async (
 	}
 };
 
+//todo add comment header
 const changeSectionName = (prisma: PrismaClient) =>
 	async (id: number, newName: string): Promise<Section | Error> => {
 	try {
@@ -167,11 +168,65 @@ const changeSectionName = (prisma: PrismaClient) =>
 	}
 }
 
+//todo add comment header
+const moveSectionToProject = (prisma: PrismaClient) => async (sectionId: number, newProjectId: number): Promise<Section | Error>  => {
+	try {
+		//todo verify the section exists
+		const section = await getSectionById(prisma)(sectionId);
+		if(section instanceof Error) {
+			return section as Error;
+		}
+
+		if (section === null) {
+			return new Error(`A section with the id ${sectionId} does not exist`);
+		}
+
+		//todo verify the project exists
+		const project = await projectService.getProjectById(prisma)(newProjectId);
+		if(project instanceof Error) {
+			return project as Error;
+		}
+
+		if (project === null) {
+			return new Error(`A project with the id ${newProjectId} does not exist`);
+		}
+
+		const errorMsg = `Cannot move section "${section.name}" (id: ${section.id}) to project "${project.name}" (id: ${project.id}).`
+
+		//todo verify the new project is not the same as the one section is currently is
+		if(project.id == section.project_id) {
+			return new Error (`${errorMsg} Section already exists in that project`)
+		}
+
+		//todo verify the project doesn't currently have the max amount of projects
+		const sectionSize = await sectionService.getNumberOfSectionInProject(prisma)(project.id)
+		if(sectionSize >= MAX_SECTIONS) {
+			return new Error(`${errorMsg} Project already has max amount of sections (${sectionSize})`)
+		}
+
+		//todo verify a section with the name of the current section doesn't already exist within that project
+		const existingSection = await sectionService.getSectionByName(prisma)(project.id, section.name);
+
+		if (existingSection !== null) {
+			return new Error(`${errorMsg} A section within that project already has that name.`)
+		} 
+
+		//todo update the section so its project id is the new one
+		const updatedSection = await sectionService.changeSectionProject(prisma)(section.id, project.id);
+		return updatedSection;
+	}
+
+	catch(err) {
+		return err as Error;
+	}
+}
+
 export {
 	MAX_SECTIONS,
 	createSection,
 	getSectionById,
 	getAllSectionsInProject,
 	getAllSections,
-	changeSectionName
+	changeSectionName,
+	moveSectionToProject
 };

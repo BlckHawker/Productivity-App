@@ -372,6 +372,7 @@ const getAllSections = async (req: Request, res: Response) => {
  *                   example: "No sections were found"
  */
 
+//todo add comment header
 const changeSectionName = async (req: Request, res: Response) => {
 	const new_name = req.body && typeof req.body?.new_name === "string" ? req.body?.new_name.trim() : "";
 	const section_id = req.body && typeof req.body?.section_id === "number" ? Number(req.body?.section_id) : NaN;

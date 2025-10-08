@@ -132,6 +132,7 @@ const getNumberOfSectionInProject =
 		return sections;
 	};
 
+//todo add comment header
 const changeSectionName = (prisma: PrismaClient) => async (id: number, newName: string) => {
 	const updatedSection = await prisma.section.update({
       where: {
@@ -139,6 +140,19 @@ const changeSectionName = (prisma: PrismaClient) => async (id: number, newName: 
       },
       data: {
         name: newName,
+      },
+    });
+
+	return updatedSection;
+}
+
+const changeSectionProject = (prisma: PrismaClient) => async (sectionId: number, projectId: number) => {
+	const updatedSection = await prisma.section.update({
+      where: {
+        id: sectionId,
+      },
+      data: {
+        project_id: projectId,
       },
     });
 
@@ -153,5 +167,6 @@ export {
 	createSection,
 	getNumberOfSectionInProject,
 	getAllSections,
-	getAllSectionsInProject
+	getAllSectionsInProject,
+	changeSectionProject
 };
