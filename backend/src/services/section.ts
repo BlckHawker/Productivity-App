@@ -146,6 +146,7 @@ const changeSectionName = (prisma: PrismaClient) => async (id: number, newName: 
 	return updatedSection;
 }
 
+//todo add comment header
 const changeSectionProject = (prisma: PrismaClient) => async (sectionId: number, projectId: number) => {
 	const updatedSection = await prisma.section.update({
       where: {

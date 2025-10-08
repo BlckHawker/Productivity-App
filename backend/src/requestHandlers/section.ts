@@ -503,8 +503,27 @@ const moveSectionToProject = async (req: Request, res: Response) => {
 
 	if (!validArgs.success)
 		return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+
+	const response = await sectionController.moveSectionToProject(req.prisma)(section_id, project_id);
+
+	const notFoundMatches = [/A section with the id .+ does not exist/, /A project with the id .+ does not exist/];
+	const conflictMatches = [/Cannot move section ".+" \(id: .+\) to project ".+" \(id: .+\)\. Section already exists in that project/,
+		/Cannot move section ".+" \(id: .+\) to project ".+" \(id: .+\)\. Project already has max amount of sections \(.+\)/,
+		/Cannot move section ".+" \(id: .+\) to project ".+" \(id: .+\)\. A section within that project already has that name\./
+	]
+
+	if(response instanceof Error) {
+		if(notFoundMatches.some(reg => response.message.match(reg))) {
+			return res.status(StatusCode.ClientErrorNotFound).json({message: response.message});
+		}
+
+		if(conflictMatches.some(reg => response.message.match(reg))) {
+			return res.status(StatusCode.ClientErrorConflict).json({message: response.message});
+		}
+	}
+
 	return utils.sanitizeResponse(
-		null,
+		response,
 		res,
 		"Contact developers if this line appears. moveSectionToProject request handler"
 	);
@@ -537,6 +556,28 @@ const moveSectionToProject = async (req: Request, res: Response) => {
  *                 description: The id of the section that will be moved
  *                 example: 1
  *     responses:
+  *       200:
+ *         description: Successful response with updated section data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: number
+ *                   example: 1
+ *                 project_id:
+ *                   type: number
+ *                   example: 2
+ *                 name:
+ *                   type: string
+ *                   example: "Math"
+ *                 created_at:
+ *                   type: string
+ *                   example: "2025-09-05T23:03:57.213Z"
+ *                 updated_at:
+ *                   type: string
+ *                   example: "2025-09-05T23:03:57.213Z"
  *       400:
  *         description: Invalid data
  *         content:
@@ -559,6 +600,46 @@ const moveSectionToProject = async (req: Request, res: Response) => {
  *                 value:
  *                   success: false
  *                   message: "Invalid project_id: must be typeof integer"
+ *       404:
+ *          description: Not found
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                  examples:
+ *                    projectId:
+ *                      summary: Project with given id is not in database 
+ *                      value:
+ *                        message: "A project with the id 1 does not exist"
+ *                    sectionId:
+ *                      summary: Section with given id is not in database
+ *                      value:
+ *                        message: "A section with the id 1 does not exist"
+ *       409:
+ *          description: Conflict
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                  examples:
+ *                    sameProject:
+ *                      summary: Attempting to move section in current project
+ *                      value:
+ *                        message: "Cannot move section \"Budget\" (id: 205) to project \"fda\" (id: 110). Section already exists in that project"
+ *                    maxSections:
+ *                      summary: Target project can't store any more sections
+ *                      value:
+ *                        message: "Cannot move section \"Budget\" (id: 205) to project \"fda\" (id: 110). Project already has max amount of sections (100)"
+ *                    sameName:
+ *                      summary: Target project already has a section with the moving section's name (case-insensitive)
+ *                      value:
+ *                        message: "Cannot move section \"Budget\" (id: 205) to project \"fda\" (id: 110). A section within that project already has that name."
  */
 
 
