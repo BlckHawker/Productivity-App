@@ -1,5 +1,6 @@
 import * as projectService from "../services/project";
 import * as sectionService from "../services/section";
+import * as projectController from "./project"
 import { PrismaClient, Section } from "../../generated/prisma";
 
 const MAX_SECTIONS = 100;
@@ -125,10 +126,52 @@ const getAllSections = async (
 	}
 };
 
+const changeSectionName = (prisma: PrismaClient) =>
+	async (id: number, newName: string): Promise<Section | Error> => {
+	try {
+		//check to see if the section exists
+		const section = await getSectionById(prisma)(id);
+
+		if (section instanceof Error) {
+			return section as Error;
+		}
+
+		if (section === null) {
+			return new Error(`A section with the id ${id} does not exist`);
+		}
+
+		//verify the new name does not exist for an existing section within this project
+		const project = await projectController.getProjectById(prisma)(section.project_id);
+
+		if(project instanceof Error) {
+			return project as Error;
+		}
+
+		if(project === null) {
+			return new Error(`Could not find a project connected to the section with an id of ${id}`);
+		}
+
+		const existingSection = await sectionService.getSectionByName(prisma)(section.project_id, newName);
+
+		if (existingSection !== null) {
+			return new Error(`A section within the project named "${project.name}" (id: ${project.id}) already has a section named "${newName}". Cannot change the section named "${section.name}" (id: ${id}) to "${newName}"`)
+		} 
+
+		//change the name of the section
+		const updatedSection = await sectionService.changeSectionName(prisma)(id, newName);
+		return updatedSection;
+	}
+
+	catch(err) {
+		return err as Error;
+	}
+}
+
 export {
 	MAX_SECTIONS,
 	createSection,
 	getSectionById,
 	getAllSectionsInProject,
-	getAllSections
+	getAllSections,
+	changeSectionName
 };

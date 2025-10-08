@@ -4,6 +4,7 @@
  */
 
 import { PrismaClient, Section } from "../../generated/prisma";
+import prisma from "../prisma";
 
 /**
  * Creates a new section within a given project.
@@ -131,7 +132,21 @@ const getNumberOfSectionInProject =
 		return sections;
 	};
 
+const changeSectionName = (prisma: PrismaClient) => async (id: number, newName: string) => {
+	const updatedSection = await prisma.section.update({
+      where: {
+        id,
+      },
+      data: {
+        name: newName,
+      },
+    });
+
+	return updatedSection;
+}
+
 export {
+	changeSectionName,
 	getSectionById,
 	getSectionByName,
 	getSectionsByName,
