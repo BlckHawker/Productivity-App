@@ -372,9 +372,65 @@ const getAllSections = async (req: Request, res: Response) => {
  *                   example: "No sections were found"
  */
 
+const changeSectionName = async (req: Request, res: Response) => {
+	const new_name = req.body && typeof req.body?.new_name === "string" ? req.body?.new_name.trim() : "";
+	const section_id = req.body && typeof req.body?.section_id === "number" ? Number(req.body?.section_id) : NaN;
+	
+	const validArgs = utils.mergeResults(
+		utils.assertArgumentsString({ new_name }),
+		utils.assertArgumentsNumber({ section_id })
+	);
+
+	if (!validArgs.success)
+		return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+
+
+
+	return utils.sanitizeResponse(
+		null,
+		res,
+		`Debug response for changeSectionName`
+	);
+};
+/**
+ * @swagger
+ * /section/changeName:
+ *   get:
+ *     summary: Change the name of an existing section
+ *     tags:
+ *       - Section
+ *     responses:
+ *       400:
+ *         description: Invalid data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             examples:
+ *               invalidSectionId:
+ *                 summary: section_id is either missing or not an integer
+ *                 value:
+ *                   success: false
+ *                   message: "Invalid section_id: must be a valid number"
+ *               invalidNewName:
+ *                 summary: new_name is either missing or not a string
+ *                 value:
+ *                   success: false
+ *                   message: "Invalid new_name: must be typeof string"
+ */
+
+
+
+
 export {
 	createSection,
 	getSectionById,
 	getAllSectionsInProject,
-	getAllSections
+	getAllSections,
+	changeSectionName
 };

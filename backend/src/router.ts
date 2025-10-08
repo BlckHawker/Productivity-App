@@ -18,8 +18,8 @@ export default (app: Express) => {
 	app.get("/section/:id", section.getSectionById);
 	app.get("/sections/", section.getAllSections);
 	app.get("/project/sections/:id", section.getAllSectionsInProject);
-
 	app.post("/section/create", section.createSection);
+	app.put("/section/changeName", section.changeSectionName)
 	swaggerDocs(app, port);
 	app.use(utils.notFound);
 };
