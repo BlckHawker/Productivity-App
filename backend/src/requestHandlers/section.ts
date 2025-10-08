@@ -396,7 +396,7 @@ const changeSectionName = async (req: Request, res: Response) => {
 	return utils.sanitizeResponse(
 		response,
 		res,
-		`Debug response for changeSectionName`
+		"Contact developers if this line appears. changeSectionName request handler"
 	);
 };
 /**
@@ -496,8 +496,71 @@ const moveSectionToProject = async (req: Request, res: Response) => {
 	const section_id = req.body && typeof req.body?.section_id === "number" ? Number(req.body?.section_id) : NaN;
 	const project_id = req.body && typeof req.body?.project_id === "number" ? Number(req.body?.project_id) : NaN;
 
+	const validArgs = utils.mergeResults(
+		utils.assertArgumentsNumber({ project_id }),
+		utils.assertArgumentsNumber({ section_id })
+	);
+
+	if (!validArgs.success)
+		return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
+	return utils.sanitizeResponse(
+		null,
+		res,
+		"Contact developers if this line appears. moveSectionToProject request handler"
+	);
+
 
 }
+/**
+ * @swagger
+ * /section/changeProject:
+ *   put:
+ *     summary: Change a section's project
+ *     tags:
+ *       - Section
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - section_id
+ *               - project_id
+ *             properties:
+ *               project_id:
+ *                 type: number
+ *                 description: The id of the project that the section will be moved to
+ *                 example: 1
+ *               section_id:
+ *                 type: number
+ *                 description: The id of the section that will be moved
+ *                 example: 1
+ *     responses:
+ *       400:
+ *         description: Invalid data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: number
+ *             examples:
+ *               invalidSectionId:
+ *                 summary: section_id is either missing or not an integer
+ *                 value:
+ *                   success: false
+ *                   message: "Invalid section_id: must be a valid number"
+ *               invalidNewName:
+ *                 summary: project_id is either missing or not an integer
+ *                 value:
+ *                   success: false
+ *                   message: "Invalid project_id: must be typeof integer"
+ */
+
 
 
 
@@ -506,5 +569,6 @@ export {
 	getSectionById,
 	getAllSectionsInProject,
 	getAllSections,
-	changeSectionName
+	changeSectionName,
+	moveSectionToProject
 };
