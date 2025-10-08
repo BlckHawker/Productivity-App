@@ -491,6 +491,13 @@ const changeSectionName = async (req: Request, res: Response) => {
  *                   example: "A section within the project named \"School\" (id: 1) already has a section named \"Math\". Cannot change the section named \"Algebra\" (id: 1) to \"Math\""
  */
 
+//todo add header comment
+const moveSectionToProject = async (req: Request, res: Response) => {
+	const section_id = req.body && typeof req.body?.section_id === "number" ? Number(req.body?.section_id) : NaN;
+	const project_id = req.body && typeof req.body?.project_id === "number" ? Number(req.body?.project_id) : NaN;
+
+
+}
 
 
 
