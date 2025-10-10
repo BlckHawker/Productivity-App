@@ -32,7 +32,7 @@ export default function ProjectDisplay() {
 				{isProj ? (
 					projects &&
 					projects.map((proj) => (
-						<Project key={proj.id} name={proj.name} color={proj.color} />
+						<Project key={proj.id} id={proj.id} name={proj.name} color={proj.color} />
 					))
 				) : (
 					<p>No projects!</p>
@@ -43,4 +43,4 @@ export default function ProjectDisplay() {
 }
 
 // export default ProjectDisplay;
-export {projArray};
+export {projArray}; // TODO: currently everything in the array is duplicated on every page reload

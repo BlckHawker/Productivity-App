@@ -3,11 +3,12 @@ import { Form } from "../hooks/Form";
 import React from "react"; // must be in scope for JSX
 
 // props will be an object with the current project's name and color
-function UpdateProjectForm(props: {name: string, color: string}) {
+function UpdateProjectForm(props: {name: string, color: string, id: number}) {
     // initial state of form
     const initialState = {
         name: props.name,
-        color: props.color
+        color: props.color,
+        id: props.id
     };
     
     const { onChange, onSubmit, values } = Form(
@@ -21,7 +22,11 @@ function UpdateProjectForm(props: {name: string, color: string}) {
     }
 
     async function projectChangeCallback(){
+        const newName = values.name;
+        const newColor = values.color;
+        const id = props.id;
 
+        console.log(`current name: ${newName}, currentColor: ${newColor}, ID: ${id}`);
     }
 
     // TODO: hide component on form submission (page reload)

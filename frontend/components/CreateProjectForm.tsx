@@ -48,6 +48,7 @@ function CreateProjectForm() {
 		);
 		const message = await postResponse.json;
 
+		// error handling
 		// project limit hit
 		if (postResponse.status == "400") {
 			// limit is 100 projects
@@ -107,6 +108,7 @@ function CreateProjectForm() {
 			}
 		}
 
+		// after input is accepted
 		if (!postResponse.status) {
 			if (input) {
 				input.value = "";

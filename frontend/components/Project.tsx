@@ -4,6 +4,7 @@ import UpdateProjectForm from "./UpdateProjectForm";
 export default function Project(props: {
 	name: string;
 	color: string;
+	id: number;
 }): React.ReactElement {
 
 	const [isShown, setIsShown] = useState<boolean>(false);
@@ -15,7 +16,7 @@ export default function Project(props: {
 					{props.name}
 				</p>
 				<button onClick={()=> setIsShown(true)}>Edit Project</button>
-				{isShown && <UpdateProjectForm name={props.name} color={props.color}/>}
+				{isShown && <UpdateProjectForm name={props.name} color={props.color} id={props.id}/>}
 			</div>
 		</>
 	);
