@@ -1,15 +1,19 @@
-import * as utils from "../src/api/utils";
+// import * as utils from "../src/api/utils";
 import { Form } from "../hooks/Form";
 import React from "react"; // must be in scope for JSX
 
 // props will be an object with the current project's name and color
 function UpdateProjectForm(props: {name: string, color: string, id: number}) {
+    let currentColor = document.querySelector<HTMLInputElement>("#inputColor");
+
     // initial state of form
     const initialState = {
         name: props.name,
         color: props.color,
         id: props.id
     };
+
+    // currentColor.value = props.color;
     
     const { onChange, onSubmit, values } = Form(
         projectChangeCallback,
@@ -51,6 +55,7 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 						id="inputcolor"
 						type="color"
 						placeholder="Color"
+                        // TODO: make sure color displays as current color, not as default black
 						onChange={onChange}
 						required
 					/>
