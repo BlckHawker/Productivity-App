@@ -20,6 +20,11 @@ function UpdateProjectForm(props: {name: string, color: string}) {
         
     }
 
+    async function projectChangeCallback(){
+
+    }
+
+    // TODO: hide component on form submission (page reload)
     return (
         <>
             <form name="submit-project-form" id="submit-project-form" onSubmit={onSubmit}>
@@ -30,7 +35,7 @@ function UpdateProjectForm(props: {name: string, color: string}) {
 						type="name"
 						placeholder="Project Name"
 						onChange={onChange}
-						//onInput={checkInput} 
+						onInput={checkInput} 
                         // TODO: write checkInput function to handle input errors
 						required
 					/>
