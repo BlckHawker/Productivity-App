@@ -1,4 +1,4 @@
-// import * as utils from "../src/api/utils";
+import * as utils from "../src/api/utils";
 import { Form } from "../hooks/Form";
 import React from "react"; // must be in scope for JSX
 
@@ -26,11 +26,18 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
     }
 
     async function projectChangeCallback(){
-        const newName = values.name;
-        const newColor = values.color;
+        const newName: string = values.name;
+        const newColor: string = values.color;
         const id = props.id;
+        const newProj: object = {newName, newColor};
 
         console.log(`current name: ${newName}, currentColor: ${newColor}, ID: ${id}`);
+
+        // make PUT request to update name and/or color
+        // display error message in a div below the form
+        // PUT returns errors when name is the same!
+        const putRequest = await utils.putAPICall("/project/update", newProj);
+
     }
 
     // TODO: hide component on form submission (page reload)
@@ -44,8 +51,6 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 						type="name"
 						placeholder="Project Name"
 						onChange={onChange}
-						onInput={checkInput} 
-                        // TODO: write checkInput function to handle input errors
 						required
 					/>
 					<p id="name-error"></p>

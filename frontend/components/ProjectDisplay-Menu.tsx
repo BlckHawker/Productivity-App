@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Project from "./Project";
 import React from "react"; // must be in scope for JSX
 
-const projArray: Array<object> = [];
+//const projArray: Array<object> = [];
 
 export default function ProjectDisplay() {
 	// make get request for projects
@@ -19,8 +19,8 @@ export default function ProjectDisplay() {
 	// checking type of 'projects': array means tasks have been returned, anything else means there are no tasks
 	if (Array.isArray(projects)) {
 		isProj = true;
-		projects.map((proj) => projArray.push(proj));
-		console.log(projArray);
+		// projects.map((proj) => projArray.push(proj));
+		// console.log(projArray);
 	} else {
 		isProj = false;
 	}
@@ -43,4 +43,4 @@ export default function ProjectDisplay() {
 }
 
 // export default ProjectDisplay;
-export {projArray}; // TODO: currently everything in the array is duplicated on every page reload
+//export {projArray}; // TODO: currently everything in the array is duplicated on every page reload
