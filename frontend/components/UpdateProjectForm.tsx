@@ -19,6 +19,8 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
         name: props.name,
         color: props.color
     };
+
+	const oldColor = props.color;
     
     const { onChange, onSubmit, values } = Form(
         projectChangeCallback,
@@ -94,7 +96,6 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 
     }
 
-    // TODO: hide component on form submission (page reload)
     return (
         <>
             <form name="submit-project-form" id="submit-project-form" onSubmit={onSubmit}>
@@ -116,6 +117,7 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 						type="color"
 						placeholder="Color"
                         // TODO: make sure color displays as current color, not as default black
+						defaultValue={oldColor}
 						onChange={onChange}
 						required
 					/>
