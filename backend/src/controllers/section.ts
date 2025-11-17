@@ -183,7 +183,7 @@ const moveSectionToProject = (prisma: PrismaClient) => async (sectionId: number,
 		}
 
 		//verify the project exists
-		const project = await projectService.getProjectById(prisma)(newProjectId);
+		const project = await projectController.getProjectById(prisma)(newProjectId);
 		if(project instanceof Error) {
 			return project as Error;
 		}
