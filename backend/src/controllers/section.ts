@@ -1,3 +1,4 @@
+
 import * as projectService from "../services/project";
 import * as sectionService from "../services/section";
 import * as projectController from "./project"
@@ -126,7 +127,17 @@ const getAllSections = async (
 	}
 };
 
-//todo add comment header
+/**
+ * Changes the name of an existing section.
+ *
+ * @param prisma - The PrismaClient instance used to access the database.
+ * @returns An asynchronous function:
+ *   - @param id - The unique ID of the section to rename.
+ *   - @param newName - The new name for the section.
+ *   - @returns A Promise resolving to the updated `Section` on success,
+ *     or an `Error` if the section does not exist, the parent project does not exist,
+ *     or another section in the same project already uses `newName`.
+ */
 const changeSectionName = (prisma: PrismaClient) =>
 	async (id: number, newName: string): Promise<Section | Error> => {
 	try {
@@ -168,7 +179,18 @@ const changeSectionName = (prisma: PrismaClient) =>
 	}
 }
 
-//todo add comment header
+/**
+ * Moves a section to a different project.
+ *
+ * @param prisma - The PrismaClient instance used to access the database.
+ * @returns An asynchronous function:
+ *   - @param sectionId - The unique ID of the section to move.
+ *   - @param newProjectId - The ID of the project to move the section into.
+ *   - @returns A Promise resolving to the updated `Section` on success,
+ *     or an `Error` if the section or project does not exist, if attempting to move
+ *     the section to its current project, if the new project already contains a section
+ *     with the same name, or if the project has reached the maximum number of sections.
+ */
 const moveSectionToProject = (prisma: PrismaClient) => async (sectionId: number, newProjectId: number): Promise<Section | Error>  => {
 	try {
 		//verify the section exists

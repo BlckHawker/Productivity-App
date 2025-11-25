@@ -372,7 +372,17 @@ const getAllSections = async (req: Request, res: Response) => {
  *                   example: "No sections were found"
  */
 
-//todo add comment header
+/**
+ * Handles the creation of a new section within a project.
+ *
+ * Validates the request body, forwards the request to the section controller,
+ * and returns appropriate HTTP responses based on validation errors,
+ * controller errors, or successful section creation.
+ *
+ * @param req - Express request object containing `name` and `project_id` in the body.
+ * @param res - Express response object used to return JSON responses.
+ * @returns A Promise resolving to the HTTP response sent to the client.
+ */
 const changeSectionName = async (req: Request, res: Response) => {
 	const new_name = req.body && typeof req.body?.new_name === "string" ? req.body?.new_name.trim() : "";
 	const section_id = req.body && typeof req.body?.section_id === "number" ? Number(req.body?.section_id) : NaN;
@@ -491,7 +501,21 @@ const changeSectionName = async (req: Request, res: Response) => {
  *                   example: "A section within the project named \"School\" (id: 1) already has a section named \"Math\". Cannot change the section named \"Algebra\" (id: 1) to \"Math\""
  */
 
-//todo add header comment
+/**
+ * Moves a section from one project into another.
+ *
+ * Validates the request body, then calls the controller to perform the move.
+ * Returns detailed error statuses for:
+ * - missing/invalid IDs,
+ * - non-existent section or project,
+ * - attempting to move to the same project,
+ * - exceeding section limits,
+ * - or name conflicts within the destination project.
+ *
+ * @param req - Express request object containing `section_id` and `project_id` in the body.
+ * @param res - Express response object used to return JSON responses.
+ * @returns A Promise resolving to the HTTP response sent to the client.
+ */
 const moveSectionToProject = async (req: Request, res: Response) => {
 	const section_id = req.body && typeof req.body?.section_id === "number" ? Number(req.body?.section_id) : NaN;
 	const project_id = req.body && typeof req.body?.project_id === "number" ? Number(req.body?.project_id) : NaN;
