@@ -1,3 +1,10 @@
+/**
+ * Section controller layer.
+ *
+ * Provides higher-level operations for managing sections,
+ * wrapping service-layer calls with error handling and
+ * additional business logic such as validation and limits.
+ */
 
 import * as projectService from "../services/project";
 import * as sectionService from "../services/section";

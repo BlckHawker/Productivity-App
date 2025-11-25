@@ -1,3 +1,11 @@
+/**
+ * App router.
+ *
+ * Sets up all project and section routes, applies middleware,
+ * and loads the Swagger docs. Connects each endpoint to its
+ * corresponding request handler.
+ */
+
 import * as project from "./requestHandlers/project";
 import * as section from "./requestHandlers/section";
 

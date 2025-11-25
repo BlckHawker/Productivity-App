@@ -1,3 +1,12 @@
+/**
+ * Section request handler layer.
+ *
+ * Defines Express route handlers for creating, fetching, updating,
+ * and moving sections. Performs request validation, forwards logic to
+ * the section controller, and returns consistent HTTP responses
+ * for success, validation errors, and controller-level errors.
+ */
+
 import * as sectionController from "../controllers/section";
 import * as utils from "../utils";
 import { Request, Response } from "express";
