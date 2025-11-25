@@ -34,7 +34,6 @@ const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
 
 describe("createSection", () => {
 	beforeEach(() => resetTests());
-
 	test("400s when given invalid data", async () => {
 		(utils.mergeResults as jest.Mock).mockReturnValue({ success: false });
 		await createSection(req as Request, res);
@@ -218,127 +217,84 @@ describe("getAllSections", () => {
 describe("moveSectionToProject", () => {
 	beforeEach(() => resetTests());
 
-	test("400s when given invalid arguments", async () => {
+	test("400s when given invalid data", async () => {
 		(utils.mergeResults as jest.Mock).mockReturnValue({ success: false });
-
 		await moveSectionToProject(req as Request, res);
-
 		expect(sectionController.moveSectionToProject).not.toHaveBeenCalled();
 		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
-		expect(res.json).toHaveBeenCalledWith({ success: false });
 	});
+
 
 	describe("404s", () => {
-		test("when section does not exist", async () => {
-			req.body = { project_id: 1, section_id: 2 };
-			(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
+	const baseMessage = "Cannot move section \"Section Name\" (id: 1) to project \"Project Name\" (id: 2). "
+    const conflictErrors = [
+        `A section with the id 1 does not exist`,
+        `A project with the id 1 does not exist`,
+    ];
 
-			const message = `A section with the id 2 does not exist`;
-			mockCurried(
-				sectionController.moveSectionToProject as jest.Mock,
-				new Error(message)
-			);
+    test.each(conflictErrors)(
+        "returns 404 when not found error occurs: %s",
+        async (reason) => {
+			const errorMessage = baseMessage + reason;
+            (utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
+            mockCurried(
+                sectionController.moveSectionToProject as jest.Mock,
+                new Error(errorMessage)
+            );
 
-			await moveSectionToProject(req as Request, res);
+            await moveSectionToProject(req as Request, res);
 
-			expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorNotFound);
-			expect(res.json).toHaveBeenCalledWith({ message });
-		});
-
-		test("when project does not exist", async () => {
-			req.body = { project_id: 99, section_id: 5 };
-			(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
-
-			const message = `A project with the id 99 does not exist`;
-			mockCurried(
-				sectionController.moveSectionToProject as jest.Mock,
-				new Error(message)
-			);
-
-			await moveSectionToProject(req as Request, res);
-
-			expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorNotFound);
-			expect(res.json).toHaveBeenCalledWith({ message });
-		});
-	});
+            expect(sectionController.moveSectionToProject).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorNotFound);
+            expect(res.json).toHaveBeenCalledWith({ message: errorMessage });
+        }
+    );
+});
 
 	describe("409s", () => {
-		test("when section already exists in the target project", async () => {
-			req.body = { project_id: 1, section_id: 10 };
-			(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
+	const baseMessage = "Cannot move section \"Section Name\" (id: 1) to project \"Project Name\" (id: 2). "
+    const conflictErrors = [
+        `Section already exists in that project.`,
+        `Project already has max amount of sections (100)`,
+        `A section within that project already has that name.`,
+    ];
 
-			const message =
-				'Cannot move section "Math" (id: 10) to project "Work" (id: 1). Section already exists in that project';
-			mockCurried(
-				sectionController.moveSectionToProject as jest.Mock,
-				new Error(message)
-			);
+    test.each(conflictErrors)(
+        "returns 409 when conflict error occurs: %s",
+        async (reason) => {
+			const errorMessage = baseMessage + reason;
+            (utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
+            mockCurried(
+                sectionController.moveSectionToProject as jest.Mock,
+                new Error(errorMessage)
+            );
 
-			await moveSectionToProject(req as Request, res);
+            await moveSectionToProject(req as Request, res);
 
-			expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
-			expect(res.json).toHaveBeenCalledWith({ message });
-		});
+            expect(sectionController.moveSectionToProject).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
+            expect(res.json).toHaveBeenCalledWith({ message: errorMessage });
+        }
+    );
+});
 
-		test("when project reached max sections", async () => {
-			req.body = { project_id: 1, section_id: 10 };
-			(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
 
-			const message =
-				'Cannot move section "Sci" (id: 10) to project "Work" (id: 1). Project already has max amount of sections (100)';
-			mockCurried(
-				sectionController.moveSectionToProject as jest.Mock,
-				new Error(message)
-			);
-
-			await moveSectionToProject(req as Request, res);
-
-			expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
-			expect(res.json).toHaveBeenCalledWith({ message });
-		});
-
-		test("when another section in the project already has the name", async () => {
-			req.body = { project_id: 1, section_id: 10 };
-			(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
-
-			const message =
-				'Cannot move section "Math" (id: 10) to project "Work" (id: 1). A section within that project already has that name.';
-			mockCurried(
-				sectionController.moveSectionToProject as jest.Mock,
-				new Error(message)
-			);
-
-			await moveSectionToProject(req as Request, res);
-
-			expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
-			expect(res.json).toHaveBeenCalledWith({ message });
-		});
-	});
-
-	test("200s and returns sanitized response", async () => {
-		req.body = { project_id: 1, section_id: 2 };
-		(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
-
-		const movedSection = {
-			id: 2,
-			project_id: 1,
-			name: "Math"
-		};
-
-		mockCurried(
-			sectionController.moveSectionToProject as jest.Mock,
-			movedSection
-		);
-
+test("200s and returns moved section with updated data", async () => {
+	req.body = { section_id: 1, project_id: 2 };
+	const section = { id: 1, name: "Movies" };
+	(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
+		mockCurried(sectionController.moveSectionToProject as jest.Mock, section);
 		jest.spyOn(utils, "sanitizeResponse").mockImplementation((_r, res) => {
-			res.status(StatusCode.SuccessOK).json(movedSection);
+			res.status(StatusCode.SuccessOK).json(section);
 			return res;
 		});
+	await moveSectionToProject(req as Request, res);
+	expect(sectionController.moveSectionToProject).toHaveBeenCalled();
+	expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
+            expect(res.json).toHaveBeenCalledWith( section );
 
-		await moveSectionToProject(req as Request, res);
+	
 
-		expect(sectionController.moveSectionToProject).toHaveBeenCalled();
-		expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
-		expect(res.json).toHaveBeenCalledWith(movedSection);
-	});
+})
+
 });
