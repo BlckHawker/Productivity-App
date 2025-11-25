@@ -6,7 +6,8 @@ import {
 	getAllSections,
 	getAllSectionsInProject,
 	getSectionById,
-	moveSectionToProject
+	moveSectionToProject,
+	changeSectionName
 } from "../../../src/requestHandlers/section";
 import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";
@@ -291,10 +292,52 @@ test("200s and returns moved section with updated data", async () => {
 	await moveSectionToProject(req as Request, res);
 	expect(sectionController.moveSectionToProject).toHaveBeenCalled();
 	expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
-            expect(res.json).toHaveBeenCalledWith( section );
+    expect(res.json).toHaveBeenCalledWith(section);
 
 	
 
 })
 
 });
+
+describe("changeSectionName", () => {
+	beforeEach(() => resetTests());
+
+	test("400s if new name and/or section id is invalid", async () => {
+		(utils.mergeResults as jest.Mock).mockReturnValue({ success: false });
+		await changeSectionName(req as Request, res);
+		expect(sectionController.changeSectionName).not.toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
+	})
+
+	test("409s if the new name of the section already exists within the project", async () => {
+		const errorMessage = "A section within the project named \"1\" \(id: 1\) already has a section named \"1\". Cannot change the section named \"1\" \(id: 1\) to \"1\"";
+		(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
+		mockCurried(
+                sectionController.changeSectionName as jest.Mock,
+                new Error(errorMessage)
+            );
+		await changeSectionName(req as Request, res);
+		expect(sectionController.changeSectionName).toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorConflict);
+        expect(res.json).toHaveBeenCalledWith({ message: errorMessage });
+	})
+
+	test("200s and returns section with new name", async () => {
+		const section = { id: 1, name: "Movies" };
+		req.body = { new_name: "new_name", section_id: 1 };
+		(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
+		mockCurried(
+                sectionController.changeSectionName as jest.Mock,
+                section
+            );
+		jest.spyOn(utils, "sanitizeResponse").mockImplementation((_r, res) => {
+			res.status(StatusCode.SuccessOK).json(section);
+			return res;
+		});
+		await changeSectionName(req as Request, res);
+		expect(sectionController.changeSectionName).toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
+    	expect(res.json).toHaveBeenCalledWith(section);
+	})
+})
