@@ -94,8 +94,6 @@ describe("updateProject", () => {
 		resetTests();
 	});
 
-
-
 		describe("400s", () => {
 
 				test("400s if id is not valid", async () => {

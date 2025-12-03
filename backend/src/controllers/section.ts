@@ -6,9 +6,9 @@
  * additional business logic such as validation and limits.
  */
 
+import * as projectController from "./project"
 import * as projectService from "../services/project";
 import * as sectionService from "../services/section";
-import * as projectController from "./project"
 import { PrismaClient, Section } from "../../generated/prisma";
 
 const MAX_SECTIONS = 100;
@@ -29,7 +29,7 @@ const createSection =
 	async (id: number, name: string): Promise<Section | Error> => {
 		try {
 			//check to see if the project exists
-			const project = await projectService.getProjectById(prisma)(id);
+			const project = await projectController.getProjectById(prisma)(id);
 
 			if (!project) {
 				return new Error(`A project with the id ${id} does not exist`);

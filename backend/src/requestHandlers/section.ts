@@ -408,7 +408,7 @@ const changeSectionName = async (req: Request, res: Response) => {
 		section_id,new_name
 	);
 
-	if(response instanceof Error && response.message.match(/A section within the project named ".+" \(id: .+\) already has a section named ".+"\. Cannot change the section named ".+" \(id: .+\) to \".+"/)) {
+	if(response instanceof Error && response.message.match(/A section within the project named ".+" \(id: .+\) already has a section named ".+"\. Cannot change the section named ".+" \(id: .+\) to ".+"/)) {
 		return res.status(StatusCode.ClientErrorConflict).json({message: response.message});
 	}
 
@@ -674,8 +674,6 @@ const moveSectionToProject = async (req: Request, res: Response) => {
  *                      value:
  *                        message: "Cannot move section \"Budget\" (id: 205) to project \"fda\" (id: 110). A section within that project already has that name."
  */
-
-
 
 
 export {

@@ -4,7 +4,6 @@
  */
 
 import { PrismaClient, Section } from "../../generated/prisma";
-import prisma from "../prisma";
 
 /**
  * Creates a new section within a given project.

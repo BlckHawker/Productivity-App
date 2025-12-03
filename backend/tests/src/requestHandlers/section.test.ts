@@ -2,12 +2,12 @@ import * as sectionController from "../../../src/controllers/section";
 import * as utils from "../../../src/utils";
 import { Request, Response } from "express";
 import {
+	changeSectionName,
 	createSection,
 	getAllSections,
 	getAllSectionsInProject,
 	getSectionById,
 	moveSectionToProject,
-	changeSectionName
 } from "../../../src/requestHandlers/section";
 import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";
@@ -294,8 +294,6 @@ test("200s and returns moved section with updated data", async () => {
 	expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
     expect(res.json).toHaveBeenCalledWith(section);
 
-	
-
 })
 
 });
@@ -311,7 +309,7 @@ describe("changeSectionName", () => {
 	})
 
 	test("409s if the new name of the section already exists within the project", async () => {
-		const errorMessage = "A section within the project named \"1\" \(id: 1\) already has a section named \"1\". Cannot change the section named \"1\" \(id: 1\) to \"1\"";
+		const errorMessage = "A section within the project named \"1\" (id: 1) already has a section named \"1\". Cannot change the section named \"1\" (id: 1) to \"1\"";
 		(utils.mergeResults as jest.Mock).mockReturnValue({ success: true });
 		mockCurried(
                 sectionController.changeSectionName as jest.Mock,
