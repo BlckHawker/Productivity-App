@@ -49,9 +49,10 @@ const updateProject =
 	(prisma: PrismaClient) =>
 	async (
 		id: number,
-		data: { name?: string; color?: string }
+		data: { name: string | null; color: string | null }
 	): Promise<Project | Error> => {
 		try {
+			//verify the project to update exists
 			const projectToUpdate = await projectServices.getProjectById(prisma)(id);
 
 			if (projectToUpdate === null) {
@@ -62,36 +63,43 @@ const updateProject =
 				return projectToUpdate;
 			}
 
+			//if the user is changing both the name and color, verify both are different
 			if (
-				data.name &&
+				data.name !== null &&
 				projectToUpdate.name.toUpperCase() === data.name.toUpperCase() &&
-				data.color &&
+				data.color !== null &&
 				projectToUpdate.color.toUpperCase() === data.color.toUpperCase()
 			) {
+				console.log("name and color");
 				return new Error(
 					"Cannot update a project with the same values it currently has."
 				);
 			}
 
+			//if the user is changing just the name, verify the new one is different
 			if (
-				data.name &&
+				data.name !== null &&
 				projectToUpdate.name.toUpperCase() === data.name.toUpperCase()
 			) {
+				console.log("name");
 				return new Error(
 					"Updated project name must be different from the current name."
 				);
 			}
 
+			//if the user is changing just the color, verify the new one is different
 			if (
-				data.color &&
+				data.color !== null &&
 				projectToUpdate.color.toUpperCase() === data.color.toUpperCase()
 			) {
+				console.log("color");
 				return new Error(
 					"Updated project color must be different from the current color."
 				);
 			}
 
-			if (data.name) {
+			//if the name is being changed, verify there is not an existing project with the new name
+			if (data.name !== null) {
 				const existingProject = await projectServices.getProjectByName(prisma)(
 					data.name
 				);
@@ -107,7 +115,23 @@ const updateProject =
 				}
 			}
 
-			const updatedProject = projectServices.updateProject(prisma)(id, data);
+			//todo update the project based on what is being changed
+			let updatedProject = null;
+
+			if(data.name !== null) {
+				updatedProject = projectServices.updateProjectName(prisma)(id,data.name);
+			}
+
+
+			if(data.color !== null) {
+				updatedProject = projectServices.updateProjectColor(prisma)(id,data.color);
+			}
+
+			//todo if for some reason the updatedProject is null at this point, throw an error
+			if(updatedProject == null) {
+				return new Error(`An error occurred updating the project with the id ${id}. Please contact the developers.`)
+			}
+
 			return updatedProject;
 		} catch (err) {
 			return err as Error;
