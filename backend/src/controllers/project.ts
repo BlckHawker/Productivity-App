@@ -70,7 +70,6 @@ const updateProject =
 				data.color !== null &&
 				projectToUpdate.color.toUpperCase() === data.color.toUpperCase()
 			) {
-				console.log("name and color");
 				return new Error(
 					"Cannot update a project with the same values it currently has."
 				);
@@ -81,7 +80,6 @@ const updateProject =
 				data.name !== null &&
 				projectToUpdate.name.toUpperCase() === data.name.toUpperCase()
 			) {
-				console.log("name");
 				return new Error(
 					"Updated project name must be different from the current name."
 				);
@@ -92,7 +90,6 @@ const updateProject =
 				data.color !== null &&
 				projectToUpdate.color.toUpperCase() === data.color.toUpperCase()
 			) {
-				console.log("color");
 				return new Error(
 					"Updated project color must be different from the current color."
 				);
@@ -115,7 +112,7 @@ const updateProject =
 				}
 			}
 
-			//todo update the project based on what is being changed
+			//update the project based on what is being changed
 			let updatedProject = null;
 
 			if(data.name !== null) {
@@ -127,7 +124,7 @@ const updateProject =
 				updatedProject = projectServices.updateProjectColor(prisma)(id,data.color);
 			}
 
-			//todo if for some reason the updatedProject is null at this point, throw an error
+			//if for some reason the updatedProject is null at this point, throw an error
 			if(updatedProject == null) {
 				return new Error(`An error occurred updating the project with the id ${id}. Please contact the developers.`)
 			}
