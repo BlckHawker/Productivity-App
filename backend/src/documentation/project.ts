@@ -28,23 +28,7 @@
  *          content:
  *              application/json:
  *                  schema:
- *                      type: object
- *                      properties:
- *                          id:
- *                              type: number
- *                              example: 1
- *                          color:
- *                              type: string
- *                              example: "#f00"
- *                          name:
- *                              type: string
- *                              example: "Work"
- *                          created_at:
- *                              type: string
- *                              example: "2025-09-05T23:03:57.213Z"
- *                          updated_at:
- *                              type: string
- *                              example: "2025-09-05T23:03:57.213Z"
+ *                      $ref: "#/components/schemas/Project"
  *       400:
  *          description: Bad Request
  *          content:
@@ -100,23 +84,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: Work
- *                 color:
- *                   type: string
- *                   example: "#FF5733"
- *                 created_at:
- *                   type: string
- *                   example: "2025-09-07T17:34:03.434Z"
- *                 updated_at:
- *                   type: string
- *                   example: "2025-09-07T17:34:03.434Z"
+ *               $ref: "#/components/schemas/Project"
  *       404:
  *         description: Not Found
  *         content:
@@ -164,23 +132,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: Work
- *                 color:
- *                   type: string
- *                   example: "#FF5733"
- *                 created_at:
- *                   type: string
- *                   example: "2025-09-07T17:34:03.434Z"
- *                 updated_at:
- *                   type: string
- *                   example: "2025-09-07T17:34:03.434Z"
+ *               $ref: "#/components/schemas/Project"
  *       404:
  *         description: Project not found
  *         content:
@@ -228,23 +180,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: Work
- *                 color:
- *                   type: string
- *                   example: "#FF5733"
- *                 created_at:
- *                   type: string
- *                   example: "2025-09-07T17:34:03.434Z"
- *                 updated_at:
- *                   type: string
- *                   example: "2025-09-07T17:34:03.434Z"
+ *               $ref: "#/components/schemas/Project"
  *       404:
  *         description: Not Found
  *         content:
@@ -286,20 +222,7 @@
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   name:
- *                     type: string
- *                   color:
- *                     type: string
- *                   created_at:
- *                     type: string
- *                     format: date-time
- *                   updated_at:
- *                     type: string
- *                     format: date-time
+ *                 $ref: "#/components/schemas/Project"
  *             example:
  *               - id: 1
  *                 name: "Movies"
@@ -357,23 +280,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: Gym
- *                 color:
- *                   type: string
- *                   example: "#FF5733"
- *                 created_at:
- *                   type: string
- *                   example: "2025-09-07T17:34:03.434Z"
- *                 updated_at:
- *                   type: string
- *                   example: "2025-09-07T17:34:03.434Z"
+ *               $ref: "#/components/schemas/Project"
  *       400:
  *         description: Bad Request
  *         content:

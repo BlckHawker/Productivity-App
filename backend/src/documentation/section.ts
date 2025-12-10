@@ -14,6 +14,7 @@
  *             type: object
  *             required:
  *               - name
+ *               - project_id
  *             properties:
  *               name:
  *                 type: string
@@ -29,23 +30,7 @@
  *          content:
  *              application/json:
  *                  schema:
- *                      type: object
- *                      properties:
- *                          id:
- *                              type: number
- *                              example: 1
- *                          project_id:
- *                              type: number
- *                              example: 2
- *                          name:
- *                              type: string
- *                              example: "Math"
- *                          created_at:
- *                              type: string
- *                              example: "2025-09-05T23:03:57.213Z"
- *                          updated_at:
- *                              type: string
- *                              example: "2025-09-05T23:03:57.213Z"
+ *                      $ref: "#/components/schemas/Section"
  *       404:
  *          description: Not found
  *          content:
@@ -99,23 +84,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: number
- *                   example: 1
- *                 project_id:
- *                   type: number
- *                   example: 2
- *                 name:
- *                   type: string
- *                   example: "Math"
- *                 created_at:
- *                   type: string
- *                   example: "2025-09-05T23:03:57.213Z"
- *                 updated_at:
- *                   type: string
- *                   example: "2025-09-05T23:03:57.213Z"
+ *               $ref: "#/components/schemas/Section"
  *
  *       404:
  *         description: Not Found
@@ -166,20 +135,7 @@
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   name:
- *                     type: string
- *                   color:
- *                     type: string
- *                   created_at:
- *                     type: string
- *                     format: date-time
- *                   updated_at:
- *                     type: string
- *                     format: date-time
+ *                 $ref: "#/components/schemas/Section"
  *             example:
  *               - id: 104
  *                 project_id: 6
@@ -228,26 +184,11 @@
  *       - Section
  *     responses:
  *       200:
- *         description: A list of projects
+ *         description: A list of sections
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   name:
- *                     type: string
- *                   color:
- *                     type: string
- *                   created_at:
- *                     type: string
- *                     format: date-time
- *                   updated_at:
- *                     type: string
- *                     format: date-time
+ *               $ref: "#/components/schemas/Section"
  *             example:
  *               - id: 104
  *                 project_id: 6
