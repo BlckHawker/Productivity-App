@@ -1,3 +1,4 @@
+//todo make this pr blocked by pr # 141 since this pr uses schemas documentation that are implemented in pr 141
 import * as sectionController from "../controllers/section";
 import * as utils from "../utils";
 import { Request, Response } from "express";
@@ -20,6 +21,71 @@ const deleteSectionById = async (req: Request, res: Response) => {
 		`A section with the id "${id}" could not be found.`
 	);
 };
+/**
+ * @swagger
+ * /section/{id}:
+ *   delete:
+ *     summary: Delete a section by id 
+ *     description: Delete a section by its id (and its tasks)
+ *     tags:
+ *       - Section
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         required: true
+ *         description: Numeric id of the section to delete
+ *     responses:
+ *       200:
+ *         description: the section data deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                   id:
+ *                       type: number
+ *                       example: 1
+ *                   project_id:
+ *                       type: number
+ *                       example: 2
+ *                   name:
+ *                       type: string
+ *                       example: "Math"
+ *                   created_at:
+ *                       type: string
+ *                       example: "2025-09-05T23:03:57.213Z"
+ *                   updated_at:
+ *                       type: string
+ *                       example: "2025-09-05T23:03:57.213Z"
+ *       404:
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "A section with the id \"1\" could not be found."
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *             examples:
+ *               invalid id:
+ *                 value:
+ *                   success: false
+ *                   message: "Invalid id: must be a valid number"
+ *               deleting an other section:
+ *                 value:
+ *                   message: "Section with the id 1 is named \"Other\". This cannot be deleted; its corresponding project is deleted."
+
+ */
 
 /**
  * Create section request
@@ -395,5 +461,6 @@ export {
 	createSection,
 	getSectionById,
 	getAllSectionsInProject,
-	getAllSections
+	getAllSections,
+	deleteSectionById
 };

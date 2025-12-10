@@ -14,12 +14,12 @@ const deleteSectionById =
 
 			//todo if section doesn't exist, return error
 			if (!sectionToDelete) {
-				return new Error(`A project with the id ${id} could not be found`);
+				return new Error(`A section with the id ${id} could not be found`);
 			}
 
 			//todo if the section to delete is an "Other" one, prohibit it
 			if(sectionToDelete.is_other) {
-				return new Error(`Section with the id ${id} is named "Other". This cannot be deleted`)
+				return new Error(`Section with the id ${id} is named "Other". This cannot be deleted its corresponding project is deleted.`)
 			}
 
 			const section = await sectionService.deleteSectionById(prisma)(id);

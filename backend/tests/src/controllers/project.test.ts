@@ -22,7 +22,7 @@ const mockCurriedError = (fn: jest.Mock, error: Error) => {
 	fn.mockReturnValueOnce(jest.fn().mockRejectedValueOnce(error));
 };
 
-describe("getProjectById", () => {
+describe("deleteProjectById", () => {
 	beforeEach(() => {
 		jest.resetAllMocks();
 	});

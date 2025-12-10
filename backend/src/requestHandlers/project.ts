@@ -28,7 +28,7 @@ const deleteProjectById = async (req: Request, res: Response) => {
  * @swagger
  * /project/{id}:
  *   delete:
- *     summary: Delete a project by id
+ *     summary: Delete a project by id (and its sections and tasks)
  *     description: delete a project by its id
  *     tags:
  *       - Project
