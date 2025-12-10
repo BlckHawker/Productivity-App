@@ -4,6 +4,31 @@ import { PrismaClient, Section } from "../../generated/prisma";
 
 const MAX_SECTIONS = 100;
 
+//todo add comment header
+const deleteSectionById =
+	(prisma: PrismaClient) =>
+	async (id: number): Promise<Section | Error> => {
+		try {
+			//todo check if the section of that id even exists
+			const sectionToDelete = await sectionService.getSectionById(prisma)(id);
+
+			//todo if section doesn't exist, return error
+			if (!sectionToDelete) {
+				return new Error(`A project with the id ${id} could not be found`);
+			}
+
+			//todo if the section to delete is an "Other" one, prohibit it
+			if(sectionToDelete.is_other) {
+				return new Error(`Section with the id ${id} is named "Other". This cannot be deleted`)
+			}
+
+			const section = await sectionService.deleteSectionById(prisma)(id);
+			return section;
+		} catch (err) {
+			return err as Error;
+		}
+	};
+
 /**
  * Creates a new section in a project.
  *
@@ -130,5 +155,6 @@ export {
 	createSection,
 	getSectionById,
 	getAllSectionsInProject,
-	getAllSections
+	getAllSections,
+	deleteSectionById
 };

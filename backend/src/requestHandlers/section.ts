@@ -2,6 +2,25 @@ import * as sectionController from "../controllers/section";
 import * as utils from "../utils";
 import { Request, Response } from "express";
 import { StatusCode } from "status-code-enum";
+
+//todo add header comment
+const deleteSectionById = async (req: Request, res: Response) => {
+	const id = Number(req.params.id);
+	
+	const validId = utils.assertArgumentsNumber({ id });
+	if (!validId.success) {
+		return res.status(StatusCode.ClientErrorBadRequest).json(validId);
+	}
+
+	const response = await sectionController.deleteSectionById(req.prisma)(id);
+
+	return utils.sanitizeResponse(
+		response,
+		res,
+		`A section with the id "${id}" could not be found.`
+	);
+};
+
 /**
  * Create section request
  * @param {Request} req

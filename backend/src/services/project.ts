@@ -5,14 +5,27 @@
 
 import { PrismaClient, Project } from "../../generated/prisma";
 
+//todo add header here
 const deleteProjectById =
 	(prisma: PrismaClient) =>
 	async (id: number): Promise<Project> => {
-		return prisma.project.delete({
+
+		return prisma.$transaction(async (transaction) => {
+			//todo write an issue for the comment below as tasks are not implemented yet
+			//todo delete all tasks in all of the sections that are going to be deleted
+
+			//delete all section in the project
+			await transaction.section.deleteMany({
+				where: { project_id: id },
+			});
+
+			//delete the project
+			return prisma.project.delete({
 			where: {
 				id
 			}
 		});
+		})	
 	};
 
 /**

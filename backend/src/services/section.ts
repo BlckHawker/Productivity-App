@@ -63,6 +63,16 @@ const getSectionById = (prisma: PrismaClient) => async (sectionId: number) => {
 	return section;
 };
 
+//todo add function header
+const deleteSectionById = (prisma: PrismaClient) => async (id: number) => {
+	const section = await prisma.section.delete({
+		where: {
+			id
+		}
+	});
+	return section;
+};
+
 /**
  * Retrieves all sections by name (case-insensitive).
  *
@@ -138,5 +148,6 @@ export {
 	createSection,
 	getNumberOfSectionInProject,
 	getAllSections,
-	getAllSectionsInProject
+	getAllSectionsInProject,
+	deleteSectionById
 };
