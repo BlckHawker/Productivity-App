@@ -3,10 +3,10 @@ import * as utils from "../../../src/utils";
 import { Request, Response } from "express";
 import {
 	createSection,
+	deleteSectionById,
 	getAllSections,
 	getAllSectionsInProject,
-	getSectionById,
-	deleteSectionById
+	getSectionById
 } from "../../../src/requestHandlers/section";
 import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";

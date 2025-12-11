@@ -20,7 +20,7 @@ export default (app: Express) => {
 	app.get("/project/sections/:id", section.getAllSectionsInProject);
 
 	app.post("/section/create", section.createSection);
-	app.delete("/section/:id", section.deleteSectionById)
+	app.delete("/section/:id", section.deleteSectionById);
 	swaggerDocs(app, port);
 	app.use(utils.notFound);
 };

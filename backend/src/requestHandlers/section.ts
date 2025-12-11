@@ -1,13 +1,17 @@
-//todo make this pr blocked by pr # 141 since this pr uses schemas documentation that are implemented in pr 141
 import * as sectionController from "../controllers/section";
 import * as utils from "../utils";
 import { Request, Response } from "express";
 import { StatusCode } from "status-code-enum";
 
-//todo add header comment
+/**
+ * Delete section by id request
+ * @param {Request} req
+ * @param {Response} res
+ * @returns
+ */
 const deleteSectionById = async (req: Request, res: Response) => {
 	const id = Number(req.params.id);
-	
+
 	const validId = utils.assertArgumentsNumber({ id });
 	if (!validId.success) {
 		return res.status(StatusCode.ClientErrorBadRequest).json(validId);

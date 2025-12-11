@@ -4,22 +4,33 @@ import { PrismaClient, Section } from "../../generated/prisma";
 
 const MAX_SECTIONS = 100;
 
-//todo add comment header
+/**
+ * Deletes a section by its unique ID.
+ *
+ * @param prisma - The PrismaClient instance used to access the database.
+ * @returns An asynchronous function:
+ *   - @param id - The unique ID of the section to delete.
+ *   - @returns A Promise resolving to the deleted `Section` on success,
+ *     or an `Error` if the section does not exist, is an "Other" section,
+ *     or if deletion fails.
+ */
 const deleteSectionById =
 	(prisma: PrismaClient) =>
 	async (id: number): Promise<Section | Error> => {
 		try {
-			//todo check if the section of that id even exists
+			//check if the section of that id even exists
 			const sectionToDelete = await sectionService.getSectionById(prisma)(id);
 
-			//todo if section doesn't exist, return error
+			//if section doesn't exist, return error
 			if (!sectionToDelete) {
 				return new Error(`A section with the id ${id} could not be found`);
 			}
 
-			//todo if the section to delete is an "Other" one, prohibit it
-			if(sectionToDelete.is_other) {
-				return new Error(`Section with the id ${id} is named "Other". This cannot be deleted its corresponding project is deleted.`)
+			//if the section to delete is an "Other" one, prohibit it
+			if (sectionToDelete.is_other) {
+				return new Error(
+					`Section with the id ${id} is named "Other". This cannot be deleted its corresponding project is deleted.`
+				);
 			}
 
 			const section = await sectionService.deleteSectionById(prisma)(id);
