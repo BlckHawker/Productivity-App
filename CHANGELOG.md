@@ -9,7 +9,7 @@
   - Get all projects
   - Update project
   - Delete project by ID
-  - Greate section
+  - Create section
   - Get section by id
   - Get all sections with a project by its id
   - Update the name of a section
