@@ -1,3 +1,4 @@
+import * as projectController from "../../../src/controllers/project.ts";
 import * as projectService from "../../../src/services/project.ts";
 import * as sectionController from "../../../src/controllers/section.ts";
 import * as sectionService from "../../../src/services/section.ts";
@@ -6,6 +7,7 @@ import {
 	Project,
 	Section
 } from "../../../generated/prisma/index";
+jest.mock("../../../src/controllers/project");
 jest.mock("../../../src/services/section");
 jest.mock("../../../src/services/project");
 
@@ -37,7 +39,7 @@ const project: Project = {
 
 const section: Section = {
 	id: 1,
-	name: "Test Section"
+	name: "Test Section",
 } as Section;
 
 describe("deleteSectionById", () => {
@@ -91,26 +93,26 @@ describe("createSection", () => {
 		await sectionController.createSection(prismaMock())(1, "");
 
 	test("Returns an error if the project doesn't exist", async () => {
-		mockCurried(projectService.getProjectById as jest.Mock, null);
+		mockCurried(projectController.getProjectById as jest.Mock, null);
 		const response = await createSection();
 		expect(response).toBeInstanceOf(Error);
 	});
 
-	test("Returns an error if the projectServices returns an error", async () => {
-		mockCurried(projectService.getProjectById as jest.Mock, new Error());
+	test("Returns an error if the projectController returns an error", async () => {
+		mockCurried(projectController.getProjectById as jest.Mock, new Error());
 		const response = await createSection();
 		expect(response).toBeInstanceOf(Error);
 	});
 
 	test("Returns an error if a section with the same name exists in a project", async () => {
-		mockCurried(projectService.getProjectById as jest.Mock, project);
+		mockCurried(projectController.getProjectById as jest.Mock, project);
 		mockCurried(sectionService.getSectionByName as jest.Mock, 1);
 		const response = await createSection();
 		expect(response).toBeInstanceOf(Error);
 	});
 
 	test("Returns an error if a project has reached section limit", async () => {
-		mockCurried(projectService.getProjectById as jest.Mock, project);
+		mockCurried(projectController.getProjectById as jest.Mock, project);
 		mockCurried(sectionService.getSectionByName as jest.Mock, null);
 		mockCurried(
 			sectionService.getNumberOfSectionInProject as jest.Mock,
@@ -121,7 +123,7 @@ describe("createSection", () => {
 	});
 
 	test("Returns created section on success", async () => {
-		mockCurried(projectService.getProjectById as jest.Mock, project);
+		mockCurried(projectController.getProjectById as jest.Mock, project);
 		mockCurried(sectionService.getSectionByName as jest.Mock, null);
 		mockCurried(sectionService.getNumberOfSectionInProject as jest.Mock, 0);
 		mockCurried(sectionService.createSection as jest.Mock, section);
@@ -130,7 +132,7 @@ describe("createSection", () => {
 	});
 
 	test("Returns an error if one was thrown", async () => {
-		mockCurriedError(projectService.getProjectById as jest.Mock, new Error());
+		mockCurriedError(projectController.getProjectById as jest.Mock, new Error());
 		const response = await createSection();
 		expect(response).toBeInstanceOf(Error);
 	});
@@ -205,3 +207,169 @@ describe("getAllSections", () => {
 		expect(response).toBeInstanceOf(Error);
 	});
 });
+
+describe("changeSectionName", () => {
+	beforeEach(() => {
+		jest.resetAllMocks();
+	});
+
+	const id = 1;
+	const newName = "name";
+	const changeSectionName = async () =>
+		await sectionController.changeSectionName(prismaMock())(id, newName);
+
+	test("Returns an error if the getting the section by id returns an error", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, new Error());
+		const response = await changeSectionName();
+		expect(response).toBeInstanceOf(Error);
+	})
+
+	test("Returns an error if the getting the section by id returns null", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, null);
+		const response = await changeSectionName();
+		expect(response).toBeInstanceOf(Error);
+	})
+
+	test("If getting the current project returns an error, return that project as an error", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, new Error());
+		const response = await changeSectionName();
+		expect(response).toBeInstanceOf(Error);
+	})
+
+	test("If getting the current project returns null, return an error", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, null);
+		const response = await changeSectionName();
+		expect(response).toBeInstanceOf(Error);
+		expect((response as Error).message).toBe(`Could not find a project connected to the section with an id of ${id}`)
+	})
+
+	test("If there is already a section with the new desired name, return an error", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, project);
+		mockCurried(sectionService.getSectionByName as jest.Mock, section);
+		const response = await changeSectionName();
+		expect(response).toBeInstanceOf(Error);
+		expect((response as Error).message).toBe(`A section within the project named "${project.name}" (id: ${project.id}) already has a section named "${newName}". Cannot change the section named "${section.name}" (id: ${id}) to "${newName}"`)
+	})
+
+	test("If there are no conflicts, the name of the section should be changed and the update section object should be returned", async ()=> {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, project);
+		mockCurried(sectionService.getSectionByName as jest.Mock, null);
+		mockCurried(sectionService.changeSectionName as jest.Mock, section);
+		const response = await changeSectionName();
+		expect(response).toBe(section);		
+	})
+
+	test("Returns an error if one was thrown", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, project);
+		mockCurriedError(projectController.getProjectById as jest.Mock, new Error());
+		const response = await changeSectionName();
+		expect(response).toBeInstanceOf(Error);
+	});
+})
+
+describe("moveSectionToProject", () => {
+	beforeEach(() => {
+		jest.resetAllMocks();
+	});
+
+	const old_project: Project = {
+		id: 1,
+		name: "Project 1",
+		color: "#FFFFFF"
+	} as Project;
+
+	const new_project: Project = {
+		id: 2,
+		name: "Project 2",
+		color: "#FFFFFF"
+	} as Project;
+
+	const section: Section = {
+		id: 1,
+		name: "Test Section",
+		project_id: 1,
+	} as Section;
+
+	const getErrorMessage = (section : Section, project: Project) => `Cannot move section "${section.name}" (id: ${section.id}) to project "${project.name}" (id: ${project.id}).`
+
+	const moveSectionToProject = async (sectionId = section.id, newProjectId = new_project.id) =>
+		await sectionController.moveSectionToProject(prismaMock())(sectionId, newProjectId);
+
+	test("Returns an error if the getting the section by id returns an error", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, new Error())
+		const response = await moveSectionToProject();
+		expect(response).toBeInstanceOf(Error);
+	})
+
+	test("Returns an error if the getting the section by id returns null", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, null);
+		const response = await moveSectionToProject();
+		expect(response).toBeInstanceOf(Error);
+	})
+
+	test("If getting the current project returns an error, return that project as an error", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, new Error());
+		const response = await moveSectionToProject();
+		expect(response).toBeInstanceOf(Error);
+	})
+
+	test("If getting the current project returns null, return an error", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, null);
+		const response = await moveSectionToProject();
+		expect(response).toBeInstanceOf(Error);
+		expect((response as Error).message).toBe(`A project with the id ${new_project.id} does not exist`)
+	})
+
+	test("verify the new project is not the same as the one section is currently is", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, old_project);
+		const response = await moveSectionToProject(section.id, old_project.id);
+		expect(response).toBeInstanceOf(Error);
+
+		expect((response as Error).message).toBe(`${getErrorMessage(section, old_project)} Section already exists in that project`)
+	})
+
+	test("verify the project doesn't currently have the max amount of projects", async () => {
+		const sectionSize = sectionController.MAX_SECTIONS;
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, new_project);
+		mockCurried(sectionService.getNumberOfSectionInProject as jest.Mock, sectionSize);
+		const response = await moveSectionToProject();
+		expect(response).toBeInstanceOf(Error);
+		expect((response as Error).message).toBe(`${getErrorMessage(section, new_project)} Project already has max amount of sections (${sectionSize})`)
+	})
+
+	test("verify a section with the same name doesn't exists within that project", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, new_project);
+		mockCurried(sectionService.getNumberOfSectionInProject as jest.Mock, 0);
+		mockCurried(sectionService.getSectionByName as jest.Mock, section);
+		const response = await moveSectionToProject();
+		expect(response).toBeInstanceOf(Error);
+		expect((response as Error).message).toBe(`${getErrorMessage(section, new_project)} A section within that project already has that name.`)
+	})
+
+	test("move the section to the new project, and return the new section", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(projectController.getProjectById as jest.Mock, new_project);
+		mockCurried(sectionService.getNumberOfSectionInProject as jest.Mock, 0);
+		mockCurried(sectionService.getSectionByName as jest.Mock, null);
+		mockCurried(sectionService.changeSectionProject as jest.Mock, section);
+		const response = await moveSectionToProject();
+		expect(response).toBe(section);
+	})
+
+	test("Returns an error if one was thrown", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurriedError(projectController.getProjectById as jest.Mock, new Error());
+		const response = await moveSectionToProject();
+		expect(response).toBeInstanceOf(Error);
+	});
+})

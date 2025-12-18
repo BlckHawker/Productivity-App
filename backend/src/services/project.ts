@@ -36,23 +36,48 @@ const deleteProjectById =
 		});
 	};
 
+
 /**
- * Updates a project in the database by its ID.
+ * Updates a project's name based on its ID.
  *
  * @param prisma - The Prisma client instance.
  * @param id - The unique ID of the project to update.
- * @param data - An object containing the fields to update
+ * @param name - The new name of the project
  * @returns A promise resolving to the updated Project object.
  */
-const updateProject =
+const updateProjectName =
 	(prisma: PrismaClient) =>
 	async (
 		id: number,
-		data: { name?: string; color?: string }
+		name: string
 	): Promise<Project> => {
 		return prisma.project.update({
 			where: { id },
-			data
+			data: {
+				name
+			}
+		});
+	};
+
+/**
+ * Updates a project's color based on its ID.
+ *
+ * @param prisma - The Prisma client instance.
+ * @param id - The unique ID of the project to update.
+ * @param color - The new color of the project
+ * @returns A promise resolving to the updated Project object.
+ */
+	const updateProjectColor =
+	(prisma: PrismaClient) =>
+	async (
+		id: number,
+		color: string
+	): Promise<Project> => {
+		return prisma.project.update({
+			where: { id },
+			data: {
+				color
+			}
 		});
 	};
 
@@ -141,6 +166,7 @@ export {
 	getProjectCount,
 	getProjectById,
 	getAllProjects,
-	updateProject,
+	updateProjectName,
+	updateProjectColor,
 	deleteProjectById
 };

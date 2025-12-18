@@ -13,6 +13,8 @@
   - Create section
   - Get section by id
   - Get all sections with a project by its id
+  - Update the name of a section
+  - Update the project of a section
   - Get all sections within the database
 - Schema documentation added to the Wiki
 - Scripts to easily modify the database for debugging

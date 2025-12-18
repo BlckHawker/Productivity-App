@@ -94,7 +94,9 @@ describe("updateProject", () => {
 		resetTests();
 	});
 
-	test("400s if id is not valid", async () => {
+		describe("400s", () => {
+
+				test("400s if id is not valid", async () => {
 		const obj = { success: false, message: "invalid" };
 		(utils.assertArgumentsNumber as jest.Mock).mockReturnValueOnce(obj);
 		(utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
@@ -120,6 +122,45 @@ describe("updateProject", () => {
 			message: `${message}\n${message}`
 		});
 	});
+
+		const errors = [
+			"A project with the id",
+			"Cannot update a project with the same values it currently has.",
+			"Updated project name must be different from the current name.",
+			"Updated project color must be different from the current color.",
+			"Updated project color must be different from the current color.",
+			"A project with the name"
+		];
+
+		test.each(errors)(
+        "returns 400 when conflict error occurs: %s",
+        async (error) => {
+
+			const id = 1;
+		const name = "name";
+		const color = "color";
+		req.body.id = id;
+		req.body.name = name;
+		req.body.color = color;
+		const project = { id, name, color };
+
+		(req as Request).body = project;
+		const obj = { success: true };
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
+		(utils.assertArgumentsString as jest.Mock).mockReturnValue(obj);
+            mockCurried(
+                projectController.updateProject as jest.Mock,
+                new Error(error)
+            );
+
+            await updateProject(req as Request, res);
+
+            expect(projectController.updateProject).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
+            expect(res.json).toHaveBeenCalledWith({ message: error });
+        }
+    );
+	})
 
 	test("200s if both a valid name a color are given", async () => {
 		const id = 1;
@@ -148,6 +189,7 @@ describe("updateProject", () => {
 		expect(res.json).toHaveBeenCalledWith(project);
 	});
 
+	
 	test("200s when name is invalid but color is valid", async () => {
 		const id = 1;
 		const name = "name";

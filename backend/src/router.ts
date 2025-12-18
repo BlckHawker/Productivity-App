@@ -1,3 +1,11 @@
+/**
+ * App router.
+ *
+ * Sets up all project and section routes, applies middleware,
+ * and loads the Swagger docs. Connects each endpoint to its
+ * corresponding request handler.
+ */
+
 import * as project from "./requestHandlers/project";
 import * as section from "./requestHandlers/section";
 
@@ -18,8 +26,9 @@ export default (app: Express) => {
 	app.get("/section/:id", section.getSectionById);
 	app.get("/sections/", section.getAllSections);
 	app.get("/project/sections/:id", section.getAllSectionsInProject);
-
 	app.post("/section/create", section.createSection);
+	app.put("/section/changeName", section.changeSectionName)
+	app.put("/section/changeProject", section.moveSectionToProject)
 	app.delete("/section/:id", section.deleteSectionById);
 	swaggerDocs(app, port);
 	app.use(utils.notFound);
