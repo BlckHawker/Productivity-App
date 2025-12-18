@@ -1,3 +1,11 @@
+/**
+ * Project request handler layer.
+ *
+ * Defines Express route handlers for creating, fetching, updating,
+ * and moving projects. Performs request validation, forwards logic to
+ * the project controller, and returns consistent HTTP responses
+ * for success, validation errors, and controller-level errors.
+ */
 import * as projectController from "../controllers/project";
 import * as utils from "../utils";
 import { Request, Response } from "express";
