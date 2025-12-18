@@ -64,6 +64,86 @@
 
 /**
  * @swagger
+ * /project/update:
+ *   put:
+ *     summary: Update a project given its id
+ *     tags:
+ *       - Project
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             oneOf:
+ *               - type: object
+ *                 required: [id, name]
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     example: 1
+ *                   name:
+ *                     type: string
+ *                     example: "NEW NAME"
+ *                 description: Update only the project name
+ *  
+ *               - type: object
+ *                 required: [id, color]
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     example: 1
+ *                   color:
+ *                     type: string
+ *                     example: "#FFF"
+ *                 description: Update only the project color
+ *   
+ *               - type: object
+ *                 required: [id, name, color]
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     example: 1
+ *                   name:
+ *                     type: string
+ *                     example: "NEW NAME"
+ *                   color:
+ *                     type: string
+ *                     example: "#FFF"
+ *                 description: Update both the project name and color
+ *     responses:
+ *       200:
+ *         description: The project with its updated values
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   example: "Gym"
+ *                 color:
+ *                   type: string
+ *                   example: "#FF5733"
+ *                 created_at:
+ *                   type: string
+ *                 updated_at:
+ *                   type: string
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ */
+
+/**
+ * @swagger
  * /project/{id}:
  *   delete:
  *     summary: Delete a project by id
