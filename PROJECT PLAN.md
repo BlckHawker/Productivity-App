@@ -810,23 +810,63 @@ Once the app is production-ready or multi-user features are introduced, hosting 
     - [ ]  weeks
     - [ ]  months
     - [ ]  years
-  - [ ]  xth day of the month
-  - [ ]  custom weekday sets (e.g., Mon/Wed/Fri)
-  - [ ]  last weekday of the month
-  - [ ]  last day of the month
-- [ ]  If a task’s deadline or desired date is deleted, reminders targeting it are also removed after warning.
-- [ ]  Static reminders that target a past time are auto-deleted.
-- [ ]  Recurring task reminders update correctly with new recurrence dates.
-  - [ ] If the tasks has not been marked complete, recurring reminders will neither update nor delete themselves until task has been updated
-- [ ]  Max 3 reminders per task.
-  - [ ]  User prompted to remove one if attempting to add a fourth.
+  - [ ]  weekdays
+  - [ ]  weekends
+  - [ ]  xth of month
+  - [ ]  xth weekday
+  - [ ]  last day
+  - [ ]  last weekday
+- [ ]  Completing a recurring task generates a new instance with updated:
+  - [ ]  desired date
+  - [ ]  deadline
+  - [ ]  creation date
+  - [ ]  reminders
+- [ ]  If a recurring task is incomplete past its deadline or desired date, it does not generate a new instance.
+- [ ]  A manual "Reschedule Task" action is available to regenerate the task.
+- [ ]  Recurring subtasks and parent tasks follow the recurrence interaction rules:
+  - [ ]  One-time subtasks under recurring parents are recreated only if completed.
+  - [ ]  Recurring subtasks operate independently and recur only when completed.
+
+#### 4.2 - Missed Recurrence Logic
+
+- [ ]  If a recurring task is incomplete past its desired date or deadline, it does not generate a new instance.
+- [ ]  A "Reschedule Task" button appears instead.
+- [ ]  Rescheduling applies recurrence logic from the current date forward.
+- [ ]  Past recurrence intervals are not stacked or doubled (no auto-catch-up).
+
+#### 4.3 - Visual Urgency Indicators
+
+- [ ]  Tasks display urgency tags:
+  - [ ]  !!! = Red = deadline overdue
+  - [ ]  !! = Orange = desired date overdue
+  - [ ]  ! = Yellow (bold) = deadline within 24 hrs
+  - [ ]  \* = Yellow (normal) = desired date within 24 hrs
+- [ ]  Indicator updates occur automatically based on time.
+- [ ]  Users can visually distinguish symbols without relying on color (colorblind-safe).
+
+---
+
+### Epic 5: Reminders
+
+| **Name**                                 | **Description**                                                                                    | **User Story**                                                                                                                                 |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **5.1 - Smart Reminders**                | Reminders can be absolute or relative to deadlines or desired dates and support custom recurrence. | As a user, I want flexible reminder options (e.g., "every Monday", "2 days before deadline") so I never forget important work.                 |
+| **5.2 - Reminder Notification Delivery** |                                                                                                    | As a user, I want to receive timely reminder notifications via the app and/or push system, so that I don’t forget to complete important tasks. |
+
+---
+
+#### 5.1 - Smart Reminders Acceptance Criteria
+
+- [ ]  Users can choose between:
+  - [ ]  Static (absolute time, e.g., July 5th 4:00pm)
+  - [ ]  Dynamic reminders (relative to deadline/desired date)
+- [ ]  Users can define recurrence rules for reminders: - [ ]  every x:
+      =======
 
 #### 5.2 - Reminder Notification Acceptance Criteria
 
 - [ ] When a reminder’s scheduled time is reached, the app triggers a notification (in-app and/or push).
-
 ---
-
 ### Epic 6: Labels, Filters, Views & Sorting
 
 | **Name**               | **Description**                                                                                              | **User Story**                                                                                                                                     |
