@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "Normalizing backend imports for commit..."
+npm run prepare:test --prefix backend
+
+if ! git diff --quiet backend; then
+  echo "❌ Backend imports were rewritten."
+  echo "Please review the changes and commit again."
+  exit 1
+fi
