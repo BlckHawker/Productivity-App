@@ -78,6 +78,27 @@ http://localhost:3000/api
 
 - This page shows all available API endpoints, request/response schemas, and examples.
 
+### 3.2 Set up Git pre-push hook (Optional)
+There is a custom script `INSERT SCRIPT NAME HERE` in the backend that is utlized in order to verify the application works in development mode. It is suggested to set up a pre-push hook in order to not need to remember to run this script manually. Below are the instructions to set up this hook.
+1. Open the `.git` folder in the root
+    - This folder may be hidden. Be sure to set up your device to see hidden files.
+    - If the folder is still not there, run `git init` in the root in the terminal.
+1. Rename `pre-push.sample` to `pre-push`
+1. Replace the content of `pre-push` with the following:
+    1. The hook should work correctly, if you see a new log line in `.git/tmp/git-hooks.log`
+```
+#!/bin/sh
+# Exit immediately if any command returns a non-zero status
+set -e
+
+echo "$(date) Setting up backend imports for testing mode..." >> .git/tmp/git-hooks.log
+npm run prepare:test --prefix backend
+```
+4. If you are using macOS or Linux, run the following to make the hook executable
+```
+chmod +x .git/hooks/pre-push
+```
+5. Test the hook by making a dummy commit/push and checking the the logs.
 ## 4. Frontend Setup
 
 1. If using VSCode:
