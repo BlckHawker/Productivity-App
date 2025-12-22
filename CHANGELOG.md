@@ -1,7 +1,7 @@
 ## [Unreleased]
 
 ### Added
-
+- Add optional steps to add a pre-push hook
 - API endpoints:
   - Create projects
   - Get projects by ID
