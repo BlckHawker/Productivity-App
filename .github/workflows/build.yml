@@ -39,6 +39,7 @@ jobs:
           npm install --prefix backend
 
       - name: Prepare for build
+        working-directory: backend
         run: npm run prepare:build --prefix backend
 
       - name: Build backend
