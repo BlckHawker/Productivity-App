@@ -40,7 +40,7 @@ jobs:
 
       - name: Prepare for build
         working-directory: backend
-        run: npm run prepare:build --prefix backend
+        run: npm run prepare:build
 
       - name: Build backend
         run: npm run build --prefix backend
