@@ -41,6 +41,13 @@ jobs:
       - name: Build backend
         run: npm run build --prefix backend
 
+      - name: Start backend and verify watching for /health endpoint
+        run: |
+          npm install -g wait-on
+          npm run start:prod --prefix backend &
+          npx wait-on "${DATABASE_URL}/health"
+          curl -f "${DATABASE_URL}/health"
+
       # Frontend
       - name: Clean install (frontend)
         run: |
