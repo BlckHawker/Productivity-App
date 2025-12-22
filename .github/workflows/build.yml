@@ -38,13 +38,16 @@ jobs:
           rm -rf backend/node_modules backend/package-lock.json
           npm install --prefix backend
 
+      - name: Prepare for build
+        run: npm run prepare:build --prefix backend
+
       - name: Build backend
         run: npm run build --prefix backend
-
+        
       - name: Start backend and verify watching for /health endpoint
         run: |
           npm install -g wait-on
-          npm run start:prod --prefix backend &
+          npm run start --prefix backend &
           npx wait-on "${DATABASE_URL}/health"
           curl -f "${DATABASE_URL}/health"
 
