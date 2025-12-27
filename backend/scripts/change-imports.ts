@@ -15,12 +15,17 @@ const map: Record<string, { test?: string; build?: string }> = {
 	"src/server": { test: "", build: "js" },
 	"src/utils": { test: "", build: "js" },
 	"tests/src/utils": { test: "", build: "js" },
-	"src/requestHandlers/task": { test: "", build: "js" },
-	"src/controllers/task": { test: "", build: "js" },
-	"src/services/task": { test: "", build: "js" },
-	"src/router/task": { test: "", build: "js" },
-	"tests/src/controllers/task": { test: "", build: "js" },
-	"tests/src/requestHandlers/task": { test: "", build: "js" }
+	"src/requestHandlers/project": { test: "", build: "js" },
+	"src/controllers/project": { test: "", build: "js" },
+	"src/services/project": { test: "", build: "js" },
+	"src/requestHandlers/section": { test: "", build: "js" },
+	"src/controllers/section": { test: "", build: "js" },
+	"src/services/section": { test: "", build: "js" },
+	"tests/src/controllers/project": { test: "", build: "js" },
+	"tests/src/controllers/section": { test: "", build: "js" },
+	"tests/src/requestHandlers/project": { test: "", build: "js" },
+	"tests/src/requestHandlers/section": { test: "", build: "js" },
+
 };
 
 const importRegex = /(from\s+["'])(\.{1,2}\/[^"']+?)(?:\.(ts|js))?(["'])/g;
