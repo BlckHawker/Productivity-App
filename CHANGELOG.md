@@ -15,8 +15,8 @@
   - Get all sections with a project by its id (#128)
   - Update the name of a section (#135)
   - Update the project of a section (#135)
-  - Get all sections within the database
-- Schema documentation added to the Wiki
+  - Get all sections within the database (#128)
+- Schema documentation added to the Wiki (#117)
 - Scripts to easily modify the database for debugging (#115)
 - Swagger API documentation (#91)
 - Util scripts to configure for testing and running build (#94)
