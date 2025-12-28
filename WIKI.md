@@ -94,15 +94,17 @@ There is a custom script `prepare:test` in the backend that is utilized in order
 # Exit immediately if any command returns a non-zero status
 set -e
 
-echo "$(date) Setting up backend imports for testing mode..." >> .git/tmp/git-hooks.log
-npm run prepare:test --prefix backend
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+echo "$(date) Setting up backend imports for testing mode..." >> "$REPO_ROOT/.git/hooks/git-hooks.log"
+npm run prepare:test --prefix "$REPO_ROOT/backend"
 ```
 4. Run the following to make the hook executable
 ```
 chmod +x .git/hooks/pre-push
 ```
 
-5. Verify the hook execuable was set up correctly by running
+5. Verify the hook executable was set up correctly by running
 ```
 ls -l .git/hooks/pre-push
 ```
