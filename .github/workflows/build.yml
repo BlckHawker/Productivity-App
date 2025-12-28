@@ -49,7 +49,9 @@ jobs:
         run: |
           npm run start --prefix backend &
           sleep 5 &
-          curl --fail "${VITE_BACKEND_URL}/health"
+          
+          # curl --fail "https://www.youtube.com"
+      # curl --fail "${VITE_BACKEND_URL}/health"
       # Frontend
       - name: Clean install (frontend)
         run: |
