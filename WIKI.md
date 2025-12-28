@@ -94,9 +94,11 @@ There is a custom script `prepare:test` in the backend that is utilized in order
 # Exit immediately if any command returns a non-zero status
 set -e
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
+# Log to tmp folder instead of .git/hooks
+mkdir -p "$REPO_ROOT/tmp"
+echo "$(date) Setting up backend imports for testing mode..." >> "$REPO_ROOT/tmp/git-hooks.log"
 
-echo "$(date) Setting up backend imports for testing mode..." >> "$REPO_ROOT/.git/hooks/git-hooks.log"
+# Run backend command
 npm run prepare:test --prefix "$REPO_ROOT/backend"
 ```
 4. Run the following to make the hook executable
