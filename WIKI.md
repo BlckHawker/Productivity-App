@@ -1,4 +1,4 @@
-# Overview test
+# Overview
 
 This project is a full-stack application with a React frontend and a Node.js / Express backend using TypeScript.
 
@@ -80,6 +80,9 @@ http://localhost:3000/api
 
 ### 3.2 Set up Git pre-push hook (Optional)
 There is a custom script `prepare:test` in the backend that is utilized in order to verify the application works in development mode. It is suggested to set up a pre-push hook in order to not need to remember to run this script manually. Below are the instructions to set up this hook.
+
+**Disclaimer:** This will **NOT** work if you are using windows powershell. Git bash should be used instead.
+
 1. Open the `.git` folder in the root
     - This folder may be hidden. Be sure to set up your device to see hidden files.
     - If the folder is still not there, run `git init` in the root in the terminal.
@@ -94,10 +97,22 @@ set -e
 echo "$(date) Setting up backend imports for testing mode..." >> .git/tmp/git-hooks.log
 npm run prepare:test --prefix backend
 ```
-4. If you are using macOS or Linux, run the following to make the hook executable
+4. Run the following to make the hook executable
 ```
 chmod +x .git/hooks/pre-push
 ```
+
+5. Verify the hook execuable was set up correctly by running
+```
+ls -l .git/hooks/pre-push
+```
+This should be printed in the console
+```
+-rwxr-xr-x (other stuff is here...)
+```
+
+
+
 5. Test the hook by making a dummy commit/push and checking the the logs.
 ## 4. Frontend Setup
 
