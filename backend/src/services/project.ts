@@ -28,7 +28,7 @@ const deleteProjectById =
 			});
 
 			//delete the project
-			return prisma.project.delete({
+			return transaction.project.delete({
 				where: {
 					id
 				}
