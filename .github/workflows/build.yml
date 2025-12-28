@@ -49,7 +49,7 @@ jobs:
         run: |
           npm run start --prefix backend &
           sleep 5 &
-          curl --fail "${DATABASE_URL}/health"
+          curl --fail "${VITE_BACKEND_URL}/health"
       # Frontend
       - name: Clean install (frontend)
         run: |
