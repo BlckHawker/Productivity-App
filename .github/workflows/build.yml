@@ -49,9 +49,7 @@ jobs:
         run: |
           npm install -g wait-on
           npm run start --prefix backend &
-          npx wait-on "${DATABASE_URL}/health"
-          curl -f "${DATABASE_URL}/health"
-
+          curl --fail "${DATABASE_URL}/health"
       # Frontend
       - name: Clean install (frontend)
         run: |
