@@ -48,6 +48,7 @@ jobs:
       - name: Start backend and verify watching for /health endpoint
         run: |
           npm run start --prefix backend &
+          echo "${DATABASE_URL}" &
           curl --fail "${DATABASE_URL}/health"
       # Frontend
       - name: Clean install (frontend)
