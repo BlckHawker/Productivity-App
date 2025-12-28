@@ -45,13 +45,18 @@ jobs:
       - name: Build backend
         run: npm run build --prefix backend
         
-      - name: Start backend and verify watching for /health endpoint
+      - name: Start backend and verify /health endpoint
         run: |
           npm run start --prefix backend &
-          sleep 5 &
-          
-          # curl --fail "https://www.youtube.com"
-      # curl --fail "${VITE_BACKEND_URL}/health"
+          for i in {1..10}; do
+            if curl -fs "${VITE_BACKEND_URL}/health"; then
+              echo "Backend is up"
+              break
+            fi
+            echo "Waiting for backend..."
+            sleep 2
+          done
+
       # Frontend
       - name: Clean install (frontend)
         run: |
