@@ -10,11 +10,11 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     env:
-      DATABASE_LOCALHOST: localhost
-      DATABASE_NAME: productivity_app_db
+      DATABASE_LOCALHOST: ${{ secrets.DATABASE_LOCALHOST }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      DATABASE_PORT: 5432
-      DATABASE_URL: postgresql://${{ secrets.DATABASE_USERNAME }}:${{ secrets.DATABASE_PASSWORD }}@${{DATABASE_LOCALHOST}}:${{DATABASE_PORT}}/${{DATABASE_NAME}}?schema=public
+      DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
       DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
       VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
     steps:
