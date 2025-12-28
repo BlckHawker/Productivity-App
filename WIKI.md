@@ -83,7 +83,7 @@ There is a custom script `prepare:test` in the backend that is utilized in order
 1. Open the `.git` folder in the root
     - This folder may be hidden. Be sure to set up your device to see hidden files.
     - If the folder is still not there, run `git init` in the root in the terminal.
-1. Rename `pre-push.sample` to `pre-push`
+1. Rename `pre-push.sample` to `pre-push` in the `hooks` folder
 1. Replace the content of `pre-push` with the following:
     1. The hook should work correctly, if you see a new log line in `.git/tmp/git-hooks.log`
 ```
