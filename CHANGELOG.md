@@ -1,7 +1,7 @@
 ## [Unreleased]
 
 ### Added
-
+- Build workflow to test backend build is functional (#151)
 - API endpoints:
   - Create projects
   - Get projects by ID
