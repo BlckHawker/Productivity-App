@@ -61,6 +61,55 @@
  *                   message: Reached maximum amount of sections (100) for the project "Other"
  */
 
+/**
+ * @swagger
+ * /section/{id}:
+ *   delete:
+ *     summary: Delete a section by id 
+ *     description: Delete a section by its id (and its tasks)
+ *     tags:
+ *       - Section
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         required: true
+ *         description: Numeric id of the section to delete
+ *     responses:
+ *       200:
+ *         description: the section data deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Section"
+ *       404:
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "A section with the id \"1\" could not be found."
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *             examples:
+ *               invalid id:
+ *                 value:
+ *                   success: false
+ *                   message: "Invalid id: must be a valid number"
+ *               deleting an other section:
+ *                 value:
+ *                   message: "Section with the id 1 is named \"Other\". This cannot be deleted; its corresponding project is deleted."
+
+ */
 
 /**
  * @swagger

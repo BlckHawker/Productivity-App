@@ -5,13 +5,34 @@
 
 import { PrismaClient, Project } from "../../generated/prisma";
 
+/**
+ * Deletes a project by its unique ID, along with all sections belonging to it.
+ *
+ * This operation is executed within a transaction:
+ * - All sections associated with the project are deleted first.
+ * - The project is deleted afterward.
+ * - If any step fails, the entire transaction is rolled back.
+ *
+ * @param prisma - The Prisma client instance.
+ * @returns A function that accepts a `projectId` and resolves to the deleted `Project`.
+ *   Throws an error if the project does not exist or if deletion fails.
+ */
+
 const deleteProjectById =
 	(prisma: PrismaClient) =>
 	async (id: number): Promise<Project> => {
-		return prisma.project.delete({
-			where: {
-				id
-			}
+		return prisma.$transaction(async (transaction) => {
+			//delete all section in the project
+			await transaction.section.deleteMany({
+				where: { project_id: id }
+			});
+
+			//delete the project
+			return transaction.project.delete({
+				where: {
+					id
+				}
+			});
 		});
 	};
 

@@ -3,6 +3,7 @@
 ### Added
 
 - API endpoints:
+  - Delete section by ID
   - Create projects
   - Get projects by ID
   - Get projects by name (case insensitive)

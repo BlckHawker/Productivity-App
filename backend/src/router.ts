@@ -29,6 +29,7 @@ export default (app: Express) => {
 	app.post("/section/create", section.createSection);
 	app.put("/section/changeName", section.changeSectionName)
 	app.put("/section/changeProject", section.moveSectionToProject)
+	app.delete("/section/:id", section.deleteSectionById);
 	swaggerDocs(app, port);
 	app.use(utils.notFound);
 };

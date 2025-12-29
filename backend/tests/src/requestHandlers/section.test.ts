@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import {
 	changeSectionName,
 	createSection,
+	deleteSectionById,
 	getAllSections,
 	getAllSectionsInProject,
 	getSectionById,
@@ -32,6 +33,60 @@ const resetTests = () => {
 const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
 	fn.mockReturnValueOnce(jest.fn().mockResolvedValueOnce(returnValue));
 };
+
+describe("deleteSectionById", () => {
+	beforeEach(() => {
+		resetTests();
+	});
+
+	test("400s if id is not a number", async () => {
+		(req as Request).params = { id: "abc" };
+		const obj = { success: false, message: "invalid" };
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
+		await deleteSectionById(req as Request, res);
+		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorBadRequest);
+		expect(res.json).toHaveBeenCalledWith(obj);
+		expect(sectionController.deleteSectionById).not.toHaveBeenCalled();
+	});
+
+	test("404s if a section with the given id is not found", async () => {
+		const id = 1;
+		(req as Request).params = { id: String(id) };
+		const obj = { success: true };
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
+		mockCurried(sectionController.deleteSectionById as jest.Mock, null);
+		const notFoundMessage = `A section with the id "${id}" could not be found.`;
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res, message) => {
+				res.status(StatusCode.ClientErrorNotFound).json({ message });
+				return res;
+			});
+		await deleteSectionById(req as Request, res);
+		expect(sectionController.deleteSectionById).toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.ClientErrorNotFound);
+		expect(res.json).toHaveBeenCalledWith({ message: notFoundMessage });
+	});
+
+	test("200s and returns the deleted section", async () => {
+		const id = 1;
+		const section = { id };
+		(req as Request).params = { id: String(id) };
+		const obj = { success: true };
+		(utils.assertArgumentsNumber as jest.Mock).mockReturnValue(obj);
+		mockCurried(sectionController.deleteSectionById as jest.Mock, section);
+		jest
+			.spyOn(utils, "sanitizeResponse")
+			.mockImplementation((_response, res) => {
+				res.status(StatusCode.SuccessOK).json(section);
+				return res;
+			});
+		await deleteSectionById(req as Request, res);
+		expect(sectionController.deleteSectionById).toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(StatusCode.SuccessOK);
+		expect(res.json).toHaveBeenCalledWith(section);
+	});
+});
 
 describe("createSection", () => {
 	beforeEach(() => resetTests());

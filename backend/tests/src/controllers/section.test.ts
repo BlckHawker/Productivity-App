@@ -42,6 +42,48 @@ const section: Section = {
 	name: "Test Section",
 } as Section;
 
+describe("deleteSectionById", () => {
+	beforeEach(() => {
+		jest.resetAllMocks();
+	});
+
+	test("should return an error if the section doesn't exist", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, null);
+		const response = await sectionController.deleteSectionById(prismaMock())(1);
+		expect(response).toBeInstanceOf(Error);
+		expect((response as Error).message).toMatch(
+			/A section with the id .+ could not be found/
+		);
+	});
+
+	test('should return an error if the section is named "Other"', async () => {
+		const otherSection = { ...section, is_other: true };
+		mockCurried(sectionService.getSectionById as jest.Mock, otherSection);
+		mockCurried(sectionService.deleteSectionById as jest.Mock, otherSection);
+		const response = await sectionController.deleteSectionById(prismaMock())(1);
+		expect(response).toBeInstanceOf(Error);
+		expect((response as Error).message).toMatch(
+			/Section with the id .+ is named "Other". This cannot be deleted its corresponding project is deleted./
+		);
+	});
+
+	test("should return an error if the service returns an error", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		(sectionService.getSectionById as jest.Mock).mockRejectedValueOnce(
+			new Error()
+		);
+		const response = await sectionController.deleteSectionById(prismaMock())(1);
+		expect(response).toBeInstanceOf(Error);
+	});
+
+	test("should return whatever deleteProjectById services returns", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		mockCurried(sectionService.deleteSectionById as jest.Mock, section);
+		const response = await sectionController.deleteSectionById(prismaMock())(1);
+		expect(response).toBe(section);
+	});
+});
+
 describe("createSection", () => {
 	beforeEach(() => {
 		jest.resetAllMocks();
