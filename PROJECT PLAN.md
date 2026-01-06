@@ -850,8 +850,8 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 
 | **Name**                                 | **Description**                                                                                    | **User Story**                                                                                                                                 |
 | ---------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| **5.1 - Smart Reminders**                | Reminders can be absolute or relative to deadlines or desired dates and support custom recurrence. | As a user, I want flexible reminder options (e.g., "every Monday", "2 days before deadline") so I never forget important work.                 |
-| **5.2 - Reminder Notification Delivery** |                                                                                                    | As a user, I want to receive timely reminder notifications via the app and/or push system, so that I don’t forget to complete important tasks. |
+| **5.1 - Smart Reminders**                | Reminders can be absolute or relative to deadlines or desired dates and support custom recurrence. | As a user, I want flexible reminder options (e.g., "every Monday", "2 days before deadline") so I never forget important work. |
+| **5.2 - Reminder Notification Delivery** |  When a reminder goes off, a notifiacion should be pushed for the user stating so. | As a user, I want to receive timely reminder notifications via the app and/or push system, so that I don’t forget to complete important tasks. |
 
 ---
 
@@ -860,12 +860,28 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 - [ ]  Users can choose between:
   - [ ]  Static (absolute time, e.g., July 5th 4:00pm)
   - [ ]  Dynamic reminders (relative to deadline/desired date)
-- [ ]  Users can define recurrence rules for reminders: - [ ]  every x:
-      =======
+- [ ]  Users can define recurrence rules for reminders
+    - [ ] every x 
+        - [ ] minutes
+        - [ ] hours
+        - [ ] days
+        - [ ] weeks
+        - [ ] months
+        - [ ] years
+    - [ ] Every xth of the month
+    - [ ] every xth day of the month (ex: every third Saturday)
+    - [ ] Every
+        - [ ] weekday
+        - [ ] weekend
+    - [ ] Custom day of week sets (ex: every Mon/Wed/Fri)
+    - [ ] Last day of the month
+- [ ] Reminders that target static date/time that has passed will automatically be deleted. If the task is recurring, the reminders will stay, and will be updated only when the targeted date/time is updated to a future date/time
 
 #### 5.2 - Reminder Notification Acceptance Criteria
 
-- [ ] When a reminder’s scheduled time is reached, the app triggers a notification (in-app and/or push).
+- [ ] When a reminder’s scheduled time is reached, the app triggers a notification
+    - [ ] in-app and/or push for mobile
+    - [ ] Pop up notification on desktop (siilar to google calendar)
 ---
 ### Epic 6: Labels, Filters, Views & Sorting
 
