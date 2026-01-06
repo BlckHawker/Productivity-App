@@ -8,7 +8,7 @@
  */
 
 import * as sectionController from "../controllers/section";
-import * as utils from "../utils";
+import * as utils from "../utils.js";
 import { Request, Response } from "express";
 import { StatusCode } from "status-code-enum";
 /**

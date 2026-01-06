@@ -7,7 +7,7 @@
  * for success, validation errors, and controller-level errors.
  */
 import * as projectController from "../controllers/project";
-import * as utils from "../utils";
+import * as utils from "../utils.js";
 import { Request, Response } from "express";
 import { StatusCode } from "status-code-enum";
 
