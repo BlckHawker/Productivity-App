@@ -3,6 +3,7 @@
 ### Added
 - Build workflow to test backend build is functional (#151)
 - API endpoints:
+  - Delete section by ID
   - Create projects
   - Get projects by ID
   - Get projects by name (case insensitive)

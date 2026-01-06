@@ -24,11 +24,17 @@
  *                 example: "#f00"
  *     responses:
  *       200:
- *          description: Project successfully created
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: "#/components/schemas/Project"
+ *         description: Project and default \"Other\" section successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               minItems: 2
+ *               maxItems: 2
+ *               items:
+ *                 allOf:
+ *                   - $ref: "#/components/schemas/Project"
+ *                   - $ref: "#/components/schemas/Section"
  *       400:
  *          description: Bad Request
  *          content:
@@ -116,21 +122,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 name:
- *                   type: string
- *                   example: "Gym"
- *                 color:
- *                   type: string
- *                   example: "#FF5733"
- *                 created_at:
- *                   type: string
- *                 updated_at:
- *                   type: string
+ *               $ref: "#/components/schemas/Project"
  *       400:
  *         description: Bad Request
  *         content:

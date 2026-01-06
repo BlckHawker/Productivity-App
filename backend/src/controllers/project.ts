@@ -7,7 +7,7 @@
  */
 
 import * as projectServices from "../services/project";
-import { PrismaClient, Project } from "../../generated/prisma";
+import { PrismaClient, Project, Section } from "../../generated/prisma";
 
 const MAX_PROJECTS = 100;
 
@@ -197,11 +197,11 @@ const getProjectByName =
  * @returns An asynchronous function:
  *    - @param name - The name of the project.
  *    - @param color - The hex code of the color assigned to this project
- *    - @returns A Promise resolving to the created `Project` on success, or an `Error` if creation fails.
+ *    - @returns A Promise resolving to a tuple of the created `Project` and `Section` on success, or an `Error` if creation fails.
  */
 const createProject =
 	(prisma: PrismaClient) =>
-	async (name: string, color: string): Promise<Project | Error> => {
+	async (name: string, color: string): Promise<[Project,Section] | Error> => {
 		try {
 			//verify the is room for more projects
 			const size = await projectServices.getProjectCount(prisma);

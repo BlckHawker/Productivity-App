@@ -29,6 +29,7 @@ export default (app: Express) => {
 	app.post("/section/create", section.createSection);
 	app.put("/section/changeName", section.changeSectionName)
 	app.put("/section/changeProject", section.moveSectionToProject)
+	app.delete("/section/:id", section.deleteSectionById);
 	app.get('/health', (req, res) => res.status(StatusCode.SuccessOK).json({ message: "OK" }));
 	swaggerDocs(app, port);
 	app.use(utils.notFound);

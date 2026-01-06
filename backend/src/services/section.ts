@@ -64,6 +64,23 @@ const getSectionById = (prisma: PrismaClient) => async (sectionId: number) => {
 };
 
 /**
+ * Deletes a section by its unique ID.
+ *
+ * @param prisma - The Prisma client instance.
+ * @returns A function that accepts an `id` and resolves to the deleted `Section`.
+ *   Throws an error if the section does not exist.
+ */
+
+const deleteSectionById = (prisma: PrismaClient) => async (id: number) => {
+	const section = await prisma.section.delete({
+		where: {
+			id
+		}
+	});
+	return section;
+};
+
+/**
  * Retrieves all sections by name (case-insensitive).
  *
  * @param prisma - The Prisma client instance.
@@ -182,5 +199,6 @@ export {
 	getNumberOfSectionInProject,
 	getAllSections,
 	getAllSectionsInProject,
-	changeSectionProject
+	changeSectionProject,
+	deleteSectionById
 };

@@ -3,15 +3,36 @@
  * Provides database access methods for Project entities using Prisma.
  */
 
-import { PrismaClient, Project } from "../../generated/prisma";
+import { PrismaClient, Project, Section } from "../../generated/prisma";
+
+/**
+ * Deletes a project by its unique ID, along with all sections belonging to it.
+ *
+ * This operation is executed within a transaction:
+ * - All sections associated with the project are deleted first.
+ * - The project is deleted afterward.
+ * - If any step fails, the entire transaction is rolled back.
+ *
+ * @param prisma - The Prisma client instance.
+ * @returns A function that accepts a `projectId` and resolves to the deleted `Project`.
+ *   Throws an error if the project does not exist or if deletion fails.
+ */
 
 const deleteProjectById =
 	(prisma: PrismaClient) =>
 	async (id: number): Promise<Project> => {
-		return prisma.project.delete({
-			where: {
-				id
-			}
+		return prisma.$transaction(async (transaction) => {
+			//delete all section in the project
+			await transaction.section.deleteMany({
+				where: { project_id: id }
+			});
+
+			//delete the project
+			return transaction.project.delete({
+				where: {
+					id
+				}
+			});
 		});
 	};
 
@@ -72,21 +93,34 @@ const getAllProjects = async (prisma: PrismaClient): Promise<Project[]> => {
 };
 
 /**
- * Creates a new project with the given name and color.
+ * Creates a new project and automatically creates an "Other" section for it.
  *
  * @param prisma - The Prisma client instance.
- * @returns A function that accepts project `name` and `color` and returns the created Project.
+ * @returns A function that accepts project `name` and `color` and returns a tuple of the created Project and Section.
  */
 const createProject =
 	(prisma: PrismaClient) =>
-	async (name: string, color: string): Promise<Project> => {
-		const project = await prisma.project.create({
-			data: {
-				name,
-				color
-			}
+	async (name: string, color: string): Promise<[Project, Section]> => {
+		return await prisma.$transaction(async (transaction) => {
+			//create the Project
+			const project = await transaction.project.create({
+				data: {
+					name,
+					color,
+				},
+			});
+
+			//crate the Other Section corresponding to the Project
+			const section = await transaction.section.create({
+				data: {
+					name: "Other",
+					is_other: true,
+					project_id: project.id,
+				},
+			});
+
+			return [project, section];
 		});
-		return project;
 	};
 
 /**
