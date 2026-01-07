@@ -94,7 +94,8 @@ There is a custom script `prepare:test` in the backend that is utilized in order
 # Exit immediately if any command returns a non-zero status
 set -e
 
-# Log to tmp folder instead of .git/hooks
+# Log to root tmp folder
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 mkdir -p "$REPO_ROOT/tmp"
 echo "$(date) Setting up backend imports for testing mode..." >> "$REPO_ROOT/tmp/git-hooks.log"
 
