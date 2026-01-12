@@ -1,7 +1,7 @@
 ## [Unreleased]
 
 ### Added
-
+- Optional wiki steps to add a pre-push hook
 - API endpoints:
   - Delete section by ID
   - Create projects

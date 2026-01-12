@@ -78,6 +78,47 @@ http://localhost:3000/api
 
 - This page shows all available API endpoints, request/response schemas, and examples.
 
+### 3.2 Set up Git pre-push hook (Optional)
+There is a custom script `prepare:test` in the backend that is utilized in order to verify the application works in development mode. It is suggested to set up a pre-push hook in order to not need to remember to run this script manually. Below are the instructions to set up this hook.
+
+**Disclaimer:** This will **NOT** work if you are using windows powershell. Git bash should be used instead.
+
+1. Open the `.git` folder in the root
+    - This folder may be hidden. Be sure to set up your device to see hidden files.
+    - If the folder is still not there, run `git init` in the root in the terminal.
+1. Rename `pre-push.sample` to `pre-push` in the `hooks` folder
+1. Replace the content of `pre-push` with the following:
+    1. The hook should work correctly, if you see a new log line in `.git/tmp/git-hooks.log`
+```
+#!/bin/sh
+# Exit immediately if any command returns a non-zero status
+set -e
+
+# Log to root tmp folder
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+mkdir -p "$REPO_ROOT/tmp"
+echo "$(date) Setting up backend imports for testing mode..." >> "$REPO_ROOT/tmp/git-hooks.log"
+
+# Run backend command
+npm run prepare:test --prefix "$REPO_ROOT/backend"
+```
+4. Run the following to make the hook executable
+```
+chmod +x .git/hooks/pre-push
+```
+
+5. Verify the hook executable was set up correctly by running
+```
+ls -l .git/hooks/pre-push
+```
+This should be printed in the console
+```
+-rwxr-xr-x (other stuff is here...)
+```
+
+
+
+5. Test the hook by making a dummy commit/push and checking the the logs.
 ## 4. Frontend Setup
 
 1. If using VSCode:

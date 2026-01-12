@@ -9,10 +9,10 @@
 import * as project from "./requestHandlers/project";
 import * as section from "./requestHandlers/section";
 
-import * as utils from "./utils";
+import * as utils from "./utils.js";
 import { Express } from "express";
 import cors from "cors";
-import { port } from "./server";
+import { port } from "./server.js";
 import swaggerDocs from "./swagger.js";
 
 export default (app: Express) => {
