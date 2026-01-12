@@ -881,7 +881,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 
 - [ ] When a reminder’s scheduled time is reached, the app triggers a notification
     - [ ] in-app and/or push for mobile
-    - [ ] Pop up notification on desktop (siilar to google calendar)
+    - [ ] Pop up notification on desktop (similar to google calendar)
 ---
 ### Epic 6: Labels, Filters, Views & Sorting
 
