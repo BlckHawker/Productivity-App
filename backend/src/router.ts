@@ -8,7 +8,7 @@
 
 import * as project from "./requestHandlers/project";
 import * as section from "./requestHandlers/section";
-
+import { StatusCode } from "status-code-enum";
 import * as utils from "./utils";
 import { Express } from "express";
 import cors from "cors";
@@ -30,6 +30,7 @@ export default (app: Express) => {
 	app.put("/section/changeName", section.changeSectionName)
 	app.put("/section/changeProject", section.moveSectionToProject)
 	app.delete("/section/:id", section.deleteSectionById);
+	app.get('/health', (req, res) => res.status(StatusCode.SuccessOK).json({ message: "OK" }));
 	swaggerDocs(app, port);
 	app.use(utils.notFound);
 };
