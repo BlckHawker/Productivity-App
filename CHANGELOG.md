@@ -42,7 +42,7 @@
 
 ### Fixed
 
-- Project plan formatting (#75)
+- Project plan formatting (#75, #144, #156)
 
 ### Removed
 
