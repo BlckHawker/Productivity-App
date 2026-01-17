@@ -12,6 +12,7 @@ import {
 } from "../../../src/requestHandlers/section";
 import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";
+import * from "util"
 
 jest.mock("../../../src/controllers/section");
 jest.mock("../../../src/utils");
