@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  root:
+    image: productivity-app/root
+    build:
+      context: .
+      target: root
+  backend:
+    image: productivity-app/backend
+    build:
+      context: .
+      target: backend
+  frontend:
+    image: productivity-app/frontend
+    build:
+      context: .
+      target: frontend
