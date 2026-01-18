@@ -14,20 +14,14 @@ if (!["test", "build"].includes(target)) {
 const map: Record<string, { test?: string; build?: string }> = {
 	"src/server": { test: "", build: "js" },
 	"src/utils": { test: "", build: "js" },
-	"tests/src/utils": { test: "", build: "js" },
-	"src/requestHandlers/project": { test: "", build: "js" },
-	"src/controllers/project": { test: "", build: "js" },
-	"src/services/project": { test: "", build: "js" },
+	"src/requestHandlers/": { test: "", build: "js" },
+	"src/controllers/": { test: "", build: "js" },
+	"src/services/": { test: "", build: "js" },
 	"src/requestHandlers/section": { test: "", build: "js" },
-	"src/controllers/section": { test: "", build: "js" },
-	"src/services/section": { test: "", build: "js" },
-	"tests/src/controllers/project": { test: "", build: "js" },
-	"tests/src/controllers/section": { test: "", build: "js" },
-	"tests/src/requestHandlers/project": { test: "", build: "js" },
-	"tests/src/requestHandlers/section": { test: "", build: "js" },
-
+	"tests/src/": { test: "", build: "js" },
 };
-
+// tests/src/
+// tests/server
 const importRegex = /(from\s+["'])(\.{1,2}\/[^"']+?)(?:\.(ts|js))?(["'])/g;
 
 function processFile(filePath: string) {
@@ -47,6 +41,8 @@ function processFile(filePath: string) {
 				.relative(process.cwd(), absImportPath)
 				.replace(/\\/g, "/");
 
+			
+
 			// check if this resolved path is in the map
 			const rule = map[relImportPath];
 			if (rule) {
@@ -56,6 +52,14 @@ function processFile(filePath: string) {
 						? `${prefix}${importPath}${suffix}`
 						: `${prefix}${importPath}.${ext}${suffix}`;
 				return newImport;
+			}
+
+			//check if the current directory matches one in the map
+			for (const [key, rule] of Object.entries(map)) {
+				if (key.endsWith("/") && relImportPath.startsWith(key.slice(0, -1))) {
+					const ext = rule[target];
+					return ext === "" ? `${prefix}${importPath}${suffix}` : `${prefix}${importPath}.${ext}${suffix}`;
+				}
 			}
 
 			// untouched if not in map
