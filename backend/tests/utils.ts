@@ -1,6 +1,8 @@
 //todo add header comments to all the functions
+import StatusCode from "status-code-enum";
 import { PrismaClient, Project, Section } from "../generated/prisma/index"
 import { Request, Response } from "express";
+import * as utils from "../src/utils";
 const prismaMock = (props: object = {}) =>
     ({ ...props }) as jest.Mocked<PrismaClient>;
 jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
@@ -31,6 +33,39 @@ const resetRequestHandlerTests = () => {
     jest.clearAllMocks();
 };
 
+const mockSanitizeResponseBase = <T>(
+  status: StatusCode,
+  payload: (message?: string) => T
+) => {
+  return jest
+    .spyOn(utils, "sanitizeResponse")
+    .mockImplementation((_response, expressRes: Response, message?: string) => {
+      expressRes.status(status).json(payload(message));
+      return expressRes;
+    });
+};
+
+
+const mockSanitizeResponseWithMessage = <T>(
+  status: StatusCode,
+  payload: (message: string) => T
+) => {
+  return mockSanitizeResponseBase(status, (message?: string) => {
+    if (message === undefined) {
+      throw new Error("sanitizeResponse was called without a message");
+    }
+    return payload(message);
+  });
+};
+
+
+const mockSanitizeResponseNoMessage = <T>(
+  status: StatusCode,
+  payload: () => T
+) => {
+  return mockSanitizeResponseBase(status, () => payload());
+};
+
 type MockPrisma = Partial<PrismaClient>;
 let req: Partial<Request> & { prisma?: MockPrisma };
 let res: jest.Mocked<Response>;
@@ -47,9 +82,16 @@ const mockedSection: Section = {
 } as Section;
 
 
+
 export {
+    MockPrisma,
     mockedProject,
     mockedSection,
+    req,
+    res,
+    mockSanitizeResponseWithMessage,
+    mockSanitizeResponseNoMessage,
+    resetRequestHandlerTests,
     prismaMock,
     mockCurried,
     mockCurriedError,
