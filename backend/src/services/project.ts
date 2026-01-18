@@ -36,7 +36,6 @@ const deleteProjectById =
 		});
 	};
 
-
 /**
  * Updates a project's name based on its ID.
  *
@@ -47,10 +46,7 @@ const deleteProjectById =
  */
 const updateProjectName =
 	(prisma: PrismaClient) =>
-	async (
-		id: number,
-		name: string
-	): Promise<Project> => {
+	async (id: number, name: string): Promise<Project> => {
 		return prisma.project.update({
 			where: { id },
 			data: {
@@ -67,12 +63,9 @@ const updateProjectName =
  * @param color - The new color of the project
  * @returns A promise resolving to the updated Project object.
  */
-	const updateProjectColor =
+const updateProjectColor =
 	(prisma: PrismaClient) =>
-	async (
-		id: number,
-		color: string
-	): Promise<Project> => {
+	async (id: number, color: string): Promise<Project> => {
 		return prisma.project.update({
 			where: { id },
 			data: {
@@ -106,8 +99,8 @@ const createProject =
 			const project = await transaction.project.create({
 				data: {
 					name,
-					color,
-				},
+					color
+				}
 			});
 
 			//crate the Other Section corresponding to the Project
@@ -115,8 +108,8 @@ const createProject =
 				data: {
 					name: "Other",
 					is_other: true,
-					project_id: project.id,
-				},
+					project_id: project.id
+				}
 			});
 
 			return [project, section];

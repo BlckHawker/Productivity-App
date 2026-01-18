@@ -44,7 +44,7 @@ jobs:
 
       - name: Build backend
         run: npm run build --prefix backend
-        
+
       - name: Start backend and verify /health endpoint
         run: |
           npm run start --prefix backend &
