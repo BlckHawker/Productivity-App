@@ -70,9 +70,9 @@ npm run test -- taskController.test.js
 - [ ] Tests added or updated as needed
 - [ ] Linting and formatting pass
 - [ ] Documentation updated (if needed)
-- [ ] Changelog updated
 - [ ] Files changed/added have a header comment
 - [ ] All changed/added function have header comments
 - [ ] Any backend status use the `status-code-enum` dependency
+- [ ] Changelog updated
 - [ ] Add PR number next to new changelog items
 
