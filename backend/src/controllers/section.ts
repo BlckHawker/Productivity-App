@@ -195,6 +195,11 @@ const changeSectionName = (prisma: PrismaClient) =>
 			return new Error(`A section with the id ${id} does not exist`);
 		}
 
+		//verify the section is not an "Other"
+		if(section.is_other) {
+			return new Error(`Can not change the name of "Other" section`)
+		}
+
 		//verify the new name does not exist for an existing section within this project
 		const project = await projectController.getProjectById(prisma)(section.project_id);
 
@@ -245,6 +250,11 @@ const moveSectionToProject = (prisma: PrismaClient) => async (sectionId: number,
 
 		if (section === null) {
 			return new Error(`A section with the id ${sectionId} does not exist`);
+		}
+
+		//verify the section is not an "Other"
+		if(section.is_other) {
+			return new Error(`Can not move "Other" section to a different project`)
 		}
 
 		//verify the project exists
