@@ -1,6 +1,6 @@
 import * as sectionController from "../../../src/controllers/section";
 import * as utils from "../../../src/utils";
-import { Request, Response } from "express";
+import { Request } from "express";
 import {
 	changeSectionName,
 	createSection,
@@ -10,7 +10,6 @@ import {
 	getSectionById,
 	moveSectionToProject,
 } from "../../../src/requestHandlers/section";
-import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";
 import * as testUtils from "../../utils.ts"
 
