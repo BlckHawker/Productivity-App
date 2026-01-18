@@ -60,6 +60,98 @@
  *                   message: Reached maximum amount of sections (100) for the project "Other"
  */
 
+/** 
+ * @swagger
+ * /section/changeName:
+ *   put:
+ *     summary: Change the name of an existing section (case insensitive)
+ *     tags:
+ *       - Section
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - section_id
+ *               - new_name
+ *             properties:
+ *               new_name:
+ *                 type: string
+ *                 description: The new name of the section
+ *                 example: "Budget"
+ *               section_id:
+ *                 type: number
+ *                 description: The id of the section of the name to be changed
+ *                 example: 1
+ *     responses:
+ *       200:
+ *         description: Successful response with updated section data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: number
+ *                   example: 1
+ *                 project_id:
+ *                   type: number
+ *                   example: 2
+ *                 name:
+ *                   type: string
+ *                   example: "Math"
+ *                 created_at:
+ *                   type: string
+ *                   example: "2025-09-05T23:03:57.213Z"
+ *                 updated_at:
+ *                   type: string
+ *                   example: "2025-09-05T23:03:57.213Z"
+ *       400:
+ *         description: Invalid data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             examples:
+ *               invalidSectionId:
+ *                 summary: section_id is either missing or not an integer
+ *                 value:
+ *                   success: false
+ *                   message: "Invalid section_id: must be a valid number"
+ *               invalidNewName:
+ *                 summary: new_name is either missing or not a string
+ *                 value:
+ *                   success: false
+ *                   message: "Invalid new_name: must be typeof string"
+ *       404:
+ *          description: Section could not be found
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          message:
+ *                              type: string
+ *                              example: "A section with the id 1 does not exist"
+ *       409:
+ *         description: A section within the same project already has the new name
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "A section within the project named \"School\" (id: 1) already has a section named \"Math\". Cannot change the section named \"Algebra\" (id: 1) to \"Math\""
+ */
+
 /**
  * @swagger
  * /section/changeProject:
