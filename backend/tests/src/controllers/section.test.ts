@@ -228,6 +228,15 @@ describe("changeSectionName", () => {
 		mockCurried(sectionService.getSectionById as jest.Mock, null);
 		const response = await changeSectionName();
 		expect(response).toBeInstanceOf(Error);
+		expect((response as Error).message).toMatch(/A section with the id .+ does not exist/);
+	})
+
+	test ("Returns an error if the section to be changed is an \"Other\" section", async () => {
+		const section = {is_other: true}
+		mockCurried(sectionService.getSectionById as jest.Mock, section);
+		const response = await changeSectionName();
+		expect(response).toBeInstanceOf(Error);
+		expect((response as Error).message).toBe(`Can not change the name of "Other" section`)
 	})
 
 	test("If getting the current project returns an error, return that project as an error", async () => {
@@ -310,6 +319,13 @@ describe("moveSectionToProject", () => {
 		mockCurried(sectionService.getSectionById as jest.Mock, null);
 		const response = await moveSectionToProject();
 		expect(response).toBeInstanceOf(Error);
+	})
+
+	test("Returns an error of the section to be moved in \"Other\"", async () => {
+		mockCurried(sectionService.getSectionById as jest.Mock, {is_other: true});
+		const response = await moveSectionToProject();
+		expect(response).toBeInstanceOf(Error);
+		expect((response as Error).message).toBe(`Can not move "Other" section to a different project`)
 	})
 
 	test("If getting the current project returns an error, return that project as an error", async () => {

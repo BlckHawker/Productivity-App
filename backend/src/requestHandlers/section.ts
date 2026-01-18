@@ -165,6 +165,12 @@ const changeSectionName = async (req: Request, res: Response) => {
 		return res.status(StatusCode.ClientErrorConflict).json({message: response.message});
 	}
 
+	if(response instanceof Error && response.message == `Can not change the name of "Other" section`) {
+		return res.status(StatusCode.ClientErrorBadRequest).json({message: response.message});
+	}
+
+
+
 	return utils.sanitizeResponse(
 		response,
 		res,
@@ -213,6 +219,10 @@ const moveSectionToProject = async (req: Request, res: Response) => {
 
 		if(conflictMatches.some(reg => response.message.match(reg))) {
 			return res.status(StatusCode.ClientErrorConflict).json({message: response.message});
+		}
+
+		if(response.message == `Can not move "Other" section to a different project`) {
+			return res.status(StatusCode.ClientErrorBadRequest).json({message: response.message});
 		}
 	}
 
