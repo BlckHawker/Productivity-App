@@ -40,6 +40,7 @@
 
 - Project plan more to include more detail in terms of sorting, filters, and the inclusion of a "today" view. (#116)
 - `seed-db.ts` updated to create a project called **Other**. (#117)
+- Unit tests to reduce duplicated code (#154)
 
 ### Fixed
 
