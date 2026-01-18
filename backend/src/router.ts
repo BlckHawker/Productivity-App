@@ -8,9 +8,9 @@
 
 import * as project from "./requestHandlers/project";
 import * as section from "./requestHandlers/section";
-import { StatusCode } from "status-code-enum";
 import * as utils from "./utils";
 import { Express } from "express";
+import { StatusCode } from "status-code-enum";
 import cors from "cors";
 import { port } from "./server";
 import swaggerDocs from "./swagger.js";
@@ -27,10 +27,12 @@ export default (app: Express) => {
 	app.get("/sections/", section.getAllSections);
 	app.get("/project/sections/:id", section.getAllSectionsInProject);
 	app.post("/section/create", section.createSection);
-	app.put("/section/changeName", section.changeSectionName)
-	app.put("/section/changeProject", section.moveSectionToProject)
+	app.put("/section/changeName", section.changeSectionName);
+	app.put("/section/changeProject", section.moveSectionToProject);
 	app.delete("/section/:id", section.deleteSectionById);
-	app.get('/health', (req, res) => res.status(StatusCode.SuccessOK).json({ message: "OK" }));
+	app.get("/health", (req, res) =>
+		res.status(StatusCode.SuccessOK).json({ message: "OK" })
+	);
 	swaggerDocs(app, port);
 	app.use(utils.notFound);
 };
