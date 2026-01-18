@@ -258,9 +258,9 @@ const moveSectionToProject = (prisma: PrismaClient) => async (sectionId: number,
 		//todo make unit test
 		//todo make swagger docs
 		if(section.is_other) {
-			return new Error(`Can not move of "Other" section to a different project`)
+			return new Error(`Can not move "Other" section to a different project`)
 		}
-		
+
 		//verify the project exists
 		const project = await projectController.getProjectById(prisma)(newProjectId);
 		if(project instanceof Error) {
