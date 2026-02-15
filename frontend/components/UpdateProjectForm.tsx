@@ -50,9 +50,14 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 	}
 
     async function projectChangeCallback(){
-        const newName: string = values.name;
+        let newName: string = values.name;
         const newColor: string = values.color;
         const id = props.id;
+
+		if (currentVal === "") {
+			newName = props.name;	
+		}
+
         const newProj: object = {id: id, name: newName, color: newColor};
 
         console.log(`current name: ${newName}, currentColor: ${newColor}, ID: ${id}`);
@@ -96,6 +101,7 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 
     }
 
+	// TODO: if neither field changes, keep update project button grayed out. Also, add a cancel button that is always active. When clicked, a warning popup should show up.
     return (
         <>
             <form name="submit-project-form" id="submit-project-form" onSubmit={onSubmit}>
@@ -107,7 +113,6 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 						placeholder="Project Name"
 						onChange={onChange}
                         onInput={checkInput}
-						required
 					/>
 					<p id="name-error"></p>
 
@@ -116,10 +121,8 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 						id="inputcolor"
 						type="color"
 						placeholder="Color"
-                        // TODO: make sure color displays as current color, not as default black
 						defaultValue={oldColor}
 						onChange={onChange}
-						required
 					/>
 					<button id="submitbtn" type="submit">
 						Update Project

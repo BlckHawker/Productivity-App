@@ -73,23 +73,23 @@ const updateProject =
 				);
 			}
 
-			if (
-				data.name &&
-				projectToUpdate.name.toUpperCase() === data.name.toUpperCase()
-			) {
-				return new Error(
-					"Updated project name must be different from the current name."
-				);
-			}
+			// if (
+			// 	data.name &&
+			// 	projectToUpdate.name.toUpperCase() === data.name.toUpperCase()
+			// ) {
+			// 	return new Error(
+			// 		"Updated project name must be different from the current name."
+			// 	); 
+			// }
 
-			if (
-				data.color &&
-				projectToUpdate.color.toUpperCase() === data.color.toUpperCase()
-			) {
-				return new Error(
-					"Updated project color must be different from the current color."
-				);
-			}
+			// if (
+			// 	data.color &&
+			// 	projectToUpdate.color.toUpperCase() === data.color.toUpperCase()
+			// ) {
+			// 	return new Error(
+			// 		"Updated project color must be different from the current color."
+			// 	);
+			// }
 
 			if (data.name) {
 				const existingProject = await projectServices.getProjectByName(prisma)(
@@ -101,10 +101,14 @@ const updateProject =
 				}
 
 				if (existingProject != null) {
-					return new Error(
+					if (existingProject.id != id)
+					{
+						return new Error(
 						`A project with the name "${data.name}" already exists`
 					);
 				}
+					}
+					
 			}
 
 			const updatedProject = projectServices.updateProject(prisma)(id, data);
