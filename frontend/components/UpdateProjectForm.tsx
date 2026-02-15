@@ -101,7 +101,6 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 
     }
 
-	// TODO: if neither field changes, keep update project button grayed out. Also, add a cancel button that is always active. When clicked, a warning popup should show up.
     return (
         <>
             <form name="submit-project-form" id="submit-project-form" onSubmit={onSubmit}>
