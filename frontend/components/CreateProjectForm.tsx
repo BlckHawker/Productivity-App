@@ -1,6 +1,6 @@
 import * as utils from "../src/api/utils";
 import { Form } from "../hooks/Form";
-import {MAX_PROJECTS} from "../../backend/src/controllers/project.ts"
+import { MAX_PROJECTS } from "../../backend/src/controllers/project.ts";
 import React from "react"; // must be in scope for JSX
 
 function CreateProjectForm() {
@@ -11,9 +11,9 @@ function CreateProjectForm() {
 	const input = document.querySelector<HTMLInputElement>("#inputname");
 	const defaultColor = "#000000";
 	let maxHit = false;
-	let currentVal:string;
+	let currentVal: string;
 
-	if (input){
+	if (input) {
 		currentVal = input.value;
 	}
 	
@@ -52,7 +52,10 @@ function CreateProjectForm() {
 		// project limit hit
 		if (postResponse.status == "400") {
 			// limit is 100 projects
-			if (message.message === `Reached maximum amount of projects ${MAX_PROJECTS}. Please delete some before creating more.`) {
+			if (
+				message.message ===
+				`Reached maximum amount of projects ${MAX_PROJECTS}. Please delete some before creating more.`
+			) {
 				maxHit = true;
 
 				// once deletion is in place, the button will be enabled after there are less than 100 projects
@@ -135,7 +138,6 @@ function CreateProjectForm() {
 					input.style.outline = "none";
 				}
 			}
-
 		}
 	}
 

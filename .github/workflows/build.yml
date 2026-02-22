@@ -38,8 +38,24 @@ jobs:
           rm -rf backend/node_modules backend/package-lock.json
           npm install --prefix backend
 
+      - name: Prepare for build
+        working-directory: backend
+        run: npm run prepare:build
+
       - name: Build backend
         run: npm run build --prefix backend
+        
+      - name: Start backend and verify /health endpoint
+        run: |
+          npm run start --prefix backend &
+          for i in {1..10}; do
+            if curl -fs "${VITE_BACKEND_URL}/health"; then
+              echo "Backend is up"
+              break
+            fi
+            echo "Waiting for backend..."
+            sleep 2
+          done
 
       # Frontend
       - name: Clean install (frontend)

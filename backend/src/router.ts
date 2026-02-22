@@ -1,6 +1,14 @@
+/**
+ * App router.
+ *
+ * Sets up all project and section routes, applies middleware,
+ * and loads the Swagger docs. Connects each endpoint to its
+ * corresponding request handler.
+ */
+
 import * as project from "./requestHandlers/project";
 import * as section from "./requestHandlers/section";
-
+import { StatusCode } from "status-code-enum";
 import * as utils from "./utils";
 import { Express } from "express";
 import cors from "cors";
@@ -18,8 +26,11 @@ export default (app: Express) => {
 	app.get("/section/:id", section.getSectionById);
 	app.get("/sections/", section.getAllSections);
 	app.get("/project/sections/:id", section.getAllSectionsInProject);
-
 	app.post("/section/create", section.createSection);
+	app.put("/section/changeName", section.changeSectionName)
+	app.put("/section/changeProject", section.moveSectionToProject)
+	app.delete("/section/:id", section.deleteSectionById);
+	app.get('/health', (req, res) => res.status(StatusCode.SuccessOK).json({ message: "OK" }));
 	swaggerDocs(app, port);
 	app.use(utils.notFound);
 };
