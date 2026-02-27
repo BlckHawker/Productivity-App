@@ -5,6 +5,7 @@ services:
       context: .
       target: root
     volumes:
+      - .:/build
       - /build/node_modules
       - /build/frontend/node_modules
       - /build/backend/node_modules
@@ -14,11 +15,15 @@ services:
       context: .
       target: backend
     volumes:
+      - .:/build
       - /build/node_modules
+      - /build/backend/node_modules
   frontend:
     image: productivity-app/frontend
     build:
       context: .
       target: frontend
     volumes:
+      - .:/build
       - /build/node_modules
+      - /build/frontend/node_modules
