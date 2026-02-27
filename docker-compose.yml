@@ -1,17 +1,24 @@
-version: "3.8"
 services:
   root:
     image: productivity-app/root
     build:
       context: .
       target: root
+    volumes:
+      - /build/node_modules
+      - /build/frontend/node_modules
+      - /build/backend/node_modules
   backend:
     image: productivity-app/backend
     build:
       context: .
       target: backend
+    volumes:
+      - /build/node_modules
   frontend:
     image: productivity-app/frontend
     build:
       context: .
       target: frontend
+    volumes:
+      - /build/node_modules
