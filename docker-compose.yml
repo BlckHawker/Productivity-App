@@ -18,6 +18,8 @@ services:
       - .:/build
       - /build/node_modules
       - /build/backend/node_modules
+    networks:
+      - appnet
   frontend:
     image: productivity-app/frontend
     build:
@@ -27,3 +29,10 @@ services:
       - .:/build
       - /build/node_modules
       - /build/frontend/node_modules
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    name: productivity-app-network
+    driver: bridge
