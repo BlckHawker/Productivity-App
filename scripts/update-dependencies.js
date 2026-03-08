@@ -1,3 +1,9 @@
+/**
+ * Script to ease the process of upgrading node modules across the repository.
+ * Deletes `node_modules` and `package-lock.json` in the root, frontend, and backend
+ * directories, then reinstalls dependencies using `npm install`.
+ */
+
 import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
