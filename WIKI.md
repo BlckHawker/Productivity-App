@@ -129,11 +129,12 @@ These scripts are shortcuts defined in `package.json` for common development tas
 
 | Script           | Description                      |
 | ---------------- | -------------------------------- |
-| `build`          | Build both frontend and backend. |
-| `build:frontend` | Build the frontend only.         |
-| `build:backend`  | Build the backend only.          |
-| `test`           | Run backend tests                |
-| `test:coverage`  | Run coverage tests for backend.  |
+| `build`                | Build both frontend and backend. |
+| `build:frontend`       | Build the frontend only.         |
+| `build:backend`        | Build the backend only.          |
+| `test`                 | Run backend tests                |
+| `test:coverage`        | Run coverage tests for backend.  |
+| `update-dependencies`  | Cleans and reinstalls all packages within the root, `frontend` and `backend` dependencies.  |
 
 ## Frontend
 
