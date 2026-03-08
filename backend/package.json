@@ -45,7 +45,7 @@
 		"swagger-ui-express": "^5.0.1"
 	},
 	"devDependencies": {
-		"@types/axios": "^0.9.36",
+		"@types/axios": "^0.14.4",
 		"@types/cors": "^2.8.19",
 		"@types/jest": "^30.0.0",
 		"@types/swagger-jsdoc": "^6.0.4",
