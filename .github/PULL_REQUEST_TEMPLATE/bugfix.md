@@ -75,4 +75,3 @@ npm run test -- taskController.test.js
 - [ ] All changed/added function have header comments
 - [ ] Any backend status use the `status-code-enum` dependency
 - [ ] Add PR number next to new changelog items
-

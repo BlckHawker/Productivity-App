@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 ### Added
+
 - Build workflow to test backend build is functional (#151)
 - A dependency to make HTTP codes an enum (#76)
 - API endpoints:
@@ -29,7 +30,7 @@
   - Unused variables (#118)
   - Const for unused variables (#118)
   - Tab indentation (#118)
-  - Explicit typing for useState (#81) 
+  - Explicit typing for useState (#81)
   - TODO and FIXME comments (#82)
 - Frontend functionality for creating projects (#127)
   - Errors are thrown if a project has the same name as a preexisting one, or if the limit of 100 projects is met (#127)
@@ -39,6 +40,7 @@
 
 - Project plan more to include more detail in terms of sorting, filters, and the inclusion of a "today" view. (#116)
 - `seed-db.ts` updated to create a project called **Other**. (#117)
+- Unit tests to reduce duplicated code (#154)
 
 ### Fixed
 

@@ -6,7 +6,7 @@
  * additional business logic such as validation and limits.
  */
 
-import * as projectController from "./project"
+import * as projectController from "./project";
 import * as projectService from "../services/project";
 import * as sectionService from "../services/section";
 import { PrismaClient, Section } from "../../generated/prisma";
@@ -181,46 +181,57 @@ const getAllSections = async (
  *     or an `Error` if the section does not exist, the parent project does not exist,
  *     or another section in the same project already uses `newName`.
  */
-const changeSectionName = (prisma: PrismaClient) =>
+const changeSectionName =
+	(prisma: PrismaClient) =>
 	async (id: number, newName: string): Promise<Section | Error> => {
-	try {
-		//check to see if the section exists
-		const section = await getSectionById(prisma)(id);
+		try {
+			//check to see if the section exists
+			const section = await getSectionById(prisma)(id);
 
-		if (section instanceof Error) {
-			return section as Error;
+			if (section instanceof Error) {
+				return section as Error;
+			}
+
+			if (section === null) {
+				return new Error(`A section with the id ${id} does not exist`);
+			}
+
+			//verify the new name does not exist for an existing section within this project
+			const project = await projectController.getProjectById(prisma)(
+				section.project_id
+			);
+
+			if (project instanceof Error) {
+				return project as Error;
+			}
+
+			if (project === null) {
+				return new Error(
+					`Could not find a project connected to the section with an id of ${id}`
+				);
+			}
+
+			const existingSection = await sectionService.getSectionByName(prisma)(
+				section.project_id,
+				newName
+			);
+
+			if (existingSection !== null) {
+				return new Error(
+					`A section within the project named "${project.name}" (id: ${project.id}) already has a section named "${newName}". Cannot change the section named "${section.name}" (id: ${id}) to "${newName}"`
+				);
+			}
+
+			//change the name of the section
+			const updatedSection = await sectionService.changeSectionName(prisma)(
+				id,
+				newName
+			);
+			return updatedSection;
+		} catch (err) {
+			return err as Error;
 		}
-
-		if (section === null) {
-			return new Error(`A section with the id ${id} does not exist`);
-		}
-
-		//verify the new name does not exist for an existing section within this project
-		const project = await projectController.getProjectById(prisma)(section.project_id);
-
-		if(project instanceof Error) {
-			return project as Error;
-		}
-
-		if(project === null) {
-			return new Error(`Could not find a project connected to the section with an id of ${id}`);
-		}
-
-		const existingSection = await sectionService.getSectionByName(prisma)(section.project_id, newName);
-
-		if (existingSection !== null) {
-			return new Error(`A section within the project named "${project.name}" (id: ${project.id}) already has a section named "${newName}". Cannot change the section named "${section.name}" (id: ${id}) to "${newName}"`)
-		} 
-
-		//change the name of the section
-		const updatedSection = await sectionService.changeSectionName(prisma)(id, newName);
-		return updatedSection;
-	}
-
-	catch(err) {
-		return err as Error;
-	}
-}
+	};
 
 /**
  * Moves a section to a different project.
@@ -234,58 +245,73 @@ const changeSectionName = (prisma: PrismaClient) =>
  *     the section to its current project, if the new project already contains a section
  *     with the same name, or if the project has reached the maximum number of sections.
  */
-const moveSectionToProject = (prisma: PrismaClient) => async (sectionId: number, newProjectId: number): Promise<Section | Error>  => {
-	try {
-		//verify the section exists
-		const section = await getSectionById(prisma)(sectionId);
+const moveSectionToProject =
+	(prisma: PrismaClient) =>
+	async (sectionId: number, newProjectId: number): Promise<Section | Error> => {
+		try {
+			//verify the section exists
+			const section = await getSectionById(prisma)(sectionId);
 
-		if(section instanceof Error) {
-			return section as Error;
+			if (section instanceof Error) {
+				return section as Error;
+			}
+
+			if (section === null) {
+				return new Error(`A section with the id ${sectionId} does not exist`);
+			}
+
+			//verify the project exists
+			const project =
+				await projectController.getProjectById(prisma)(newProjectId);
+			if (project instanceof Error) {
+				return project as Error;
+			}
+
+			if (project === null) {
+				return new Error(
+					`A project with the id ${newProjectId} does not exist`
+				);
+			}
+
+			const errorMsg = `Cannot move section "${section.name}" (id: ${section.id}) to project "${project.name}" (id: ${project.id}).`;
+
+			//verify the new project is not the same as the one section is currently is
+			if (project.id == section.project_id) {
+				return new Error(`${errorMsg} Section already exists in that project`);
+			}
+
+			//verify the project doesn't currently have the max amount of projects
+			const sectionSize = await sectionService.getNumberOfSectionInProject(
+				prisma
+			)(project.id);
+			if (sectionSize >= MAX_SECTIONS) {
+				return new Error(
+					`${errorMsg} Project already has max amount of sections (${sectionSize})`
+				);
+			}
+
+			//verify a section with the name of the current section doesn't already exist within that project
+			const existingSection = await sectionService.getSectionByName(prisma)(
+				project.id,
+				section.name
+			);
+
+			if (existingSection !== null) {
+				return new Error(
+					`${errorMsg} A section within that project already has that name.`
+				);
+			}
+
+			//update the section so its project id is the new one
+			const updatedSection = await sectionService.changeSectionProject(prisma)(
+				section.id,
+				project.id
+			);
+			return updatedSection;
+		} catch (err) {
+			return err as Error;
 		}
-
-		if (section === null) {
-			return new Error(`A section with the id ${sectionId} does not exist`);
-		}
-
-		//verify the project exists
-		const project = await projectController.getProjectById(prisma)(newProjectId);
-		if(project instanceof Error) {
-			return project as Error;
-		}
-
-		if (project === null) {
-			return new Error(`A project with the id ${newProjectId} does not exist`);
-		}
-
-		const errorMsg = `Cannot move section "${section.name}" (id: ${section.id}) to project "${project.name}" (id: ${project.id}).`
-
-		//verify the new project is not the same as the one section is currently is
-		if(project.id == section.project_id) {
-			return new Error (`${errorMsg} Section already exists in that project`)
-		}
-
-		//verify the project doesn't currently have the max amount of projects
-		const sectionSize = await sectionService.getNumberOfSectionInProject(prisma)(project.id)
-		if(sectionSize >= MAX_SECTIONS) {
-			return new Error(`${errorMsg} Project already has max amount of sections (${sectionSize})`)
-		}
-
-		//verify a section with the name of the current section doesn't already exist within that project
-		const existingSection = await sectionService.getSectionByName(prisma)(project.id, section.name);
-
-		if (existingSection !== null) {
-			return new Error(`${errorMsg} A section within that project already has that name.`)
-		} 
-
-		//update the section so its project id is the new one
-		const updatedSection = await sectionService.changeSectionProject(prisma)(section.id, project.id);
-		return updatedSection;
-	}
-
-	catch(err) {
-		return err as Error;
-	}
-}
+	};
 
 export {
 	MAX_SECTIONS,
