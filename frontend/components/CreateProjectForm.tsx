@@ -3,7 +3,7 @@ import { Form } from "../hooks/Form";
 import { MAX_PROJECTS } from "../../backend/src/controllers/project.ts";
 import React from "react"; // must be in scope for JSX
 
-function ProjectForm() {
+function CreateProjectForm() {
 	// globals
 	const errormsg = document.querySelector<HTMLElement>("#name-error");
 	const submitbtn = document.querySelector<HTMLButtonElement>("#submitbtn");
@@ -16,6 +16,7 @@ function ProjectForm() {
 	if (input) {
 		currentVal = input.value;
 	}
+	
 	// initial state of form
 	const initialState = {
 		name: "",
@@ -47,6 +48,7 @@ function ProjectForm() {
 		);
 		const message = await postResponse.json;
 
+		// error handling
 		// project limit hit
 		if (postResponse.status == "400") {
 			// limit is 100 projects
@@ -109,6 +111,7 @@ function ProjectForm() {
 			}
 		}
 
+		// after input is accepted
 		if (!postResponse.status) {
 			if (input) {
 				input.value = "";
@@ -182,7 +185,7 @@ function ProjectForm() {
 	);
 }
 
-export default ProjectForm;
+export default CreateProjectForm;
 
 /*
 form source: https://dev.to/karan316/build-forms-using-react-the-easy-way-with-typescript-46bh

@@ -106,7 +106,9 @@ const updateProject =
 				}
 
 				if (existingProject != null) {
-					return new Error(
+					if (existingProject.id != id)
+					{
+						return new Error(
 						`A project with the name "${data.name}" already exists`
 					);
 				}
