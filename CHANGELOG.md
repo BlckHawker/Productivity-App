@@ -19,7 +19,9 @@
 - Schema documentation added to the Wiki (#117)
 - Scripts to easily modify the database for debugging (#115)
 - Swagger API documentation (#91)
-- Util scripts to configure for testing and running build (#94)
+- Util scripts to:
+  - configure for testing and running build (#94)
+  - update node packages in all directories at once (#186)
 - Header comment check to pr checklist (#74)
 - ESLint rules for the following:
   - Semi-colons (#118)

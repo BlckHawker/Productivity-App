@@ -9,7 +9,8 @@
 		"test": "npm --prefix backend install && npm --prefix backend run test",
 		"test:coverage": "cd backend && npm run test:coverage",
 		"lint": "npx eslint .",
-		"lint-fix": "npx eslint . --fix && prettier . --write"
+		"lint-fix": "npx eslint . --fix && prettier . --write",
+		"update-dependencies": "node scripts/update-dependencies.js"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.2",
