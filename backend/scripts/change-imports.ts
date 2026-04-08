@@ -24,8 +24,7 @@ const map: Record<string, { test?: string; build?: string }> = {
 	"tests/src/controllers/project": { test: "", build: "js" },
 	"tests/src/controllers/section": { test: "", build: "js" },
 	"tests/src/requestHandlers/project": { test: "", build: "js" },
-	"tests/src/requestHandlers/section": { test: "", build: "js" },
-
+	"tests/src/requestHandlers/section": { test: "", build: "js" }
 };
 
 const importRegex = /(from\s+["'])(\.{1,2}\/[^"']+?)(?:\.(ts|js))?(["'])/g;

@@ -32,7 +32,7 @@
  *         - name
  *         - created_at
  *         - updated_at
- *  
+ *
  *     Section:
  *       type: object
  *       properties:
@@ -63,4 +63,4 @@
  *         - is_other
  *         - created_at
  *         - updated_at
- */ 
+ */

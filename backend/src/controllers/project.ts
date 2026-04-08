@@ -115,18 +115,25 @@ const updateProject =
 			//update the project based on what is being changed
 			let updatedProject = null;
 
-			if(data.name !== null) {
-				updatedProject = projectServices.updateProjectName(prisma)(id,data.name);
+			if (data.name !== null) {
+				updatedProject = projectServices.updateProjectName(prisma)(
+					id,
+					data.name
+				);
 			}
 
-
-			if(data.color !== null) {
-				updatedProject = projectServices.updateProjectColor(prisma)(id,data.color);
+			if (data.color !== null) {
+				updatedProject = projectServices.updateProjectColor(prisma)(
+					id,
+					data.color
+				);
 			}
 
 			//if for some reason the updatedProject is null at this point, throw an error
-			if(updatedProject == null) {
-				return new Error(`An error occurred updating the project with the id ${id}. Please contact the developers.`)
+			if (updatedProject == null) {
+				return new Error(
+					`An error occurred updating the project with the id ${id}. Please contact the developers.`
+				);
 			}
 
 			return updatedProject;
@@ -201,7 +208,7 @@ const getProjectByName =
  */
 const createProject =
 	(prisma: PrismaClient) =>
-	async (name: string, color: string): Promise<[Project,Section] | Error> => {
+	async (name: string, color: string): Promise<[Project, Section] | Error> => {
 		try {
 			//verify the is room for more projects
 			const size = await projectServices.getProjectCount(prisma);

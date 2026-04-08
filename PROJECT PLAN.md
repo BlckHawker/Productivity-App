@@ -732,7 +732,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 | **3.3 - Add Subtasks**        | Tasks can have up to 20 levels of nested subtasks with 100 incomplete per level | As a user, I want to break down large tasks into subtasks, so I can track progress on complex work.                                         |
 | **3.4 - Prevent Recursion**   | System blocks infinite subtask loops.                                           | As a developer, I want the system to detect and prevent circular task relationships so I don’t create recursive logic bugs.                 |
 | **3.5 - Complete Task Logic** | Completion triggers the appropriate behavior based on type/recurrence.          | As a user, I want task completion to behave correctly depending on whether the task is recurring or has subtasks, so I don’t lose progress. |
-| **3.6 - Delete Task** | Deletion of a task additionally deletes its subtasks.          | As a user, I want to delete no longer wanted tasks, so my project board isn't cluttered. |
+| **3.6 - Delete Task**         | Deletion of a task additionally deletes its subtasks.                           | As a user, I want to delete no longer wanted tasks, so my project board isn't cluttered.                                                    |
 
 #### 3.1 - Create Task Acceptance Criteria
 
@@ -786,6 +786,7 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 - [ ] Tasks in completed state remain editable unless explicitly archived or locked.
 
 #### 3.6 - Delete Task Acceptance Criteria
+
 - [ ] User can delete a task
 - [ ] When a task is deleted, all substasks are deleted as well.
 - [ ] When a project is deleted, all children tasks are deleted as well.
@@ -850,8 +851,8 @@ Once the app is production-ready or multi-user features are introduced, hosting 
 
 | **Name**                                 | **Description**                                                                                    | **User Story**                                                                                                                                 |
 | ---------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| **5.1 - Smart Reminders**                | Reminders can be absolute or relative to deadlines or desired dates and support custom recurrence. | As a user, I want flexible reminder options (e.g., "every Monday", "2 days before deadline") so I never forget important work. |
-| **5.2 - Reminder Notification Delivery** |  When a reminder goes off, a notifiacion should be pushed for the user stating so. | As a user, I want to receive timely reminder notifications via the app and/or push system, so that I don’t forget to complete important tasks. |
+| **5.1 - Smart Reminders**                | Reminders can be absolute or relative to deadlines or desired dates and support custom recurrence. | As a user, I want flexible reminder options (e.g., "every Monday", "2 days before deadline") so I never forget important work.                 |
+| **5.2 - Reminder Notification Delivery** | When a reminder goes off, a notifiacion should be pushed for the user stating so.                  | As a user, I want to receive timely reminder notifications via the app and/or push system, so that I don’t forget to complete important tasks. |
 
 ---
 
@@ -861,28 +862,30 @@ Once the app is production-ready or multi-user features are introduced, hosting 
   - [ ]  Static (absolute time, e.g., July 5th 4:00pm)
   - [ ]  Dynamic reminders (relative to deadline/desired date)
 - [ ]  Users can define recurrence rules for reminders
-    - [ ] every x 
-        - [ ] minutes
-        - [ ] hours
-        - [ ] days
-        - [ ] weeks
-        - [ ] months
-        - [ ] years
-    - [ ] Every xth of the month
-    - [ ] every xth day of the month (ex: every third Saturday)
-    - [ ] Every
-        - [ ] weekday
-        - [ ] weekend
-    - [ ] Custom day of week sets (ex: every Mon/Wed/Fri)
-    - [ ] Last day of the month
+  - [ ] every x
+    - [ ] minutes
+    - [ ] hours
+    - [ ] days
+    - [ ] weeks
+    - [ ] months
+    - [ ] years
+  - [ ] Every xth of the month
+  - [ ] every xth day of the month (ex: every third Saturday)
+  - [ ] Every
+    - [ ] weekday
+    - [ ] weekend
+  - [ ] Custom day of week sets (ex: every Mon/Wed/Fri)
+  - [ ] Last day of the month
 - [ ] Reminders that target static date/time that has passed will automatically be deleted. If the task is recurring, the reminders will stay, and will be updated only when the targeted date/time is updated to a future date/time
 
 #### 5.2 - Reminder Notification Acceptance Criteria
 
 - [ ] When a reminder’s scheduled time is reached, the app triggers a notification
-    - [ ] in-app and/or push for mobile
-    - [ ] Pop up notification on desktop (similar to google calendar)
+  - [ ] in-app and/or push for mobile
+  - [ ] Pop up notification on desktop (similar to google calendar)
+
 ---
+
 ### Epic 6: Labels, Filters, Views & Sorting
 
 | **Name**               | **Description**                                                                                              | **User Story**                                                                                                                                     |

@@ -146,9 +146,15 @@ const getAllSections = async (req: Request, res: Response) => {
  * @returns A Promise resolving to the HTTP response sent to the client.
  */
 const changeSectionName = async (req: Request, res: Response) => {
-	const new_name = req.body && typeof req.body?.new_name === "string" ? req.body?.new_name.trim() : "";
-	const section_id = req.body && typeof req.body?.section_id === "number" ? Number(req.body?.section_id) : NaN;
-	
+	const new_name =
+		req.body && typeof req.body?.new_name === "string"
+			? req.body?.new_name.trim()
+			: "";
+	const section_id =
+		req.body && typeof req.body?.section_id === "number"
+			? Number(req.body?.section_id)
+			: NaN;
+
 	const validArgs = utils.mergeResults(
 		utils.assertArgumentsString({ new_name }),
 		utils.assertArgumentsNumber({ section_id })
@@ -158,11 +164,19 @@ const changeSectionName = async (req: Request, res: Response) => {
 		return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
 
 	const response = await sectionController.changeSectionName(req.prisma)(
-		section_id,new_name
+		section_id,
+		new_name
 	);
 
-	if(response instanceof Error && response.message.match(/A section within the project named ".+" \(id: .+\) already has a section named ".+"\. Cannot change the section named ".+" \(id: .+\) to ".+"/)) {
-		return res.status(StatusCode.ClientErrorConflict).json({message: response.message});
+	if (
+		response instanceof Error &&
+		response.message.match(
+			/A section within the project named ".+" \(id: .+\) already has a section named ".+"\. Cannot change the section named ".+" \(id: .+\) to ".+"/
+		)
+	) {
+		return res
+			.status(StatusCode.ClientErrorConflict)
+			.json({ message: response.message });
 	}
 
 	return utils.sanitizeResponse(
@@ -279,8 +293,14 @@ const changeSectionName = async (req: Request, res: Response) => {
  * @returns A Promise resolving to the HTTP response sent to the client.
  */
 const moveSectionToProject = async (req: Request, res: Response) => {
-	const section_id = req.body && typeof req.body?.section_id === "number" ? Number(req.body?.section_id) : NaN;
-	const project_id = req.body && typeof req.body?.project_id === "number" ? Number(req.body?.project_id) : NaN;
+	const section_id =
+		req.body && typeof req.body?.section_id === "number"
+			? Number(req.body?.section_id)
+			: NaN;
+	const project_id =
+		req.body && typeof req.body?.project_id === "number"
+			? Number(req.body?.project_id)
+			: NaN;
 
 	const validArgs = utils.mergeResults(
 		utils.assertArgumentsNumber({ project_id }),
@@ -290,21 +310,32 @@ const moveSectionToProject = async (req: Request, res: Response) => {
 	if (!validArgs.success)
 		return res.status(StatusCode.ClientErrorBadRequest).json(validArgs);
 
-	const response = await sectionController.moveSectionToProject(req.prisma)(section_id, project_id);
+	const response = await sectionController.moveSectionToProject(req.prisma)(
+		section_id,
+		project_id
+	);
 
-	const notFoundMatches = [/A section with the id .+ does not exist/, /A project with the id .+ does not exist/];
-	const conflictMatches = [/Cannot move section ".+" \(id: .+\) to project ".+" \(id: .+\)\. Section already exists in that project/,
+	const notFoundMatches = [
+		/A section with the id .+ does not exist/,
+		/A project with the id .+ does not exist/
+	];
+	const conflictMatches = [
+		/Cannot move section ".+" \(id: .+\) to project ".+" \(id: .+\)\. Section already exists in that project/,
 		/Cannot move section ".+" \(id: .+\) to project ".+" \(id: .+\)\. Project already has max amount of sections \(.+\)/,
 		/Cannot move section ".+" \(id: .+\) to project ".+" \(id: .+\)\. A section within that project already has that name\./
-	]
+	];
 
-	if(response instanceof Error) {
-		if(notFoundMatches.some(reg => response.message.match(reg))) {
-			return res.status(StatusCode.ClientErrorNotFound).json({message: response.message});
+	if (response instanceof Error) {
+		if (notFoundMatches.some((reg) => response.message.match(reg))) {
+			return res
+				.status(StatusCode.ClientErrorNotFound)
+				.json({ message: response.message });
 		}
 
-		if(conflictMatches.some(reg => response.message.match(reg))) {
-			return res.status(StatusCode.ClientErrorConflict).json({message: response.message});
+		if (conflictMatches.some((reg) => response.message.match(reg))) {
+			return res
+				.status(StatusCode.ClientErrorConflict)
+				.json({ message: response.message });
 		}
 	}
 
@@ -313,9 +344,7 @@ const moveSectionToProject = async (req: Request, res: Response) => {
 		res,
 		"Contact developers if this line appears. moveSectionToProject request handler"
 	);
-
-
-}
+};
 /**
  * @swagger
  * /section/changeProject:
@@ -342,7 +371,7 @@ const moveSectionToProject = async (req: Request, res: Response) => {
  *                 description: The id of the section that will be moved
  *                 example: 1
  *     responses:
-  *       200:
+ *       200:
  *         description: Successful response with updated section data
  *         content:
  *           application/json:
@@ -397,7 +426,7 @@ const moveSectionToProject = async (req: Request, res: Response) => {
  *                              type: string
  *                  examples:
  *                    projectId:
- *                      summary: Project with given id is not in database 
+ *                      summary: Project with given id is not in database
  *                      value:
  *                        message: "A project with the id 1 does not exist"
  *                    sectionId:
@@ -427,7 +456,6 @@ const moveSectionToProject = async (req: Request, res: Response) => {
  *                      value:
  *                        message: "Cannot move section \"Budget\" (id: 205) to project \"fda\" (id: 110). A section within that project already has that name."
  */
-
 
 export {
 	createSection,

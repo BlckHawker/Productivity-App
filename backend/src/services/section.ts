@@ -156,18 +156,19 @@ const getNumberOfSectionInProject =
  *          updating the Section’s `name` and returning the updated record.
  */
 
-const changeSectionName = (prisma: PrismaClient) => async (id: number, newName: string) => {
-	const updatedSection = await prisma.section.update({
-      where: {
-        id,
-      },
-      data: {
-        name: newName,
-      },
-    });
+const changeSectionName =
+	(prisma: PrismaClient) => async (id: number, newName: string) => {
+		const updatedSection = await prisma.section.update({
+			where: {
+				id
+			},
+			data: {
+				name: newName
+			}
+		});
 
-	return updatedSection;
-}
+		return updatedSection;
+	};
 
 /**
  * Moves a section into a different project by updating its `project_id`.
@@ -177,18 +178,19 @@ const changeSectionName = (prisma: PrismaClient) => async (id: number, newName: 
  *          updating the Section’s project and returning the updated record.
  */
 
-const changeSectionProject = (prisma: PrismaClient) => async (sectionId: number, projectId: number) => {
-	const updatedSection = await prisma.section.update({
-      where: {
-        id: sectionId,
-      },
-      data: {
-        project_id: projectId,
-      },
-    });
+const changeSectionProject =
+	(prisma: PrismaClient) => async (sectionId: number, projectId: number) => {
+		const updatedSection = await prisma.section.update({
+			where: {
+				id: sectionId
+			},
+			data: {
+				project_id: projectId
+			}
+		});
 
-	return updatedSection;
-}
+		return updatedSection;
+	};
 
 export {
 	changeSectionName,

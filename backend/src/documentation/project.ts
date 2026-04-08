@@ -91,7 +91,7 @@
  *                     type: string
  *                     example: "NEW NAME"
  *                 description: Update only the project name
- *  
+ *
  *               - type: object
  *                 required: [id, color]
  *                 properties:
@@ -102,7 +102,7 @@
  *                     type: string
  *                     example: "#FFF"
  *                 description: Update only the project color
- *   
+ *
  *               - type: object
  *                 required: [id, name, color]
  *                 properties:
