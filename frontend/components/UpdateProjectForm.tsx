@@ -33,8 +33,6 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 		// get current input value
 		if (input) {
 			if (input.value != currentVal) {
-				console.log(input.value)
-
 				// enable submit button
 				if (updatebtn) {
 					updatebtn.disabled = false;
@@ -53,40 +51,31 @@ function UpdateProjectForm(props: {name: string, color: string, id: number}) {
 	}
 
     async function projectChangeCallback(){
-        const newName: string = values.name;
+        let newName: string = values.name;
         const newColor: string = values.color;
         const id = props.id;
-		const newProj: object = {id: id, name: newName, color: newColor};
+		let newProj: object;
 
-		// if (newName != oldName && newColor != oldColor) { // both name and color changed
-		// 	newProj = {id: id, name: newName, color: newColor};
-		// }
-		// else if (newColor != oldColor && newName === oldName) { // only color changed
-		// 	newProj = {id: id, color: newColor};
-		// }
-		// else if (newName != oldName && newColor === oldColor) { // only name changed
-		// 	newProj = {id: id, name: newName}
-		// }
-		// else { // nothing changed, will return 400 Bad Request
-		// 	newProj = {id: id, name: newName, color: newColor};
-		// }
+		if (currentVal === "") {
+			newName = props.name;	
+		}
 
-		// different requests depending on if the name or color has changed, or both, or neither
-		// if (newName != props.name) {
-		// 	if (newColor != oldColor) { // name and color have changed
-		// 		newProj = {id: id, name: newName, color: newColor};
-		// 	}
-		// 	else { // only name has changed
-		// 		newProj = {id: id, name: newName}
-		// 	}
-		// }
-		// else if (newColor != oldColor){ // only color has changed
-		// 	newProj = {id: id, color: newColor}
-		// }
-		// else { // neither value has changed, will return a 400 Bad Request
-		// 	newProj = {id: id, name: newName, color: newColor};
-		// }
-        
+        // const newProj: object = {id: id, name: newName, color: newColor};
+		if (newName != oldName && newColor != oldColor) { // both name and color changed
+			newProj = {id: id, name: newName, color: newColor};
+		}
+		else if (newColor != oldColor && newName === oldName) { // only color changed
+			newProj = {id: id, color: newColor};
+		}
+		else if (newName != oldName && newColor === oldColor) { // only name changed
+			newProj = {id: id, name: newName}
+		}
+		else { // nothing changed, will return 400 Bad Request
+			newProj = {id: id, name: newName, color: newColor};
+		}
+
+        console.log(`current name: ${newName}, currentColor: ${newColor}, ID: ${id}`);
+
         // make PUT request to update name and/or color
         // display error message in a div below the form
         // PUT returns errors when name is the same!
