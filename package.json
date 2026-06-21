@@ -32,6 +32,6 @@
 		"typescript-eslint": "^8.42.0"
 	},
 	"dependencies": {
-		"@babel/preset-typescript": "^7.27.1"
+		"@babel/preset-typescript": "^8.0.1"
 	}
 }
