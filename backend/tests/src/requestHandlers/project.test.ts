@@ -1,5 +1,5 @@
-import * as projectController from "../../../src/controllers/project.ts";
-import * as utils from "../../../src/utils.ts";
+import * as projectController from "../../../src/controllers/project";
+import * as utils from "../../../src/utils";
 import { Request, Response } from "express";
 import {
 	createProject,
@@ -8,15 +8,17 @@ import {
 	getProjectById,
 	getProjectByName,
 	updateProject
-} from "../../../src/requestHandlers/project.ts";
+} from "../../../src/requestHandlers/project";
 import { PrismaClient } from "../../../generated/prisma";
 import { StatusCode } from "status-code-enum";
 
 jest.mock("../../../src/controllers/project.ts");
 jest.mock("../../../src/utils.ts");
 
-type MockPrisma = Partial<PrismaClient>;
-let req: Partial<Request> & { prisma?: MockPrisma };
+type MockRequest = Partial<Omit<Request, "prisma">> & {
+	prisma?: Partial<PrismaClient>;
+};
+let req: MockRequest;
 let res: jest.Mocked<Response>;
 
 const resetTests = () => {
