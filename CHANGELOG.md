@@ -36,6 +36,7 @@
 - Frontend functionality for creating projects (#127)
   - Errors are thrown if a project has the same name as a preexisting one, or if the limit of 100 projects is met (#127)
 - Basic project display (#127)
+- Update projects via frontend (#163)
 
 ### Changed
 

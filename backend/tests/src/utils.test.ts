@@ -1,4 +1,4 @@
-import * as utils from "../../src/utils.ts";
+import * as utils from "../../src/utils";
 import { Request, Response } from "express";
 
 type MockResponse = {

@@ -1,5 +1,5 @@
-import * as projectController from "../../../src/controllers/project.ts";
-import * as projectService from "../../../src/services/project.ts";
+import * as projectController from "../../../src/controllers/project";
+import * as projectService from "../../../src/services/project";
 import { PrismaClient, Project } from "../../../generated/prisma/index";
 
 jest.mock("../../../src/services/project");
@@ -12,7 +12,9 @@ const project: Project = {
 
 const prismaMock = (props: object = {}) =>
 	({ ...props }) as jest.Mocked<PrismaClient>;
-jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+
+jest.useFakeTimers();
+jest.setSystemTime(new Date("2020-01-01").getTime());
 
 const mockCurried = <T>(fn: jest.Mock, returnValue: T) => {
 	fn.mockReturnValueOnce(jest.fn().mockResolvedValueOnce(returnValue));

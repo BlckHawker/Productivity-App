@@ -1,7 +1,7 @@
-import * as projectController from "../../../src/controllers/project.ts";
-import * as projectService from "../../../src/services/project.ts";
-import * as sectionController from "../../../src/controllers/section.ts";
-import * as sectionService from "../../../src/services/section.ts";
+import * as projectController from "../../../src/controllers/project";
+import * as projectService from "../../../src/services/project";
+import * as sectionController from "../../../src/controllers/section";
+import * as sectionService from "../../../src/services/section";
 import {
 	PrismaClient,
 	Project,

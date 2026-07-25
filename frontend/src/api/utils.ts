@@ -62,4 +62,64 @@ const postAPICall = async (url: string, body: object) => {
 		});
 };
 
-export { getAPICall, postAPICall };
+/**
+ * Perform a PUT request to the backend API.
+ *
+ * @param {string} url - The endpoint path (relative to baseUrl).
+ * @param {object} body - The request payload to send in the PUT.
+ * @returns {Promise<any | Error>} Parsed JSON response or an Error if the request fails.
+ */
+const putAPICall = async (url: string, body: object) => {
+	return await fetch(`${baseUrl}${url}`, {
+		body: JSON.stringify(body),
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": "*"
+		}
+	})
+		.then((response) => {
+			if (!response.ok) {
+				return { status: response.status, json: response.json() };
+			}
+			return response.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((error) => {
+			return error;
+		});
+};
+
+/**
+ * Perform a PUT request to the backend API.
+ *
+ * @param {string} url - The endpoint path (relative to baseUrl).
+ * @param {object} body - The request payload to send in the DELETE.
+ * @returns {Promise<any | Error>} Parsed JSON response or an Error if the request fails.
+ */
+const deleteAPICall = async (url: string, body: object) => {
+	return await fetch(`${baseUrl}${url}`, {
+		body: JSON.stringify(body),
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": "*"
+		}
+	})
+		.then((response) => {
+			if (!response.ok) {
+				return { status: response.status, json: response.json() };
+			}
+			return response.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((error) => {
+			return error;
+		});
+};
+
+export { getAPICall, postAPICall, putAPICall, deleteAPICall };

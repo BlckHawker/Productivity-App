@@ -16,8 +16,10 @@ import { StatusCode } from "status-code-enum";
 jest.mock("../../../src/controllers/section");
 jest.mock("../../../src/utils");
 
-type MockPrisma = Partial<PrismaClient>;
-let req: Partial<Request> & { prisma?: MockPrisma };
+type MockRequest = Partial<Omit<Request, "prisma">> & {
+	prisma?: Partial<PrismaClient>;
+};
+let req: MockRequest;
 let res: jest.Mocked<Response>;
 
 const resetTests = () => {

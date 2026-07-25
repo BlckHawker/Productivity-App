@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Project from "./Project";
 import React from "react"; // must be in scope for JSX
 
-function ProjectDisplay() {
+export default function ProjectDisplay() {
 	// make get request for projects
 	const [projects, setProjects] = useState<Array<object>>(null);
 	let isProj;
@@ -27,7 +27,7 @@ function ProjectDisplay() {
 				{isProj ? (
 					projects &&
 					projects.map((proj) => (
-						<Project key={proj.id} name={proj.name} color={proj.color} />
+						<Project key={proj.id} id={proj.id} name={proj.name} color={proj.color} />
 					))
 				) : (
 					<p>No projects!</p>
@@ -36,5 +36,3 @@ function ProjectDisplay() {
 		</div>
 	);
 }
-
-export default ProjectDisplay;

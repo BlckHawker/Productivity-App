@@ -31,5 +31,5 @@
 		"skipLibCheck": true,
 		"noEmit": false
 	},
-	"include": ["src", "types", "swagger"]
+	"include": ["src/**/*","tests/**/*","types/**/*","swagger/**/*"]
 }
