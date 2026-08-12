@@ -9,7 +9,7 @@
 		"preview": "vite build && vite preview"
 	},
 	"dependencies": {
-		"@babel/preset-typescript": "^7.27.1",
+		"@babel/preset-typescript": "^8.0.1",
 		"dotenv": "^17.2.1",
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1"
