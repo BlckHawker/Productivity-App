@@ -39,7 +39,7 @@
 - Update projects via frontend (#163)
 
 ### Changed
-
+- `change-imports.ts` to accept directories and change imports inside said directories (#159)
 - Project plan more to include more detail in terms of sorting, filters, and the inclusion of a "today" view. (#116)
 - `seed-db.ts` updated to create a project called **Other**. (#117)
 

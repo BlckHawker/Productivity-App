@@ -84,8 +84,8 @@ _As a product manager, I want to filter tasks by priority so I can quickly ident
 - [ ] Code is linted and follows project conventions
 - [ ] All acceptance criteria are met
 - [ ] Documentation updated if applicable
-- [ ] Changelog updated
 - [ ] Files changed/added have a header comment
 - [ ] All changed/added function have header comments
 - [ ] Any backend status use the `status-code-enum` dependency
+- [ ] Changelog updated
 - [ ] Add PR number next to new changelog items
