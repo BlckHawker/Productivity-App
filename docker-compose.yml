@@ -1,0 +1,38 @@
+services:
+  root:
+    image: productivity-app/root
+    build:
+      context: .
+      target: root
+    volumes:
+      - .:/build
+      - /build/node_modules
+      - /build/frontend/node_modules
+      - /build/backend/node_modules
+  backend:
+    image: productivity-app/backend
+    build:
+      context: .
+      target: backend
+    volumes:
+      - .:/build
+      - /build/node_modules
+      - /build/backend/node_modules
+    networks:
+      - appnet
+  frontend:
+    image: productivity-app/frontend
+    build:
+      context: .
+      target: frontend
+    volumes:
+      - .:/build
+      - /build/node_modules
+      - /build/frontend/node_modules
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    name: productivity-app-network
+    driver: bridge
